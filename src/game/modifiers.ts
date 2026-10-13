@@ -1,4 +1,4 @@
-import { BONUS_PER_LEVEL, DINO_BY_ID } from '@/data/dinos';
+import { BONUS_PER_LEVEL, DINO_BY_ID, type DinoSpecies } from '@/data/dinos';
 import { MINE_BALANCE, PRESTIGE } from '@/data/mine';
 import type { BonusType, GameState } from './types';
 
@@ -13,6 +13,12 @@ export interface Modifiers {
   hatchSpeed: number;
   /** Multiplica los costes de mejora (≤ 1). */
   costMultiplier: number;
+}
+
+/** Bonus que aporta una especie a un nivel dado (en %, o minutos para offlineMinutes). */
+export function dinoBonusValue(species: DinoSpecies, level: number): number {
+  const perLevel = BONUS_PER_LEVEL[species.rarity] * (species.bonus === 'offlineMinutes' ? 5 : 1);
+  return perLevel * level;
 }
 
 /** Suma de bonus de la colección de dinos por tipo (en %, salvo offlineMinutes). */
@@ -30,8 +36,7 @@ export function collectionBonuses(state: GameState): Record<BonusType, number> {
   for (const [id, owned] of Object.entries(state.dinos)) {
     const species = DINO_BY_ID[id];
     if (!species || !owned) continue;
-    const perLevel = species.bonus === 'offlineMinutes' ? BONUS_PER_LEVEL[species.rarity] * 5 : BONUS_PER_LEVEL[species.rarity];
-    totals[species.bonus] += perLevel * owned.level;
+    totals[species.bonus] += dinoBonusValue(species, owned.level);
   }
   return totals;
 }

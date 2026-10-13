@@ -25,7 +25,7 @@ export function assignManager(state: GameState, station: StationId, dinoId: stri
 
 export type AbilityStatus = { kind: 'none' } | { kind: 'ready' } | { kind: 'active'; seconds: number } | { kind: 'cooldown'; seconds: number };
 
-export function abilityStatus(state: GameState, station: StationId, now: number): AbilityStatus {
+export function abilityStatus(state: Pick<GameState, 'managers' | 'abilities'>, station: StationId, now: number): AbilityStatus {
   if (!state.managers[station]) return { kind: 'none' };
   const ability = state.abilities[station];
   if (!ability || ability.cooldownUntil <= now) return { kind: 'ready' };
