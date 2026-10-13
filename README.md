@@ -5,6 +5,15 @@ véndelos en el museo, incuba huevos, colecciona 24 especies y haz prestigio con
 
 Hecho 100 % en código con **Expo (React Native) + TypeScript**, sin editores visuales.
 
+## Probar en el navegador
+
+**Online:** https://alfredogonzalez.github.io/DinoFossil/ (se publica solo en cada push con
+`.github/workflows/deploy-web.yml`). Ábrelo en el móvil o, en el ordenador, con el modo
+dispositivo de las herramientas de desarrollador (F12 → Ctrl+Shift+M).
+
+Anuncios y compras son simulados en web. La partida se guarda en el navegador
+(Ajustes → Borrar progreso para empezar de cero).
+
 ## Empezar
 
 ```bash

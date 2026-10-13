@@ -67,5 +67,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ],
   experiments: {
     typedRoutes: true,
+    // Prefijo de la web publicada en GitHub Pages (/DinoFossil). Vacío en local y en nativo.
+    baseUrl: process.env.EXPO_BASE_URL || undefined,
   },
 });
