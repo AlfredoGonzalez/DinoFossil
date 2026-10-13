@@ -1,6 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import type { ReactNode } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View, type ImageSourcePropType } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MAX_WIDTH } from './theme';
 
@@ -18,12 +18,15 @@ interface Props {
   children: ReactNode;
   background?: Background;
   edges?: ('top' | 'bottom')[];
+  /** Imagen de fondo a pantalla completa (recorte "cover"); si falta, se usa el degradado. */
+  backgroundImage?: ImageSourcePropType;
 }
 
 /** Contenedor de pantalla: fondo degradado, safe area y ancho máximo en tablets/web. */
-export function Screen({ children, background = 'jungle', edges = ['top', 'bottom'] }: Props) {
+export function Screen({ children, background = 'jungle', edges = ['top', 'bottom'], backgroundImage }: Props) {
   return (
     <LinearGradient colors={BACKGROUNDS[background]} style={styles.fill}>
+      {backgroundImage ? <Image source={backgroundImage} resizeMode="cover" style={styles.backgroundImage} /> : null}
       <SafeAreaView edges={edges} style={styles.fill}>
         <View style={styles.column}>{children}</View>
       </SafeAreaView>
@@ -33,5 +36,7 @@ export function Screen({ children, background = 'jungle', edges = ['top', 'botto
 
 const styles = StyleSheet.create({
   fill: { flex: 1 },
+  // width/height explícitos: en web, sin ellos la imagen toma el tamaño del archivo.
+  backgroundImage: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' },
   column: { flex: 1, width: '100%', maxWidth: MAX_WIDTH, alignSelf: 'center' },
 });

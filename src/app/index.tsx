@@ -1,9 +1,10 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 import { useTranslation } from '@/i18n';
 import { useHydrated } from '@/store/gameStore';
+import { getArt } from '@/ui/art';
 import { GameText } from '@/ui/GameText';
 import { Logo } from '@/ui/Logo';
 import { ProgressBar } from '@/ui/ProgressBar';
@@ -31,18 +32,23 @@ export default function Loading() {
   }, [hydrated, progress]);
 
   const mascotStyle = useAnimatedStyle(() => ({ transform: [{ translateY: bounce.value }] }));
+  const mascot = getArt('loading/mascot');
 
   return (
-    <Screen background="jungle">
+    <Screen background="jungle" backgroundImage={getArt('loading/background')}>
       <View style={styles.container}>
         <Logo />
         <GameText size={14} color={colors.textLight} weight="black" outline center>
           {t('loading.tagline').toUpperCase()}
         </GameText>
         <Animated.View style={[styles.mascot, mascotStyle]}>
-          <GameText size={150} style={{ lineHeight: 180 }}>
-            🦖
-          </GameText>
+          {mascot ? (
+            <Image source={mascot} resizeMode="contain" style={styles.mascotImage} />
+          ) : (
+            <GameText size={150} style={{ lineHeight: 180 }}>
+              🦖
+            </GameText>
+          )}
         </Animated.View>
         <View style={styles.bottom}>
           <GameText color={colors.textLight} outline center>
@@ -64,5 +70,6 @@ export default function Loading() {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 24, justifyContent: 'space-between' },
   mascot: { alignItems: 'center' },
+  mascotImage: { width: 240, height: 240 },
   bottom: { gap: 8 },
 });

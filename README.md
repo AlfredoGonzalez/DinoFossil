@@ -54,4 +54,5 @@ Ajusta también `bundleIdentifier` / `package` en `app.config.ts`.
 
 - `docs/GAME_DESIGN.md` — bucle, fórmulas, prestigio, monetización.
 - `docs/ART_GUIDE.md` — biblia de estilo y prompts para generar el arte con IA.
+- `docs/art/` — fichas de arte por módulo: qué archivos poner en `assets/art/` y con qué tamaño.
 - `CLAUDE.md` — convenciones del código para seguir desarrollando con IA.

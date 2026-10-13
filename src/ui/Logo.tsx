@@ -1,10 +1,16 @@
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
+import { getArt } from './art';
 import { GameText } from './GameText';
 import { colors, radius } from './theme';
 
-/** Logo tipográfico provisional hasta tener el logo ilustrado (ver docs/ART_GUIDE.md). */
+/** Logo ilustrado (assets/art/loading/logo.png) o, si aún no existe, el tipográfico. */
 export function Logo({ small }: { small?: boolean }) {
   const scale = small ? 0.7 : 1;
+  const art = getArt('loading/logo');
+  if (art) {
+    // Caja 16:10 como el lienzo pedido (1200×750); "contain" respeta otras proporciones.
+    return <Image source={art} resizeMode="contain" style={[styles.image, { width: 300 * scale, height: 188 * scale }]} />;
+  }
   return (
     <View style={styles.wrap}>
       <GameText size={58 * scale} weight="black" color={colors.green} style={styles.word} center>
@@ -24,6 +30,7 @@ export function Logo({ small }: { small?: boolean }) {
 
 const styles = StyleSheet.create({
   wrap: { alignItems: 'center', marginTop: 8 },
+  image: { alignSelf: 'center', marginTop: 8 },
   word: {
     textShadowColor: colors.woodDark,
     textShadowOffset: { width: 0, height: 4 },

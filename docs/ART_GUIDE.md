@@ -1,7 +1,10 @@
 # Guía de arte (generación con IA)
 
-El juego usa emojis como placeholder. Cada asset que generes sustituye a un emoji
-sin tocar las pantallas: solo hay que registrarlo en `src/ui/sprites.ts`.
+El juego usa emojis y degradados como placeholder. El arte final se entrega **módulo a módulo**:
+cada módulo tiene una ficha en [`docs/art/`](art/README.md) con los nombres de archivo exactos,
+tamaños y zonas seguras. Basta con soltar las imágenes en `assets/art/<módulo>/` y se aplican solas.
+
+Este documento contiene la biblia de estilo común y prompts generales.
 
 ## 1. Biblia de estilo (cópiala en TODOS los prompts)
 

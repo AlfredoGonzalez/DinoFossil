@@ -45,13 +45,21 @@
     "typescript": "~6.0.3"
   },
   "scripts": {
+    "art": "node scripts/generate-art.mjs",
+    "postinstall": "node scripts/generate-art.mjs",
+    "prestart": "node scripts/generate-art.mjs",
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
+    "preweb": "node scripts/generate-art.mjs",
     "web": "expo start --web",
+    "pretypecheck": "node scripts/generate-art.mjs",
     "typecheck": "tsc --noEmit",
+    "pretest": "node scripts/generate-art.mjs",
     "test": "jest",
+    "prelint": "node scripts/generate-art.mjs",
     "lint": "expo lint",
+    "preexport:web": "node scripts/generate-art.mjs",
     "export:web": "expo export --platform web"
   },
   "private": true,
