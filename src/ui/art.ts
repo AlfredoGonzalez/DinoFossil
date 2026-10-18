@@ -10,6 +10,8 @@ export const ART_SPECS = {
   'loading/background': { size: '1290×2796', format: 'jpg/webp opaco', desc: 'Fondo de la pantalla de carga' },
   'loading/logo': { size: '1200×750', format: 'png transparente', desc: 'Logo DINO FOSSIL TYCOON (carga e inicio)' },
   'loading/mascot': { size: '1024×1024', format: 'png transparente', desc: 'T-Rex mascota de cuerpo entero' },
+  // Módulo 2. Mientras no exista, la pantalla de inicio reutiliza loading/background.
+  'home/background': { size: '1290×2796', format: 'jpg/webp opaco', desc: 'Fondo de la pantalla de inicio' },
 } as const;
 
 export type ArtKey = keyof typeof ART_SPECS;

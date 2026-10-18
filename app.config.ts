@@ -24,7 +24,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   android: {
     package: 'com.dinofossil.tycoon',
     adaptiveIcon: {
-      backgroundColor: '#8FD16A',
+      backgroundColor: '#A6E0EC',
       foregroundImage: './assets/android-icon-foreground.png',
       backgroundImage: './assets/android-icon-background.png',
       monochromeImage: './assets/android-icon-monochrome.png',
@@ -47,7 +47,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         image: './assets/splash-icon.png',
         imageWidth: 200,
         resizeMode: 'contain',
-        backgroundColor: '#8FD16A',
+        // Cielo de assets/art/loading/background.jpg: transición suave splash → carga.
+        backgroundColor: '#A6E0EC',
       },
     ],
     [

@@ -42,9 +42,8 @@ const entries = [...byKey.entries()]
     return `  '${key}': require('${rel}'),`;
   });
 
-const lintDirective = entries.length ? '/* eslint-disable @typescript-eslint/no-require-imports */\n' : '';
 const content = `// Archivo generado por scripts/generate-art.mjs. No lo edites a mano.
-${lintDirective}import type { ImageSourcePropType } from 'react-native';
+import type { ImageSourcePropType } from 'react-native';
 
 export const ART: Partial<Record<string, ImageSourcePropType>> = ${entries.length ? `{\n${entries.join('\n')}\n}` : '{}'};
 `;

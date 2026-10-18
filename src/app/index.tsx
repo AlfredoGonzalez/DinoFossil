@@ -1,6 +1,6 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, Platform, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 import { useTranslation } from '@/i18n';
 import { useHydrated } from '@/store/gameStore';
@@ -15,6 +15,9 @@ import { colors } from '@/ui/theme';
 export default function Loading() {
   const { t } = useTranslation();
   const hydrated = useHydrated();
+  // ?preview=1 (solo web) deja la pantalla quieta al 100 % para revisar el arte.
+  const { preview } = useLocalSearchParams<{ preview?: string }>();
+  const stay = Platform.OS === 'web' && preview !== undefined;
   const [progress, setProgress] = useState(0);
   const bounce = useSharedValue(0);
 
@@ -23,13 +26,13 @@ export default function Loading() {
   }, [bounce]);
 
   useEffect(() => {
-    const id = setInterval(() => setProgress((p) => Math.min(1, p + 0.08)), 90);
+    const id = setInterval(() => setProgress((p) => Math.min(1, p + 0.04)), 90);
     return () => clearInterval(id);
   }, []);
 
   useEffect(() => {
-    if (hydrated && progress >= 1) router.replace('/home');
-  }, [hydrated, progress]);
+    if (hydrated && progress >= 1 && !stay) router.replace('/home');
+  }, [hydrated, progress, stay]);
 
   const mascotStyle = useAnimatedStyle(() => ({ transform: [{ translateY: bounce.value }] }));
   const mascot = getArt('loading/mascot');

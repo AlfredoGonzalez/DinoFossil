@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import Constants from 'expo-constants';
 import { useTranslation } from '@/i18n';
 import { ChunkyButton } from '@/ui/ChunkyButton';
+import { getArt } from '@/ui/art';
 import { GameModal } from '@/ui/GameModal';
 import { GameText } from '@/ui/GameText';
 import { Logo } from '@/ui/Logo';
@@ -24,7 +25,7 @@ export default function Home() {
   ] as const;
 
   return (
-    <Screen background="sky">
+    <Screen background="sky" backgroundImage={getArt('home/background') ?? getArt('loading/background')}>
       <View style={styles.container}>
         <Logo />
         <GameText size={20} weight="black" center>

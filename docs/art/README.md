@@ -5,7 +5,7 @@ común y los prompts generales están en [`../ART_GUIDE.md`](../ART_GUIDE.md).
 
 | # | Módulo | Ficha | Estado |
 |---|---|---|---|
-| 1 | Pantalla de carga (y logo de inicio) | [01-carga.md](01-carga.md) | listo para recibir arte |
+| 1 | Pantalla de carga (y logo de inicio) | [01-carga.md](01-carga.md) | fondo entregado; faltan logo, mascota y splash |
 
 ## Reglas para todos los módulos
 

@@ -87,6 +87,13 @@ at the very bottom edge of the frame, facing slightly right, big shiny eyes and 
 [BIBLIA DE ESTILO]
 ```
 
+## Cómo verlo
+
+- Web publicada: https://alfredogonzalez.github.io/DinoFossil/ (tarda ~2–3 min en actualizarse tras subir).
+- La carga dura ~2 s. Para revisarla quieta: **https://alfredogonzalez.github.io/DinoFossil/?preview=1**
+- Mientras no haya fondo propio de inicio (`home/background`, módulo 2), la pantalla de inicio reutiliza este fondo.
+- Si no ves el cambio, recarga sin caché (Ctrl+Shift+R) o abre una pestaña privada en el móvil.
+
 ## Checklist antes de entregar
 
 - [ ] Nombres exactos: `background.jpg`, `logo.png`, `mascot.png` (y `splash-icon.png`).
