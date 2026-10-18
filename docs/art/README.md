@@ -6,7 +6,8 @@ común y los prompts generales están en [`../ART_GUIDE.md`](../ART_GUIDE.md).
 | # | Módulo | Ficha | Estado |
 |---|---|---|---|
 | 1 | Pantalla de carga (y logo de inicio) | [01-carga.md](01-carga.md) | ✅ completo (splash nativo opcional) |
-| 2 | Pantalla de inicio | [02-inicio.md](02-inicio.md) | listo para recibir arte |
+| ~~2~~ | ~~Pantalla de inicio~~ | — | descartada: la carga lleva directo al juego |
+| 2 | Mina (rediseño) | próximamente | en diseño; usará los iconos `ui/icon-*` |
 
 ## Reglas para todos los módulos
 

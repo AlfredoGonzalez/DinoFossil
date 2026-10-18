@@ -1,7 +1,7 @@
 # Módulo 1 · Pantalla de carga
 
-Es lo primero que ve el jugador. El **logo** de este módulo también aparece en la pantalla
-de inicio (JUGAR / Invitado).
+Es lo primero que ve el jugador. Al terminar de cargar muestra **"¡Toca para jugar!"** y un toque
+entra directamente al juego (ya no hay pantalla de inicio).
 
 ## Capas
 
@@ -13,7 +13,7 @@ de inicio (JUGAR / Invitado).
 │        [MASCOTA]        │  ← mascot.png (recorte, rebota)
 │                         │
 │ Cargando aventuras...   │  ← texto (código)
-│ [■■■■■■■□□□□□□]  48 %   │  ← barra (código)
+│ [■■■■■■■□□□□□□]  48 %   │  ← barra (código) → al terminar: "¡Toca para jugar!" 
 │ Pequeños fósiles, ...   │  ← texto (código)
 └─────────────────────────┘
   todo encima de background.jpg (pantalla completa)
@@ -94,8 +94,7 @@ at the very bottom edge of the frame, facing slightly right, big shiny eyes and 
 ## Cómo verlo
 
 - Web publicada: https://alfredogonzalez.github.io/DinoFossil/ (tarda ~2–3 min en actualizarse tras subir).
-- La carga dura ~2 s. Para revisarla quieta: **https://alfredogonzalez.github.io/DinoFossil/?preview=1**
-- Mientras no haya fondo propio de inicio (`home/background`, módulo 2), la pantalla de inicio reutiliza este fondo.
+- La carga dura ~2 s y luego **espera tu toque** ("¡Toca para jugar!"), así que puedes mirarla con calma.
 - Si no ves el cambio, recarga sin caché (Ctrl+Shift+R) o abre una pestaña privada en el móvil.
 
 ## Checklist antes de entregar

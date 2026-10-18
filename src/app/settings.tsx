@@ -25,6 +25,7 @@ export default function SettingsScreen() {
   const settings = useGameStore((s) => s.game.settings);
   const update = useGameStore((s) => s.updateSettings);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [loginInfo, setLoginInfo] = useState(false);
 
   return (
     <Screen background="sky">
@@ -52,6 +53,12 @@ export default function SettingsScreen() {
             ))}
           </View>
         </Panel>
+        <Panel title={t('settings.account')}>
+          <ChunkyButton variant="blue" label={t('settings.login')} onPress={() => setLoginInfo(true)} />
+        </Panel>
+        <Panel title={t('settings.news')}>
+          <GameText>{t('settings.newsBody')}</GameText>
+        </Panel>
         {!adsAreSimulated ? <ChunkyButton variant="wood" label={t('settings.privacy')} onPress={() => void showPrivacyOptions()} /> : null}
         <ChunkyButton variant="red" label={t('settings.reset')} onPress={() => setConfirmReset(true)} />
         <ChunkyButton variant="blue" label={t('common.back')} onPress={() => router.back()} />
@@ -59,6 +66,10 @@ export default function SettingsScreen() {
           {t('settings.version', { version: Constants.expoConfig?.version ?? '1.0.0' })}
         </GameText>
       </ScrollView>
+      <GameModal visible={loginInfo} title={t('settings.login')} onClose={() => setLoginInfo(false)}>
+        <GameText center>{t('settings.loginSoon')}</GameText>
+        <ChunkyButton label={t('common.continue')} onPress={() => setLoginInfo(false)} />
+      </GameModal>
       <GameModal visible={confirmReset} title={t('settings.reset')} onClose={() => setConfirmReset(false)}>
         <GameText center>{t('settings.resetConfirm')}</GameText>
         <View style={styles.langs}>
@@ -70,7 +81,7 @@ export default function SettingsScreen() {
             onPress={() => {
               useGameStore.getState().resetProgress();
               setConfirmReset(false);
-              router.replace('/home');
+              router.replace('/');
             }}
           />
         </View>

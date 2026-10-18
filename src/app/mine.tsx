@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { router } from 'expo-router';
+import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import { formatDuration, formatNumber } from '@/game/format';
 import { isAdBoostActive } from '@/game/modifiers';
 import { canAddAdBoost } from '@/game/rewards';
@@ -12,6 +13,7 @@ import { playSfx } from '@/services/audio';
 import { successFeedback, tapFeedback } from '@/services/feedback';
 import { watchRewardedAd } from '@/services/rewards';
 import { useGameStore } from '@/store/gameStore';
+import { getArt } from '@/ui/art';
 import { BottomNav } from '@/ui/BottomNav';
 import { ChunkyButton } from '@/ui/ChunkyButton';
 import { CurrencyBar } from '@/ui/CurrencyBar';
@@ -34,6 +36,7 @@ function Header({ onPrestige }: { onPrestige: () => void }) {
   const canBoost = useGameStore((s) => canAddAdBoost(s.game, now));
   const prestigeReady = useGameStore((s) => pendingHuellas(s.game) > 0);
   const boosting = isAdBoostActive(useGameStore.getState().game, now);
+  const settingsIcon = getArt('ui/icon-settings');
 
   return (
     <View style={styles.header}>
@@ -59,6 +62,14 @@ function Header({ onPrestige }: { onPrestige: () => void }) {
         }}
       />
       <ChunkyButton testID="prestige" size="sm" variant={prestigeReady ? 'purple' : 'wood'} label="🐾" onPress={onPrestige} />
+      <ChunkyButton
+        testID="settings"
+        size="sm"
+        variant="wood"
+        label={settingsIcon ? undefined : '⚙️'}
+        icon={settingsIcon ? <Image source={settingsIcon} style={styles.headerIcon} /> : undefined}
+        onPress={() => router.push('/settings')}
+      />
     </View>
   );
 }
@@ -158,4 +169,5 @@ const styles = StyleSheet.create({
   grassEdge: { height: 10, backgroundColor: colors.grassDark },
   unlock: { padding: 14, backgroundColor: colors.dirtDark },
   cost: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  headerIcon: { width: 22, height: 22 },
 });

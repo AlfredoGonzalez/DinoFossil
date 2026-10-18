@@ -91,7 +91,7 @@ function GoalModal() {
   );
 }
 
-const HIDDEN_ON = ['/', '/home'];
+const HIDDEN_ON = ['/'];
 
 export function GlobalModals() {
   const pathname = usePathname();
