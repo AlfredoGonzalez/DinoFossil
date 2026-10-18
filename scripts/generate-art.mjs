@@ -35,6 +35,13 @@ for (const file of walk(artDir)) {
   }
 }
 
+// Avisos de peso: los recortes deberían pesar ≤ 300 KB y los fondos ≤ 600 KB (docs/art/README.md).
+for (const [key, file] of byKey) {
+  const kb = Math.round(fs.statSync(file).size / 1024);
+  const limit = key.endsWith('background') ? 600 : 300;
+  if (kb > limit) console.warn(`[art] "${key}" pesa ${kb} KB (recomendado ≤ ${limit} KB). Comprímelo con squoosh.app o TinyPNG.`);
+}
+
 const entries = [...byKey.entries()]
   .sort(([a], [b]) => a.localeCompare(b))
   .map(([key, file]) => {

@@ -10,8 +10,14 @@ export const ART_SPECS = {
   'loading/background': { size: '1290×2796', format: 'jpg/webp opaco', desc: 'Fondo de la pantalla de carga' },
   'loading/logo': { size: '1200×750', format: 'png transparente', desc: 'Logo DINO FOSSIL TYCOON (carga e inicio)' },
   'loading/mascot': { size: '1024×1024', format: 'png transparente', desc: 'T-Rex mascota de cuerpo entero' },
-  // Módulo 2. Mientras no exista, la pantalla de inicio reutiliza loading/background.
-  'home/background': { size: '1290×2796', format: 'jpg/webp opaco', desc: 'Fondo de la pantalla de inicio' },
+  // Módulo 2 (docs/art/02-inicio.md).
+  'home/background': { size: '1290×2796', format: 'jpg/webp opaco', desc: 'Fondo de inicio (si falta: loading/background)' },
+  'home/hero': { size: '1600×1000', format: 'png/webp transparente', desc: 'Grupo de dinos de inicio (si falta: loading/mascot)' },
+  // Iconos compartidos por varias pantallas.
+  'ui/icon-settings': { size: '384×384', format: 'png/webp transparente', desc: 'Icono de Ajustes' },
+  'ui/icon-goals': { size: '384×384', format: 'png/webp transparente', desc: 'Icono de Logros/Misiones' },
+  'ui/icon-shop': { size: '384×384', format: 'png/webp transparente', desc: 'Icono de Tienda' },
+  'ui/icon-news': { size: '384×384', format: 'png/webp transparente', desc: 'Icono de Noticias' },
 } as const;
 
 export type ArtKey = keyof typeof ART_SPECS;

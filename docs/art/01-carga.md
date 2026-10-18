@@ -24,7 +24,7 @@ de inicio (JUGAR / Invitado).
 | Archivo | Formato | Tamaño | Contenido |
 |---|---|---|---|
 | `assets/art/loading/background.jpg` | JPG/WebP opaco | **1290 × 2796** | Valle prehistórico: selva, helechos, volcán amistoso al fondo, cielo con nubes. **Sin personajes, logo ni texto.** |
-| `assets/art/loading/logo.png` | PNG transparente | **1200 × 750** (aprox.) | "DINO FOSSIL TYCOON" con el T-Rex asomándose. Único arte con texto. |
+| `assets/art/loading/logo.png` | PNG/WebP transparente | **1200 × 750** (aprox.; 4:3 también vale) | "DINO FOSSIL TYCOON" con el T-Rex asomándose. Único arte con texto. |
 | `assets/art/loading/mascot.png` | PNG transparente | **1024 × 1024** | El T-Rex mascota de cuerpo entero (es el "ancla" de estilo de todo el juego). |
 | `assets/splash-icon.png` | PNG transparente | **1024 × 1024** | Splash nativo (antes de que cargue el juego): mascota o logo simplificado. |
 
@@ -54,7 +54,11 @@ La mascota se dibuja en el centro, aprox. entre y = 1150 y 1950: deja esa parte 
 - Mira al frente o ligeramente a la derecha. Sombrero de explorador y hueso en las manos (como en el mockup).
 - Se muestra a 240 × 240 pt.
 
-### Splash nativo
+### Splash nativo (opcional)
+
+Es la imagen que muestra **el sistema del teléfono** durante una fracción de segundo, antes de que
+arranque el juego (no aparece en la web). Si no la creas, se ve el icono por defecto sobre el azul
+cielo del fondo; no pasa nada.
 
 - Todo el dibujo dentro del **círculo central de ~640 px**: Android 12+ recorta el splash en círculo.
 - Se ve sobre un color liso. Cuando llegue el fondo final, Claude ajustará ese color

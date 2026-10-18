@@ -5,7 +5,8 @@ común y los prompts generales están en [`../ART_GUIDE.md`](../ART_GUIDE.md).
 
 | # | Módulo | Ficha | Estado |
 |---|---|---|---|
-| 1 | Pantalla de carga (y logo de inicio) | [01-carga.md](01-carga.md) | fondo entregado; faltan logo, mascota y splash |
+| 1 | Pantalla de carga (y logo de inicio) | [01-carga.md](01-carga.md) | ✅ completo (splash nativo opcional) |
+| 2 | Pantalla de inicio | [02-inicio.md](02-inicio.md) | listo para recibir arte |
 
 ## Reglas para todos los módulos
 
@@ -14,7 +15,9 @@ común y los prompts generales están en [`../ART_GUIDE.md`](../ART_GUIDE.md).
 - **Fondos opacos:** JPG o WebP, calidad ~85.
 - **Resolución:** a @3x (lo que se indica en cada ficha ya está a @3x).
 - **Sin texto dentro de las imágenes**, salvo el logo: los textos del juego se traducen (es/en) y van en código.
-- **Peso:** fondos ≤ 600 KB, recortes ≤ 300 KB. Comprímelos con TinyPNG/Squoosh si se pasan.
+- **Peso:** fondos ≤ 600 KB, recortes ≤ 300 KB. Comprímelos con TinyPNG/Squoosh si se pasan
+  (WebP con transparencia suele dejarlos en ~120 KB sin pérdida visible). Si se pasan, el registro
+  de la publicación muestra un aviso `[art] … pesa N KB`.
 - **Nombres:** exactamente los de la ficha, en minúsculas. Si la extensión cambia (p. ej. `.webp` en vez de `.jpg`), no pasa nada.
 
 ## Cómo entregar los archivos

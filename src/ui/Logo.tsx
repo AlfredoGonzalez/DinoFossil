@@ -8,8 +8,8 @@ export function Logo({ small }: { small?: boolean }) {
   const scale = small ? 0.7 : 1;
   const art = getArt('loading/logo');
   if (art) {
-    // Caja 16:10 como el lienzo pedido (1200×750); "contain" respeta otras proporciones.
-    return <Image source={art} resizeMode="contain" style={[styles.image, { width: 300 * scale, height: 188 * scale }]} />;
+    // Caja 4:3; "contain" encaja sin deformar logos 4:3 o 16:10.
+    return <Image source={art} resizeMode="contain" style={[styles.image, { width: 300 * scale, height: 225 * scale }]} />;
   }
   return (
     <View style={styles.wrap}>

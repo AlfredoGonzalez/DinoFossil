@@ -8,24 +8,36 @@ Este documento contiene la biblia de estilo común y prompts generales.
 
 ## 1. Biblia de estilo (cópiala en TODOS los prompts)
 
-La consistencia entre sprites es lo más difícil con IA. Este bloque fija el estilo;
-pégalo al final de cada prompt sin cambiarlo:
+La consistencia entre sprites es lo más difícil con IA. Este bloque fija el estilo **"peluche"**
+del arte ya entregado (logo y mascota del módulo 1); pégalo al final de cada prompt sin cambiarlo:
 
 ```
-Style: cute chibi cartoon for a cozy mobile game, inspired by the art of casual idle games.
-Big round head, large shiny eyes with two white highlights, small rosy cheeks, short stubby limbs,
-soft rounded shapes with no sharp edges. Thick clean dark-brown outline (#4A2C12), cel-shading with one
-soft shadow tone and one highlight, saturated warm palette (jungle greens, sunny yellows, warm oranges).
-Single character, full body, centered, three-quarter view facing right, generous padding around it.
+Style: kawaii plush-toy characters for a cozy mobile game. Dinosaurs look like soft stuffed toys made of
+felt and fleece, with visible dashed stitching along the seams, a few small sewn-on patches, round glossy
+black button eyes with a white highlight, small rosy cheeks, short stubby limbs and chubby rounded bodies.
+Soft pastel palette: mint green, peach, sand yellow, olive green, cream belly. Explorer accessories in
+khaki and brown leather (safari pith helmet, small backpack). Clean dark-brown outline, soft gentle
+shading, warm cheerful lighting. Generous padding around the subject.
 Plain pure white background. No text, no watermark, no logos, no ground shadow.
 ```
+
+Para **fondos** (sin personajes), usa en su lugar:
+
+```
+Style: bright cozy cartoon illustration for a mobile game, clean dark-brown outlines, soft cel shading,
+lush jungle greens, sky blue, warm sunny highlights, friendly rounded shapes. No characters, no text,
+no watermark.
+```
+
+Referencias de estilo: pasa `assets/art/loading/mascot.webp` (y el logo para UI con texto) como imagen
+de referencia en cada generación: "Use image 1 only as the style reference".
 
 Paleta de la interfaz (coincide con `src/ui/theme.ts`): verde `#5CC94A`, dorado `#FFC83D`,
 madera `#B97A45`, pergamino `#FBEFD2`, cielo `#8ED6F5`, tierra `#8B5E3C`.
 
 ## 2. Flujo de trabajo
 
-1. **Genera primero el ancla**: el T-Rex mascota (prompt de abajo). Elige la mejor de 4 variantes.
+1. **El ancla ya existe**: la mascota entregada (`assets/art/loading/mascot.webp`). Úsala siempre como referencia.
 2. **Para cada dino siguiente**, pasa el T-Rex ancla como imagen de referencia
    ("Use image 1 only as the style reference") y repite la biblia de estilo.
 3. Pide **fondo blanco** (casi ningún modelo genera transparencia) y quítalo después
