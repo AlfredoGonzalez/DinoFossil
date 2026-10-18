@@ -20,14 +20,16 @@ import { CurrencyBar } from '@/ui/CurrencyBar';
 import { GameText } from '@/ui/GameText';
 import { useNow } from '@/ui/hooks';
 import { ResourceIcon } from '@/ui/Icons';
-import { CarrierCard } from '@/ui/mine/CarrierCard';
-import { ElevatorShaft } from '@/ui/mine/ElevatorShaft';
+import { BasementFloor } from '@/ui/mine/BasementFloor';
+import { HallFloor } from '@/ui/mine/HallFloor';
+import { LabFloor } from '@/ui/mine/LabFloor';
+import { Lift } from '@/ui/mine/Lift';
 import { ManagerPicker } from '@/ui/mine/ManagerPicker';
 import { PrestigeModal } from '@/ui/mine/PrestigeModal';
-import { ShaftRow } from '@/ui/mine/ShaftRow';
+import { Roof } from '@/ui/mine/Roof';
 import { UpgradeSheet } from '@/ui/mine/UpgradeSheet';
 import { Screen } from '@/ui/Screen';
-import { colors, radius } from '@/ui/theme';
+import { colors } from '@/ui/theme';
 
 function Header({ onPrestige }: { onPrestige: () => void }) {
   const { t } = useTranslation();
@@ -40,16 +42,9 @@ function Header({ onPrestige }: { onPrestige: () => void }) {
 
   return (
     <View style={styles.header}>
-      <View style={styles.title}>
-        <GameText size={16} weight="black" color={colors.textLight} outline>
-          🦴 {t('mine.title')}
-        </GameText>
-        <GameText size={12} color={colors.textLight} outline>
-          {t('worlds.eggValley.name')}
-        </GameText>
-      </View>
       <ChunkyButton
         testID="boost"
+        style={styles.boost}
         size="sm"
         variant={boosting ? 'orange' : 'blue'}
         disabled={!canBoost}
@@ -114,7 +109,17 @@ function UnlockRow() {
   );
 }
 
-/** Pantalla principal: la mina (galerías → ascensor → museo). */
+/** Cimientos bajo el último sótano (arte: museum/foundation). */
+function Foundation() {
+  const art = getArt('museum/foundation');
+  return (
+    <View style={styles.foundation}>
+      {art ? <Image source={art} resizeMode="cover" style={styles.fill} /> : null}
+    </View>
+  );
+}
+
+/** Pantalla principal: la Casa-Museo (sótanos → laboratorio → sala de exposición). */
 export default function MineScreen() {
   const shaftCount = useGameStore((s) => s.game.mine.shafts.length);
   const [upgrading, setUpgrading] = useState<StationId | null>(null);
@@ -122,27 +127,26 @@ export default function MineScreen() {
   const [prestigeOpen, setPrestigeOpen] = useState(false);
 
   return (
-    <Screen background="sky" edges={['top']}>
+    <Screen background="sky" backgroundImage={getArt('museum/sky') ?? getArt('loading/background')} edges={['top']}>
       <CurrencyBar />
       <Header onPrestige={() => (tapFeedback(), setPrestigeOpen(true))} />
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
-        <View style={styles.surface}>
-          <CarrierCard kind="museum" onUpgrade={() => setUpgrading('museum')} onPickManager={() => setPicking('museum')} />
-          <CarrierCard kind="elevator" onUpgrade={() => setUpgrading('elevator')} onPickManager={() => setPicking('elevator')} />
-        </View>
-        <View style={styles.grassEdge} />
+        <Roof />
+        <HallFloor onUpgrade={() => setUpgrading('museum')} onPickManager={() => setPicking('museum')} />
         <View>
+          <LabFloor onUpgrade={() => setUpgrading('elevator')} onPickManager={() => setPicking('elevator')} />
           {Array.from({ length: shaftCount }, (_, i) => (
-            <ShaftRow
+            <BasementFloor
               key={i}
               index={i}
               onUpgrade={() => setUpgrading(shaftStationId(i))}
               onPickManager={() => setPicking(shaftStationId(i))}
             />
           ))}
-          <ElevatorShaft />
+          <Lift />
         </View>
         <UnlockRow />
+        <Foundation />
       </ScrollView>
       <BottomNav />
       <UpgradeSheet station={upgrading} onClose={() => setUpgrading(null)} />
@@ -154,20 +158,21 @@ export default function MineScreen() {
 
 const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 10, paddingBottom: 6 },
-  title: {
-    flex: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: radius.sm,
-    backgroundColor: colors.wood,
-    borderWidth: 2,
+  boost: { flex: 1 },
+  scroll: { flex: 1 },
+  // flexGrow + cimientos con flex: la casa siempre llega hasta la barra inferior.
+  content: { flexGrow: 1 },
+  // Bajo el último sótano: tierra con el botón de excavar uno nuevo.
+  unlock: {
+    marginHorizontal: 10,
+    padding: 12,
+    backgroundColor: '#4A2F19',
+    borderLeftWidth: 6,
+    borderRightWidth: 6,
     borderColor: colors.woodDark,
   },
-  scroll: { flex: 1, backgroundColor: colors.dirtDark },
-  content: { paddingBottom: 24 },
-  surface: { gap: 8, paddingVertical: 10, backgroundColor: colors.grass },
-  grassEdge: { height: 10, backgroundColor: colors.grassDark },
-  unlock: { padding: 14, backgroundColor: colors.dirtDark },
+  foundation: { flexGrow: 1, minHeight: 70, backgroundColor: '#3A2412', overflow: 'hidden' },
+  fill: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' },
   cost: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   headerIcon: { width: 22, height: 22 },
 });

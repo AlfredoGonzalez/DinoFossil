@@ -7,7 +7,7 @@ común y los prompts generales están en [`../ART_GUIDE.md`](../ART_GUIDE.md).
 |---|---|---|---|
 | 1 | Pantalla de carga (y logo de inicio) | [01-carga.md](01-carga.md) | ✅ completo (splash nativo opcional) |
 | ~~2~~ | ~~Pantalla de inicio~~ | — | descartada: la carga lleva directo al juego |
-| 2 | Mina (rediseño) | próximamente | en diseño; usará los iconos `ui/icon-*` |
+| 2 | La Casa-Museo (pantalla principal) | [02-casa-museo.md](02-casa-museo.md) | listo para recibir arte |
 
 ## Reglas para todos los módulos
 

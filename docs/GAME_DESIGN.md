@@ -5,6 +5,10 @@ El motor (`src/game/`) es TypeScript puro y no depende de React: se prueba con `
 
 ## Bucle principal (Mundo 1)
 
+En pantalla es la **Casa-Museo**: los *sótanos* son las galerías (`shaft-i`), el *laboratorio* con su
+montacargas es la estación `elevator` y la *sala de exposición* es `museum`. Los nombres internos del
+motor no cambian para no romper partidas guardadas.
+
 ```
 Galerías (excavan fósiles) → Ascensor (sube fósiles) → Museo (vende por DinoCoins)
 ```

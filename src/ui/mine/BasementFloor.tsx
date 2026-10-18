@@ -6,23 +6,18 @@ import { shaftStationId, stationSpeed } from '@/game/simulate';
 import { useTranslation } from '@/i18n';
 import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
+import { getArt } from '../art';
 import { GameText } from '../GameText';
 import { ResourceIcon } from '../Icons';
-import { ProgressBar } from '../ProgressBar';
 import { colors } from '../theme';
 import { Digger } from './Digger';
+import { Floor } from './Floor';
 import { ManagerSlot } from './ManagerSlot';
+import { StationStatus } from './StationStatus';
 import { UpgradeChip } from './UpgradeChip';
 
-export const SHAFT_ROW_HEIGHT = 104;
-
-interface Props {
-  index: number;
-  onUpgrade: () => void;
-  onPickManager: () => void;
-}
-
-export function ShaftRow({ index, onUpgrade, onPickManager }: Props) {
+/** Un sótano de excavación (estación "shaft-i" del motor). */
+export function BasementFloor({ index, onUpgrade, onPickManager }: { index: number; onUpgrade: () => void; onPickManager: () => void }) {
   const { t } = useTranslation();
   const station = shaftStationId(index);
   const shaft = useGameStore((s) => s.game.mine.shafts[index]);
@@ -34,73 +29,49 @@ export function ShaftRow({ index, onUpgrade, onPickManager }: Props) {
   });
   if (!shaft) return null;
   const idle = !manager && !shaft.running;
+  // Cada sótano es un poco más oscuro que el anterior: se nota la profundidad.
+  const shade = Math.min(index * 6, 40);
 
   return (
-    <View style={[styles.row, { backgroundColor: index % 2 === 0 ? colors.dirt : colors.dirtLight }]}>
+    <Floor art={getArt('museum/basement')} color={`rgb(${110 - shade}, ${72 - shade}, ${42 - shade / 2})`} floorColor="#3B2414" withLift>
       <ManagerSlot station={station} onPick={onPickManager} />
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={`tap-${station}`}
-        style={styles.work}
+        style={styles.body}
         onPress={() => {
           if (!idle) return;
           tapFeedback();
           useGameStore.getState().tap(station);
         }}
       >
-        <GameText size={12} color={colors.textLight} weight="black" outline>
-          {t('mine.shaft', { n: index + 1 })}
+        <GameText size={13} weight="black" color={colors.textLight} outline>
+          ⛏️ {t('mine.shaft', { n: index + 1 })}
         </GameText>
         <View style={styles.dig}>
           <Digger dinoId={manager} running={shaft.running} />
           <View style={styles.pile}>
-            <ResourceIcon kind="fossils" size={20} />
-            <GameText size={14} color={colors.textLight} weight="black" outline>
+            <ResourceIcon kind="fossils" size={18} />
+            <GameText size={13} color={colors.textLight} weight="black" outline>
               {formatNumber(shaft.deposit)}
             </GameText>
           </View>
         </View>
-        {idle ? (
-          <View style={styles.tapHint}>
-            <GameText size={14} color={colors.text} weight="black">
-              👆 {t('mine.tap')}
-            </GameText>
-          </View>
-        ) : (
-          <ProgressBar value={shaft.progress} height={8} color={colors.gold} />
-        )}
+        <StationStatus idle={idle} progress={shaft.progress} color={colors.gold} />
       </Pressable>
-      <View style={styles.info}>
+      <View style={styles.side}>
         <UpgradeChip station={station} level={shaft.level} onPress={onUpgrade} />
-        <GameText size={12} color={colors.textLight} weight="black" outline>
-          ⭐ {formatNumber(rate)}/s
+        <GameText size={10} color={colors.textLight} weight="black" outline center>
+          {formatNumber(rate)}/s
         </GameText>
       </View>
-    </View>
+    </Floor>
   );
 }
 
 const styles = StyleSheet.create({
-  row: {
-    height: SHAFT_ROW_HEIGHT,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 6,
-    paddingRight: 52,
-    gap: 6,
-    borderBottomWidth: 4,
-    borderBottomColor: colors.dirtDark,
-  },
-  work: {
-    flex: 1,
-    height: SHAFT_ROW_HEIGHT - 16,
-    padding: 6,
-    borderRadius: 14,
-    backgroundColor: 'rgba(30,15,5,0.45)',
-    justifyContent: 'space-between',
-  },
+  body: { flex: 1, height: '86%', justifyContent: 'space-between', paddingVertical: 4 },
   dig: { flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' },
   pile: { flexDirection: 'row', alignItems: 'center', gap: 2 },
-  tapHint: { alignSelf: 'center', backgroundColor: colors.gold, borderRadius: 10, paddingHorizontal: 8 },
-  info: { alignItems: 'center', gap: 4 },
+  side: { alignItems: 'center', gap: 3, width: 70 },
 });
