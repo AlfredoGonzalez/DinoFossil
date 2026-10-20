@@ -93,6 +93,15 @@ matching icons") para fijar el estilo, y usa esa imagen como referencia para el 
 Sube los archivos a `assets/art/icons/` (puedes subirlos por tandas). En 2–3 minutos se ven en
 https://alfredogonzalez.github.io/DinoFossil/ (recarga sin caché si no aparecen).
 
+## Problemas comunes
+
+- **No renombres los archivos desde la web de GitHub.** Al renombrar `amber-Photoroom.png` el archivo
+  quedó dañado (2 bytes) y el icono no salía. Renómbralos en tu ordenador antes de subirlos, o sube el
+  archivo de nuevo con el nombre correcto. Si un archivo llega dañado, el juego lo ignora y muestra el
+  emoji, y la publicación avisa con `[art] … no es una imagen válida`.
+- **Tamaño:** no pasa nada si llegan a 2048 px (Claude los recorta y los deja en 256 px WebP de
+  ~20 KB), pero si los exportas ya a 256–512 px y comprimidos, se ven antes en la web.
+
 ## Checklist antes de entregar
 
 - [ ] Nombres exactos de la lista (`.webp` también vale).

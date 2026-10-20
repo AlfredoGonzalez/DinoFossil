@@ -1,7 +1,7 @@
 import { Image, StyleSheet, View } from 'react-native';
 import { useGameStore } from '@/store/gameStore';
 import { getArt } from '../art';
-import { GameText } from '../GameText';
+import { GameIcon } from '../GameIcon';
 import { colors } from '../theme';
 import { FLOOR_HEIGHT, LIFT_WIDTH } from './Floor';
 
@@ -23,7 +23,7 @@ export function Lift() {
       <View style={styles.rail} />
       <View style={[styles.rail, { right: 8, left: undefined }]} />
       <View style={[styles.crate, { top }]}>
-        {art ? <Image source={art} style={styles.crateArt} resizeMode="contain" /> : <GameText size={16}>🦴</GameText>}
+        {art ? <Image source={art} style={styles.crateArt} resizeMode="contain" /> : <GameIcon name="fossils" size={22} />}
       </View>
     </View>
   );

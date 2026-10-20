@@ -7,6 +7,7 @@ import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
 import { getArt } from '../art';
 import { GameText } from '../GameText';
+import { GameIcon } from '../GameIcon';
 import { IconLabel } from '../IconLabel';
 import { colors } from '../theme';
 import { Digger } from './Digger';
@@ -46,7 +47,7 @@ export function LabFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; 
         </IconLabel>
         <View style={styles.bench}>
           <Digger dinoId={manager} running={station.running} tool="🖌️" />
-          <GameText size={18}>🦴</GameText>
+          <GameIcon name="fossils" size={22} />
         </View>
         <StationStatus idle={idle} progress={station.progress} color={colors.blue} />
       </Pressable>

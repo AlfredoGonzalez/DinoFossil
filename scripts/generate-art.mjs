@@ -20,10 +20,23 @@ function walk(dir) {
   });
 }
 
+// Firma de los primeros bytes: detecta archivos dañados (p. ej. al renombrar desde la web de GitHub).
+function isValidImage(file) {
+  const head = fs.readFileSync(file).subarray(0, 12);
+  const png = head.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]));
+  const jpg = head[0] === 0xff && head[1] === 0xd8;
+  const webp = head.subarray(0, 4).toString() === 'RIFF' && head.subarray(8, 12).toString() === 'WEBP';
+  return png || jpg || webp;
+}
+
 const byKey = new Map();
 for (const file of walk(artDir)) {
   const ext = path.extname(file).toLowerCase();
   if (!EXTENSIONS.includes(ext)) continue;
+  if (!isValidImage(file)) {
+    console.warn(`[art] ${path.relative(root, file)} no es una imagen válida (¿archivo dañado?); se ignora y se usa el placeholder.`);
+    continue;
+  }
   const key = path.relative(artDir, file).slice(0, -ext.length).split(path.sep).join('/').toLowerCase();
   const previous = byKey.get(key);
   if (previous) {
