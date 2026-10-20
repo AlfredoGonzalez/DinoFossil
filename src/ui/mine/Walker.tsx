@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated, { cancelAnimation, Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
+import Animated, { cancelAnimation, Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming, type SharedValue } from 'react-native-reanimated';
 import { MINE_BALANCE } from '@/data/mine';
-import { getSheet } from '../spriteSheets';
+import { getSheet, type Sheet } from '../spriteSheets';
 import { SpriteSheet } from '../SpriteSheet';
 
 const SIZE = 64;
+/** Fracciones del ciclo: ir al túnel, escarbar y volver (cada una un tercio). */
+const TO_TUNNEL = 1 / 3;
+const DIGGING = 2 / 3;
 
 interface Props {
   running: boolean;
@@ -17,14 +20,32 @@ interface Props {
   speed: number;
 }
 
+type Phase = 'out' | 'dig' | 'back';
+
+/** Hoja visible solo durante su fase; se cambia en el hilo de UI con la opacidad. */
+function PhaseSheet({ sheet, phase, p }: { sheet: Sheet; phase: Phase; p: SharedValue<number> }) {
+  const style = useAnimatedStyle(() => {
+    const current: Phase = p.value < TO_TUNNEL ? 'out' : p.value < DIGGING ? 'dig' : 'back';
+    return { opacity: current === phase ? 1 : 0 };
+  });
+  return (
+    <Animated.View style={[StyleSheet.absoluteFill, style]}>
+      <SpriteSheet sheet={sheet} size={SIZE} />
+    </Animated.View>
+  );
+}
+
 /**
- * Excavador con sprites: en espera usa "idle"; durante un ciclo camina hacia la
- * derecha y regresa en espejo (ida y vuelta = un ciclo de excavación), y al
- * llegar vuelve a "idle". Si faltan las hojas devuelve null y se usa el placeholder.
+ * Excavador con sprites. En reposo ("idle") espera junto al montón de huesos, a la derecha.
+ * En cada ciclo de excavación: camina a la izquierda hasta el túnel, escarba ("dig") y
+ * regresa cargando ("carry", o "walk" mientras no exista); al llegar suelta los huesos
+ * y vuelve a reposo. Si faltan idle o walk devuelve null y se usa el placeholder.
  */
 export function Walker({ running, progress, managed, speed }: Props) {
   const idle = getSheet('sprites/digger/idle');
   const walk = getSheet('sprites/digger/walk');
+  const dig = getSheet('sprites/digger/dig') ?? idle;
+  const carry = getSheet('sprites/digger/carry') ?? walk;
   const [track, setTrack] = useState(0);
   const p = useSharedValue(0);
   const cycleMs = (MINE_BALANCE.shaft.cycleSeconds * 1000) / speed;
@@ -45,21 +66,30 @@ export function Walker({ running, progress, managed, speed }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [running, managed, cycleMs, p]);
 
+  // Posición: 1 = casa (derecha, junto al montón), 0 = túnel (izquierda).
   // Movimiento y volteo en capas separadas: combinarlos en un solo transform desplaza de más en web.
   const moveStyle = useAnimatedStyle(() => {
-    const along = p.value < 0.5 ? p.value * 2 : (1 - p.value) * 2;
-    return { transform: [{ translateX: Math.min(along, 1) * track }] };
+    const v = p.value;
+    const at = v < TO_TUNNEL ? 1 - v / TO_TUNNEL : v < DIGGING ? 0 : (v - DIGGING) / (1 - DIGGING);
+    return { transform: [{ translateX: Math.min(Math.max(at, 0), 1) * track }] };
   });
-  const faceStyle = useAnimatedStyle(() => ({ transform: [{ scaleX: p.value < 0.5 ? 1 : -1 }] }));
+  // Los sprites miran a la derecha: hacia el túnel (ida y escarbar) se voltean en espejo.
+  const faceStyle = useAnimatedStyle(() => ({ transform: [{ scaleX: p.value < DIGGING ? -1 : 1 }] }));
 
-  if (!idle || !walk) return null;
+  if (!idle || !walk || !dig || !carry) return null;
 
   return (
     <View style={styles.track} onLayout={(e) => setTrack(Math.max(0, e.nativeEvent.layout.width - SIZE))}>
-      <Animated.View style={[styles.mover, moveStyle]}>
-        <Animated.View style={faceStyle}>
-          <SpriteSheet sheet={running ? walk : idle} size={SIZE} />
-        </Animated.View>
+      <Animated.View style={[styles.mover, running ? moveStyle : { transform: [{ translateX: track }] }]}>
+        {running ? (
+          <Animated.View style={[styles.sprite, faceStyle]}>
+            <PhaseSheet sheet={walk} phase="out" p={p} />
+            <PhaseSheet sheet={dig} phase="dig" p={p} />
+            <PhaseSheet sheet={carry} phase="back" p={p} />
+          </Animated.View>
+        ) : (
+          <SpriteSheet sheet={idle} size={SIZE} />
+        )}
       </Animated.View>
     </View>
   );
@@ -72,4 +102,5 @@ export function hasWalkerSprites(): boolean {
 const styles = StyleSheet.create({
   track: { flex: 1, height: SIZE },
   mover: { position: 'absolute', left: 0, bottom: 0, width: SIZE, height: SIZE },
+  sprite: { width: SIZE, height: SIZE },
 });

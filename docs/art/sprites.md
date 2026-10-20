@@ -18,10 +18,25 @@ Si una hoja nueva tiene otra cuadrícula (p. ej. 4 × 4) o debe ir más rápida 
 
 | Archivo | Estado | Cuándo se usa |
 |---|---|---|
-| `idle.png` | ✅ entregado | En espera, junto al "¡Toca!" (sótano sin manager) |
-| `walk.png` | ✅ entregado | Al tocar: camina a la derecha y regresa (ida y vuelta = 3 s, un ciclo de excavación); al volver suelta los huesos |
-| `dig.png` | pendiente | Picando la pared al final del camino |
-| `carry.png` | pendiente | Regresando con los huesitos en brazos |
+| `idle.png` | ✅ entregado | En reposo junto al montón de huesos (derecha), con el "¡Toca!" |
+| `walk.png` | ✅ entregado | Ida hacia el túnel (izquierda, en espejo) y, mientras falte `carry`, también la vuelta |
+| `dig.png` | ✅ entregado (reescalado ×1,78 y centrado por Claude) | Escarbando en el túnel |
+| `carry.png` | pendiente | Regreso a la derecha cargando tierra con huesos |
 
-Hoy, con manager, el excavador repite el paseo de ida y vuelta sin parar. Cuando lleguen `dig` y
-`carry`, el ciclo será: caminar → picar → volver cargando → soltar.
+Ciclo de excavación (3 s, o menos con mejoras/Turbo), repartido en tercios:
+**camina al túnel → escarba → regresa cargando → suelta los huesos y vuelve a reposo**.
+Sin manager, un ciclo por toque; con manager, en bucle.
+
+### Si una hoja sale con el personaje más pequeño
+
+Pasa cuando la herramienta incluye tierra u objetos alrededor y "aleja" el encuadre. No hace falta
+repetirla: Claude mide el cuerpo del dino (no la tierra), la reescala al tamaño de `idle`/`walk` y
+alinea los pies en la misma línea.
+
+### Prompts usados en AutoSprite (side-scroller, 25 fotogramas, 256 px, Sharpen: None)
+
+- **Dig**: *Side view, facing right. The cute plush T-Rex stands in place and digs into the ground right
+  in front of it using both little front paws, scooping dirt with quick alternating strokes. Small clumps
+  of brown dirt and pebbles fly backward over its shoulder… In-place animation… loops seamlessly.*
+- **Carry**: *Side view, facing right. The cute plush T-Rex walks forward while hugging a small pile of
+  brown dirt with a cream fossil bone sticking out on top… In-place animation… loops seamlessly.*

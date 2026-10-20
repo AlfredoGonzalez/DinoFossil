@@ -16,6 +16,8 @@ export interface SheetLayout {
 export const SHEET_LAYOUTS: Partial<Record<ArtKey, SheetLayout>> = {
   'sprites/digger/idle': { cols: 5, rows: 5, frames: 25, fps: 10 },
   'sprites/digger/walk': { cols: 5, rows: 5, frames: 25, fps: 16 },
+  'sprites/digger/dig': { cols: 5, rows: 5, frames: 25, fps: 18 },
+  'sprites/digger/carry': { cols: 5, rows: 5, frames: 25, fps: 16 },
 };
 
 export interface Sheet extends SheetLayout {

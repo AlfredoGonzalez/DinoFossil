@@ -22,6 +22,8 @@ export const ART_SPECS = {
   // Hojas de sprites: cuadrícula de fotogramas (configuración en src/ui/spriteSheets.ts).
   'sprites/digger/idle': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Excavador en espera' },
   'sprites/digger/walk': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Excavador caminando (mira a la derecha)' },
+  'sprites/digger/dig': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Excavador escarbando (mira a la derecha)' },
+  'sprites/digger/carry': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Excavador caminando con tierra y huesos' },
 } as const;
 
 /** Iconos: assets/art/icons/<nombre> (lista en src/ui/iconNames.ts). */
