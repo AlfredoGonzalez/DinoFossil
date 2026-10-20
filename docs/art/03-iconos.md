@@ -39,13 +39,14 @@ Estilo: el mismo "peluche/fieltro con costuras" del logo → bloque **Biblia de 
 | `settings.png` | Engranaje de madera | Cabecera de la mina |
 | `ad.png` | Televisor retro con botón de play (ver anuncio) | Botones de recompensa |
 
-### Prioridad 2 · Estados y detalles (12)
+### Prioridad 2 · Estados y detalles (13)
 
 | Archivo | Qué dibujar | Dónde sale |
 |---|---|---|
 | `turbo.png` | Rayo amarillo | Habilidad del manager, boost |
 | `timer.png` | Reloj de arena | Recarga de habilidades, incubación |
-| `tap.png` | Manita señalando hacia abajo | "¡Toca!" en cada planta |
+| `tap.png` | Manita señalando hacia abajo | "¡Toca!" en cada planta y sobre el dino de los sótanos |
+| `upgrade.png` | Flecha verde hacia arriba | Botón de nivel cuando alcanza para mejorar |
 | `star.png` | Estrella dorada llena | Estrellas del mundo, hitos |
 | `star-empty.png` | La misma estrella, vacía/gris | Estrellas no conseguidas |
 | `lock.png` | Candado | Mundos bloqueados |
@@ -67,7 +68,7 @@ Estilo: el mismo "peluche/fieltro con costuras" del logo → bloque **Biblia de 
 | `shop-double-income.png` | Dos monedas DinoCoin apiladas con un brillo (ingresos ×2) |
 | `shop-dino-pass.png` | Ticket/pase dorado con una huella de dino |
 
-**Total: 35 iconos.** Si hay que priorizar, la tanda 1 ya cambia por completo el aspecto del juego.
+**Total: 36 iconos.** Si hay que priorizar, la tanda 1 ya cambia por completo el aspecto del juego.
 
 ## No hace falta crear
 

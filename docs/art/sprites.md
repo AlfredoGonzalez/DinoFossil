@@ -18,13 +18,14 @@ Si una hoja nueva tiene otra cuadrícula (p. ej. 4 × 4) o debe ir más rápida 
 
 | Archivo | Estado | Cuándo se usa |
 |---|---|---|
-| `idle.png` | ✅ entregado | En reposo junto al montón de huesos (derecha), con el "¡Toca!" |
-| `walk.png` | ✅ entregado | Ida hacia el túnel (izquierda, en espejo) |
-| `dig.png` | ✅ entregado (reescalado ×1,78 y centrado por Claude) | Escarbando en el túnel |
+| `idle.png` | ✅ entregado | En reposo delante de la canasta (derecha), mirando a la izquierda (en espejo), con la manita "¡Toca!" |
+| `walk.png` | ✅ entregado | Ida hacia el montón de tierra (izquierda, en espejo) |
+| `dig.png` | ✅ entregado (reescalado ×1,78 y centrado por Claude) | Escarbando en el montón de tierra (en espejo) |
 | `carry.png` | ✅ entregado (reescalado ×1,68 por Claude) | Regreso a la derecha cargando tierra con huesos |
 
 Ciclo de excavación (3 s, o menos con mejoras/Turbo), repartido en tercios:
-**camina al túnel → escarba → regresa cargando → suelta los huesos y vuelve a reposo**.
+**camina a la tierra → escarba → regresa cargando → suelta los huesos en la canasta y vuelve a reposo**.
+Escena completa del sótano: [04-sotanos.md](04-sotanos.md).
 Sin manager, un ciclo por toque; con manager, en bucle. En los sótanos no hay barra de progreso:
 el propio paseo del dino indica cuánto falta.
 

@@ -1,10 +1,11 @@
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import type { StationId } from '@/game/types';
 import { formatNumber } from '@/game/format';
 import { upgradeQuote } from '@/game/upgrades';
 import { useTranslation } from '@/i18n';
 import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
+import { GameIcon } from '../GameIcon';
 import { GameText } from '../GameText';
 import { colors } from '../theme';
 
@@ -25,9 +26,12 @@ export function UpgradeChip({ station, level, onPress }: { station: StationId; l
       }}
       style={[styles.chip, affordable ? styles.ready : styles.idle]}
     >
-      <GameText size={11} color={colors.textLight} weight="black" outline>
-        {affordable ? '⬆' : ''} {t('common.lvlShort')}
-      </GameText>
+      <View style={styles.row}>
+        {affordable ? <GameIcon name="upgrade" size={13} /> : null}
+        <GameText size={11} color={colors.textLight} weight="black" outline>
+          {t('common.lvlShort')}
+        </GameText>
+      </View>
       <GameText size={18} color={colors.textLight} weight="black" outline>
         {formatNumber(level)}
       </GameText>
@@ -37,6 +41,7 @@ export function UpgradeChip({ station, level, onPress }: { station: StationId; l
 
 const styles = StyleSheet.create({
   chip: { alignItems: 'center', minWidth: 54, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 12, borderWidth: 2 },
+  row: { flexDirection: 'row', alignItems: 'center', gap: 2 },
   ready: { backgroundColor: colors.green, borderColor: colors.greenDark },
   idle: { backgroundColor: colors.wood, borderColor: colors.woodDark },
 });

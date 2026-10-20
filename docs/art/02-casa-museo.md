@@ -23,8 +23,8 @@ Para interiores y escenarios usa el bloque de **fondos**.
 │ ├──────────────────────────┤ │
 │ │[M] Laboratorio  🖌️  [Nv]│▒│ │  ← museum/lab                    ▒ = montacargas
 │ ├══════════ suelo ══════════┤▒│     (raíles en código, caja = museum/crate)
-│ │[M] Sótano 1   ⛏️    [Nv]│▒│ │  ← museum/basement (se repite en cada sótano)
-│ │[M] Sótano 2   ⛏️    [Nv]│▒│ │
+│ │ ⛰️ ← 🦖🧺 [M]       [Nv]│▒│ │  ← museum/basement (se repite en cada sótano;
+│ │ ⛰️ ← 🦖🧺 [M]       [Nv]│▒│ │     escena detallada en 04-sotanos.md)
 │ │   [ + Nuevo sótano ]      │ │
 │ └──────────────────────────┘ │
 │  ░░░░░░ cimientos ░░░░░░░░░  │  ← museum/foundation
@@ -46,7 +46,7 @@ Todos en `assets/art/museum/`.
 | `roof.png` | PNG/WebP transparente | **1290 × 430** | Tejado de tejas de fieltro con chimenea y alero. **Deja libre un hueco central abajo** (≈ 520 × 170 px) para el cartel "Casa-Museo". | tejado de código |
 | `hall.png` | JPG/WebP opaco | **1290 × 480** | Interior de la sala de exposición: papel pintado cálido, zócalo de madera, cuadros con huesos, cordón rojo. **Sin personajes.** | color crema |
 | `lab.png` | JPG/WebP opaco | **1290 × 480** | Interior del laboratorio: azulejos claros, estanterías con frascos, lupa gigante, mesa de trabajo baja. | color azul claro |
-| `basement.png` | JPG/WebP opaco | **1290 × 480** | Sótano de tierra con vigas de madera, raíces, piedrecitas y algún hueso incrustado. Se repite en cada sótano: que los bordes izquierdo/derecho no tengan elementos llamativos cortados. | color tierra |
+| `basement.png` | JPG/WebP opaco | **1290 × 480** | Pared de tierra con vigas de madera, raíces, piedrecitas y algún hueso incrustado, **sin objetos grandes** (el montón de tierra y la canasta van encima, ver [04-sotanos.md](04-sotanos.md)). Se repite en cada sótano: que los bordes izquierdo/derecho no tengan elementos llamativos cortados. | color tierra |
 | `foundation.png` | JPG/WebP opaco | **1290 × 360** | Roca y tierra profunda bajo la casa (cimientos de piedra, cristales pequeños). La parte de arriba debe empalmar con el sótano. | color tierra oscura |
 | `crate.png` | PNG/WebP transparente | **256 × 256** | Caja/cesta de madera con fósiles asomando, que sube y baja en el montacargas. | caja de código con 🦴 |
 | `visitor.png` | PNG/WebP transparente | **512 × 512** | Un visitante adorable (un dino bebé de peluche con gorra y cámara) caminando hacia la derecha, de perfil. | emoji 🧒 |

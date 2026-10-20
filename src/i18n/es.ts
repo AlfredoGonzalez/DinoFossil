@@ -55,6 +55,7 @@ const es = {
     title: 'Casa-Museo',
     museum: 'Sala de exposición',
     elevator: 'Laboratorio',
+    basements: 'Sótanos',
     shaft: 'Sótano {{n}}',
     surface: 'listos para exponer',
     perTrip: '{{value}} por lote',

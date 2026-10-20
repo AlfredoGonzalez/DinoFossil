@@ -57,6 +57,7 @@ const en: Translations = {
     title: 'Museum House',
     museum: 'Exhibition hall',
     elevator: 'Laboratory',
+    basements: 'Basements',
     shaft: 'Basement {{n}}',
     surface: 'ready to exhibit',
     perTrip: '{{value}} per batch',
