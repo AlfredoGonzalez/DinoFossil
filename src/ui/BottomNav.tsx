@@ -1,7 +1,7 @@
 import { router, usePathname, type Href } from 'expo-router';
 import { useEffect } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming } from 'react-native-reanimated';
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withDelay, withSequence, withTiming } from 'react-native-reanimated';
 import { incubatorRemaining } from '@/game/collection';
 import { useTranslation } from '@/i18n';
 import { tapFeedback } from '@/services/feedback';
@@ -25,29 +25,40 @@ const TABS: { key: TabKey; icon: IconName; href: Href }[] = [
 
 const ICON = 34;
 
-/** Icono que, al activarse, salta hacia arriba saliendo de su casilla, crece y se balancea. */
-function TabIcon({ icon, active, big }: { icon: IconName; active: boolean; big: boolean }) {
-  const lift = useSharedValue(active ? 1 : 0);
+const GROW_MS = 600;
+
+/**
+ * Icono que, al activarse, sube poco a poco saliendo de su casilla mientras crece y,
+ * al terminar, se sacude. Siempre arranca en reposo: al cambiar de pestaña se monta
+ * una barra nueva y, si empezara ya crecido, la animación no se vería.
+ */
+function TabIcon({ icon, active }: { icon: IconName; active: boolean }) {
+  const lift = useSharedValue(0);
   const wiggle = useSharedValue(0);
 
   useEffect(() => {
-    lift.value = withSpring(active ? 1 : 0, { damping: 9, stiffness: 180 });
-    if (active) {
-      wiggle.value = withSequence(withTiming(-1, { duration: 90 }), withTiming(1, { duration: 140 }), withTiming(-0.5, { duration: 120 }), withTiming(0, { duration: 120 }));
-    }
+    lift.value = withTiming(active ? 1 : 0, { duration: GROW_MS, easing: Easing.inOut(Easing.cubic) });
+    wiggle.value = active
+      ? withDelay(
+          GROW_MS,
+          withSequence(
+            withTiming(-1, { duration: 80 }),
+            withTiming(1, { duration: 120 }),
+            withTiming(-0.6, { duration: 110 }),
+            withTiming(0.3, { duration: 100 }),
+            withTiming(0, { duration: 90 }),
+          ),
+        )
+      : 0;
   }, [active, lift, wiggle]);
 
   const style = useAnimatedStyle(() => ({
-    transform: [
-      { translateY: -lift.value * (big ? 14 : 22) },
-      { scale: 1 + lift.value * (big ? 0.25 : 0.45) },
-      { rotate: `${wiggle.value * 10}deg` },
-    ],
+    transform: [{ translateY: -lift.value * 22 }, { scale: 1 + lift.value * 0.45 }, { rotate: `${wiggle.value * 12}deg` }],
   }));
 
   return (
     <Animated.View style={style}>
-      <GameIcon name={icon} size={big ? 48 : ICON} />
+      <GameIcon name={icon} size={ICON} />
     </Animated.View>
   );
 }
@@ -61,21 +72,20 @@ export function BottomNav() {
     <View style={styles.bar}>
       {TABS.map((tab) => {
         const active = pathname === tab.href;
-        const big = tab.key === 'museum';
         const badge = tab.key === 'incubator' && eggBadge;
         return (
           <Pressable
             key={tab.key}
             accessibilityRole="button"
             accessibilityLabel={t(`nav.${tab.key}`)}
-            style={[styles.tab, big && styles.bigTab, active && styles.active]}
+            style={[styles.tab, active && styles.active]}
             onPress={() => {
               tapFeedback();
               // replace: las pestañas se sustituyen entre sí, así no se acumulan pantallas al ir y volver.
               if (!active) router.replace(tab.href);
             }}
           >
-            <TabIcon icon={tab.icon} active={active} big={big} />
+            <TabIcon icon={tab.icon} active={active} />
             <GameText size={11} color={colors.textLight} weight="black" outline numberOfLines={1}>
               {t(`nav.${tab.key}`)}
             </GameText>
@@ -111,9 +121,8 @@ const styles = StyleSheet.create({
     borderColor: '#5E3A1E',
     borderStyle: 'dashed',
   },
-  // El botón central es más grande y sobresale de la barra.
-  bigTab: { flex: 1.25, height: 80, marginTop: -22, borderRadius: 16, backgroundColor: colors.orange, borderColor: colors.orangeDark, borderStyle: 'solid' },
-  active: { backgroundColor: colors.green, borderColor: colors.greenDark, borderStyle: 'solid' },
+  // Pestaña activa: madera clara con borde liso (las inactivas, madera con costura punteada).
+  active: { backgroundColor: colors.orange, borderColor: colors.orangeDark, borderStyle: 'solid' },
   badge: {
     position: 'absolute',
     top: -4,
