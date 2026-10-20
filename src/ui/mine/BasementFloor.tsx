@@ -15,6 +15,7 @@ import { Floor } from './Floor';
 import { ManagerSlot } from './ManagerSlot';
 import { StationStatus } from './StationStatus';
 import { UpgradeChip } from './UpgradeChip';
+import { hasWalkerSprites, Walker } from './Walker';
 
 /** Un sótano de excavación (estación "shaft-i" del motor). */
 export function BasementFloor({ index, onUpgrade, onPickManager }: { index: number; onUpgrade: () => void; onPickManager: () => void }) {
@@ -27,6 +28,7 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
     const now = Date.now();
     return sh ? shaftRate(index, sh.level) * getModifiers(s.game, now).shaftSpeed * stationSpeed(s.game, station, now) : 0;
   });
+  const speed = useGameStore((s) => stationSpeed(s.game, station, Date.now()));
   if (!shaft) return null;
   const idle = !manager && !shaft.running;
   // Cada sótano es un poco más oscuro que el anterior: se nota la profundidad.
@@ -49,7 +51,11 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
           ⛏️ {t('mine.shaft', { n: index + 1 })}
         </GameText>
         <View style={styles.dig}>
-          <Digger dinoId={manager} running={shaft.running} />
+          {hasWalkerSprites() ? (
+            <Walker running={shaft.running} progress={shaft.progress} managed={!!manager} speed={speed} />
+          ) : (
+            <Digger dinoId={manager} running={shaft.running} />
+          )}
           <View style={styles.pile}>
             <ResourceIcon kind="fossils" size={18} />
             <GameText size={13} color={colors.textLight} weight="black" outline>

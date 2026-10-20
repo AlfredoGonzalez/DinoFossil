@@ -9,6 +9,8 @@ común y los prompts generales están en [`../ART_GUIDE.md`](../ART_GUIDE.md).
 | ~~2~~ | ~~Pantalla de inicio~~ | — | descartada: la carga lleva directo al juego |
 | 2 | La Casa-Museo (pantalla principal) | [02-casa-museo.md](02-casa-museo.md) | listo para recibir arte |
 
+Animaciones de personajes (hojas de sprites): ver [sprites.md](sprites.md).
+
 ## Reglas para todos los módulos
 
 - **Color:** sRGB.

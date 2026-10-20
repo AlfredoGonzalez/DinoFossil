@@ -18,6 +18,9 @@ export const ART_SPECS = {
   'museum/foundation': { size: '1290×360', format: 'jpg/webp opaco', desc: 'Cimientos y roca bajo el último sótano' },
   'museum/crate': { size: '256×256', format: 'png/webp transparente', desc: 'Caja de fósiles del montacargas' },
   'museum/visitor': { size: '512×512', format: 'png/webp transparente', desc: 'Visitante que pasea por la sala' },
+  // Hojas de sprites: cuadrícula de fotogramas (configuración en src/ui/spriteSheets.ts).
+  'sprites/digger/idle': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Excavador en espera' },
+  'sprites/digger/walk': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Excavador caminando (mira a la derecha)' },
   // Iconos compartidos (cabecera y barra de la mina, ajustes…).
   'ui/icon-settings': { size: '384×384', format: 'png/webp transparente', desc: 'Icono de Ajustes' },
   'ui/icon-goals': { size: '384×384', format: 'png/webp transparente', desc: 'Icono de Logros/Misiones' },
