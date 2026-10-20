@@ -7,7 +7,7 @@ Es donde se pasa el 90 % del tiempo. La mina es el **corte de una casa de muñec
 - en la **sala de exposición** se exhiben y los visitantes pagan entrada (DinoCoins).
 
 Estilo: el mismo "peluche/fieltro con costuras" del logo y la mascota → bloque **Biblia de estilo**
-de [`../ART_GUIDE.md`](../ART_GUIDE.md), con `assets/art/loading/mascot.webp` como referencia.
+de [`../ART_GUIDE.md`](../ART_GUIDE.md), con `docs/art/referencias/mascot.webp` como referencia.
 Para interiores y escenarios usa el bloque de **fondos**.
 
 ## Capas

@@ -10,7 +10,6 @@ entra directamente al juego (ya no hay pantalla de inicio).
 │        [ LOGO ]         │  ← logo.png (recorte)
 │  EXPLORA · EXCAVA · ... │  ← texto (código, traducido)
 │                         │
-│        [MASCOTA]        │  ← mascot.png (recorte, rebota)
 │                         │
 │ Cargando aventuras...   │  ← texto (código)
 │ [■■■■■■■□□□□□□]  48 %   │  ← barra (código) → al terminar: "¡Toca para jugar!" 
@@ -25,7 +24,6 @@ entra directamente al juego (ya no hay pantalla de inicio).
 |---|---|---|---|
 | `assets/art/loading/background.jpg` | JPG/WebP opaco | **1290 × 2796** | Valle prehistórico: selva, helechos, volcán amistoso al fondo, cielo con nubes. **Sin personajes, logo ni texto.** |
 | `assets/art/loading/logo.png` | PNG/WebP transparente | **1200 × 750** (aprox.; 4:3 también vale) | "DINO FOSSIL TYCOON" con el T-Rex asomándose. Único arte con texto. |
-| `assets/art/loading/mascot.png` | PNG transparente | **1024 × 1024** | El T-Rex mascota de cuerpo entero (es el "ancla" de estilo de todo el juego). |
 | `assets/splash-icon.png` | PNG transparente | **1024 × 1024** | Splash nativo (antes de que cargue el juego): mascota o logo simplificado. |
 
 ### Fondo — zonas seguras
@@ -40,19 +38,13 @@ El fondo se recorta para llenar cualquier pantalla. Sobre el lienzo de 1290 × 2
 | 2097 – 2796 (25 % inferior) | Van **barra de carga y textos blancos** encima: hierba o tierra de colores medios, sin contraste fuerte, para que se lean. |
 | Ancho completo | Se ve siempre entero. |
 
-La mascota se dibuja en el centro, aprox. entre y = 1150 y 1950: deja esa parte del paisaje despejada.
+La ilustración central (los dinos, el esqueleto…) va **dentro del fondo**: el código ya no dibuja ninguna mascota encima. La referencia de estilo de la mascota está en `docs/art/referencias/mascot.webp`.
 
 ### Logo
 
 - Margen transparente de ~40 px alrededor.
 - Debe leerse bien a **300 pt de ancho** (≈ el ancho de la pantalla de un móvil menos márgenes).
 - Si la proporción no es exactamente 16:10 no pasa nada: se ajusta sin deformarse.
-
-### Mascota
-
-- Ocupa ~85 % del lienzo, **los pies tocando el borde inferior** (la animación la hace rebotar desde ahí).
-- Mira al frente o ligeramente a la derecha. Sombrero de explorador y hueso en las manos (como en el mockup).
-- Se muestra a 240 × 240 pt.
 
 ### Splash nativo (opcional)
 
@@ -82,15 +74,6 @@ jungle greens and sunny yellows. No characters, no text, no logo, no watermark. 
 
 **Logo** → usar el prompt de la sección "Logo" de `ART_GUIDE.md`.
 
-**Mascota**
-
-```
-A cute chibi cartoon baby T-Rex, lime green with a cream belly, wearing a tiny tan safari explorer
-hat and a small brown backpack, happily hugging a big fossil bone, full body standing with its feet
-at the very bottom edge of the frame, facing slightly right, big shiny eyes and rosy cheeks.
-[BIBLIA DE ESTILO]
-```
-
 ## Cómo verlo
 
 - Web publicada: https://alfredogonzalez.github.io/DinoFossil/ (tarda ~2–3 min en actualizarse tras subir).
@@ -99,7 +82,7 @@ at the very bottom edge of the frame, facing slightly right, big shiny eyes and 
 
 ## Checklist antes de entregar
 
-- [ ] Nombres exactos: `background.jpg`, `logo.png`, `mascot.png` (y `splash-icon.png`).
+- [ ] Nombres exactos: `background.jpg`, `logo.png` (y opcional `splash-icon.png`).
 - [ ] Fondos sin texto; recortes con fondo transparente (no blanco).
 - [ ] Tamaños y pesos dentro de lo indicado.
 - [ ] Probado en la web publicada en móvil y, si es posible, en una tablet.

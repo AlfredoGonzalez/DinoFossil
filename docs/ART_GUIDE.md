@@ -29,7 +29,7 @@ lush jungle greens, sky blue, warm sunny highlights, friendly rounded shapes. No
 no watermark.
 ```
 
-Referencias de estilo: pasa `assets/art/loading/mascot.webp` (y el logo para UI con texto) como imagen
+Referencias de estilo: pasa `docs/art/referencias/mascot.webp` (y el logo para UI con texto) como imagen
 de referencia en cada generación: "Use image 1 only as the style reference".
 
 Paleta de la interfaz (coincide con `src/ui/theme.ts`): verde `#5CC94A`, dorado `#FFC83D`,
@@ -37,7 +37,7 @@ madera `#B97A45`, pergamino `#FBEFD2`, cielo `#8ED6F5`, tierra `#8B5E3C`.
 
 ## 2. Flujo de trabajo
 
-1. **El ancla ya existe**: la mascota entregada (`assets/art/loading/mascot.webp`). Úsala siempre como referencia.
+1. **El ancla ya existe**: la mascota entregada (`docs/art/referencias/mascot.webp`). Úsala siempre como referencia.
 2. **Para cada dino siguiente**, pasa el T-Rex ancla como imagen de referencia
    ("Use image 1 only as the style reference") y repite la biblia de estilo.
 3. Pide **fondo blanco** (casi ningún modelo genera transparencia) y quítalo después

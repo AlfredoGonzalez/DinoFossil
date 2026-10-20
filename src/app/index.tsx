@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 import { useTranslation } from '@/i18n';
 import { tapFeedback } from '@/services/feedback';
@@ -18,12 +18,7 @@ export default function Loading() {
   const hydrated = useHydrated();
   const [progress, setProgress] = useState(0);
   const ready = hydrated && progress >= 1;
-  const bounce = useSharedValue(0);
   const pulse = useSharedValue(1);
-
-  useEffect(() => {
-    bounce.value = withRepeat(withSequence(withTiming(-14, { duration: 450 }), withTiming(0, { duration: 450 })), -1);
-  }, [bounce]);
 
   useEffect(() => {
     if (ready) pulse.value = withRepeat(withSequence(withTiming(1.08, { duration: 600 }), withTiming(1, { duration: 600 })), -1);
@@ -34,9 +29,7 @@ export default function Loading() {
     return () => clearInterval(id);
   }, []);
 
-  const mascotStyle = useAnimatedStyle(() => ({ transform: [{ translateY: bounce.value }] }));
   const pulseStyle = useAnimatedStyle(() => ({ transform: [{ scale: pulse.value }] }));
-  const mascot = getArt('loading/mascot');
 
   return (
     <Screen background="jungle" backgroundImage={getArt('loading/background')}>
@@ -51,19 +44,13 @@ export default function Loading() {
           router.replace('/mine');
         }}
       >
-        <Logo />
-        <GameText size={14} color={colors.textLight} weight="black" outline center>
-          {t('loading.tagline').toUpperCase()}
-        </GameText>
-        <Animated.View style={[styles.mascot, mascotStyle]}>
-          {mascot ? (
-            <Image source={mascot} resizeMode="contain" style={styles.mascotImage} />
-          ) : (
-            <GameText size={150} style={{ lineHeight: 180 }}>
-              🦖
-            </GameText>
-          )}
-        </Animated.View>
+        {/* Logo y lema juntos arriba; la ilustración del centro la pone el fondo. */}
+        <View style={styles.top}>
+          <Logo />
+          <GameText size={14} color={colors.textLight} weight="black" outline center style={styles.tagline}>
+            {t('loading.tagline').toUpperCase()}
+          </GameText>
+        </View>
         <View style={styles.bottom}>
           {ready ? (
             <Animated.View style={pulseStyle}>
@@ -93,8 +80,9 @@ export default function Loading() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 24, justifyContent: 'space-between' },
-  mascot: { alignItems: 'center' },
-  mascotImage: { width: 240, height: 240 },
+  // Margen negativo: el logo trae aire transparente debajo y el lema debe quedar pegado.
+  top: { gap: 0 },
+  tagline: { marginTop: -16 },
   // Altura fija: el cambio de barra a "Toca para jugar" no mueve el resto de la pantalla.
   bottom: { gap: 8, minHeight: 120, justifyContent: 'flex-end' },
 });
