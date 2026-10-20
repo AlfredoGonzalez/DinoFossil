@@ -66,7 +66,8 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
             </GameText>
           </View>
         </View>
-        <StationStatus idle={idle} progress={shaft.progress} color={colors.gold} />
+        {/* Con sprites, el paseo del dino ya muestra el avance del ciclo: sin barra, solo el "¡Toca!". */}
+        {idle || !hasWalkerSprites() ? <StationStatus idle={idle} progress={shaft.progress} color={colors.gold} /> : null}
       </Pressable>
       <View style={styles.side}>
         <UpgradeChip station={station} level={shaft.level} onPress={onUpgrade} />

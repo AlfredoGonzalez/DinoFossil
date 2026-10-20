@@ -19,13 +19,14 @@ Si una hoja nueva tiene otra cuadrícula (p. ej. 4 × 4) o debe ir más rápida 
 | Archivo | Estado | Cuándo se usa |
 |---|---|---|
 | `idle.png` | ✅ entregado | En reposo junto al montón de huesos (derecha), con el "¡Toca!" |
-| `walk.png` | ✅ entregado | Ida hacia el túnel (izquierda, en espejo) y, mientras falte `carry`, también la vuelta |
+| `walk.png` | ✅ entregado | Ida hacia el túnel (izquierda, en espejo) |
 | `dig.png` | ✅ entregado (reescalado ×1,78 y centrado por Claude) | Escarbando en el túnel |
-| `carry.png` | pendiente | Regreso a la derecha cargando tierra con huesos |
+| `carry.png` | ✅ entregado (reescalado ×1,68 por Claude) | Regreso a la derecha cargando tierra con huesos |
 
 Ciclo de excavación (3 s, o menos con mejoras/Turbo), repartido en tercios:
 **camina al túnel → escarba → regresa cargando → suelta los huesos y vuelve a reposo**.
-Sin manager, un ciclo por toque; con manager, en bucle.
+Sin manager, un ciclo por toque; con manager, en bucle. En los sótanos no hay barra de progreso:
+el propio paseo del dino indica cuánto falta.
 
 ### Si una hoja sale con el personaje más pequeño
 
