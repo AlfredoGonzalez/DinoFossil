@@ -178,7 +178,7 @@ const es = {
     lifetime: 'DinoCoins totales',
     prestiges: 'Prestigios',
   },
-  nav: { map: 'Mapa', dinos: 'Dinos', incubator: 'Huevos', shop: 'Tienda', goals: 'Misiones' },
+  nav: { map: 'Mapa', dinos: 'Dinos', museum: 'Museo', incubator: 'Huevos', shop: 'Tienda', goals: 'Misiones' },
   settings: {
     title: 'Ajustes',
     sound: 'Sonido',

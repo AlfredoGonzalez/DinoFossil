@@ -22,6 +22,8 @@ export const ICONS = {
   'nav-eggs': '🥚',
   'nav-shop': '🏪',
   'nav-missions': '📋',
+  // Botón central grande de la barra: volver a la Casa-Museo
+  'nav-museum': '🏛️',
   // Acciones y estados
   settings: '⚙️',
   ad: '📺',

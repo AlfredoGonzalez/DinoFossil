@@ -180,7 +180,7 @@ const en: Translations = {
     lifetime: 'Total DinoCoins',
     prestiges: 'Prestiges',
   },
-  nav: { map: 'Map', dinos: 'Dinos', incubator: 'Eggs', shop: 'Shop', goals: 'Missions' },
+  nav: { map: 'Map', dinos: 'Dinos', museum: 'Museum', incubator: 'Eggs', shop: 'Shop', goals: 'Missions' },
   settings: {
     title: 'Settings',
     sound: 'Sound',

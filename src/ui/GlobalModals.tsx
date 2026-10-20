@@ -64,7 +64,7 @@ function GoalModal() {
   const claim = (toMap: boolean) => {
     useGameStore.getState().claimGoal(goal.id);
     successFeedback();
-    if (toMap) router.push('/map');
+    if (toMap) router.replace('/map');
   };
   return (
     <GameModal visible title={t('goal.title')} testID="goal-modal">

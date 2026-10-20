@@ -29,7 +29,7 @@ export function ManagerPicker({ station, onClose }: { station: StationId | null;
       {owned.length === 0 ? (
         <>
           <GameText center>{t('managers.none')}</GameText>
-          <ChunkyButton label={t('nav.incubator')} onPress={() => (onClose(), router.push('/incubator'))} />
+          <ChunkyButton label={t('nav.incubator')} onPress={() => (onClose(), router.replace('/incubator'))} />
         </>
       ) : null}
       {owned.map((species) => {

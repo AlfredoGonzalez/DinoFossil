@@ -17,7 +17,7 @@ Estilo: el mismo "peluche/fieltro con costuras" del logo → bloque **Biblia de 
 
 ## Lista (nombre de archivo = nombre exacto)
 
-### Prioridad 1 · Se ven todo el tiempo (16)
+### Prioridad 1 · Se ven todo el tiempo (17)
 
 | Archivo | Qué dibujar | Dónde sale |
 |---|---|---|
@@ -34,7 +34,8 @@ Estilo: el mismo "peluche/fieltro con costuras" del logo → bloque **Biblia de 
 | `nav-dinos.png` | Cabeza de dino de peluche (colección) | Barra inferior |
 | `nav-eggs.png` | Huevo en un nido | Barra inferior |
 | `nav-shop.png` | Puesto de mercado con toldo de rayas | Barra inferior |
-| `nav-missions.png` | Pergamino/lista con un check | Barra inferior |
+| `nav-missions.png` | Pergamino/lista con un check | Botón de misiones (cabecera) |
+| `nav-museum.png` | La Casa-Museo en miniatura (tejado rojo, cartel) | Botón central grande de la barra: vuelve al juego |
 | `settings.png` | Engranaje de madera | Cabecera de la mina |
 | `ad.png` | Televisor retro con botón de play (ver anuncio) | Botones de recompensa |
 
@@ -66,7 +67,7 @@ Estilo: el mismo "peluche/fieltro con costuras" del logo → bloque **Biblia de 
 | `shop-double-income.png` | Dos monedas DinoCoin apiladas con un brillo (ingresos ×2) |
 | `shop-dino-pass.png` | Ticket/pase dorado con una huella de dino |
 
-**Total: 34 iconos.** Si hay que priorizar, la tanda 1 ya cambia por completo el aspecto del juego.
+**Total: 35 iconos.** Si hay que priorizar, la tanda 1 ya cambia por completo el aspecto del juego.
 
 ## No hace falta crear
 
@@ -99,8 +100,9 @@ https://alfredogonzalez.github.io/DinoFossil/ (recarga sin caché si no aparecen
   quedó dañado (2 bytes) y el icono no salía. Renómbralos en tu ordenador antes de subirlos, o sube el
   archivo de nuevo con el nombre correcto. Si un archivo llega dañado, el juego lo ignora y muestra el
   emoji, y la publicación avisa con `[art] … no es una imagen válida`.
-- **Tamaño:** no pasa nada si llegan a 2048 px (Claude los recorta y los deja en 256 px WebP de
-  ~20 KB), pero si los exportas ya a 256–512 px y comprimidos, se ven antes en la web.
+- **Tamaño y nombre:** no pasa nada si llegan a 2048 px o con la extensión duplicada (`ad.png.png`):
+  `scripts/optimize-icons.py` los recorta, los deja en 256 px WebP (~20 KB) y corrige el nombre. La web
+  publicada lo hace sola en cada publicación.
 
 ## Checklist antes de entregar
 

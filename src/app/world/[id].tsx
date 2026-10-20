@@ -46,7 +46,7 @@ export default function WorldScreen() {
             label={t('world.explore')}
             sublabel={t('world.stage')}
             disabled={!world.playable}
-            onPress={() => router.push('/mine')}
+            onPress={() => router.replace('/mine')}
           />
         </Panel>
         <View style={styles.footer}>

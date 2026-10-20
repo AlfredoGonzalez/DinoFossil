@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { router } from 'expo-router';
 import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import { formatDuration, formatNumber } from '@/game/format';
+import { claimableGoals } from '@/game/goals';
 import { isAdBoostActive } from '@/game/modifiers';
 import { canAddAdBoost } from '@/game/rewards';
 import { pendingHuellas } from '@/game/prestige';
@@ -39,6 +40,7 @@ function Header({ onPrestige }: { onPrestige: () => void }) {
   const boostUntil = useGameStore((s) => s.game.adBoostUntil);
   const canBoost = useGameStore((s) => canAddAdBoost(s.game, now));
   const prestigeReady = useGameStore((s) => pendingHuellas(s.game) > 0);
+  const goalsBadge = useGameStore((s) => claimableGoals(s.game).length > 0);
   const boosting = isAdBoostActive(useGameStore.getState().game, now);
 
   return (
@@ -65,6 +67,17 @@ function Header({ onPrestige }: { onPrestige: () => void }) {
         icon={<GameIcon name="huellas" size={22} />}
         onPress={onPrestige}
       />
+      {/* Misiones: salieron de la barra inferior para dejar el centro al botón de la Casa-Museo. */}
+      <View>
+        <ChunkyButton
+          testID="missions"
+          size="sm"
+          variant="wood"
+          icon={<GameIcon name="nav-missions" size={22} />}
+          onPress={() => router.replace('/goals')}
+        />
+        {goalsBadge ? <View pointerEvents="none" style={styles.badge} /> : null}
+      </View>
       <ChunkyButton
         testID="settings"
         size="sm"
@@ -168,6 +181,17 @@ export default function MineScreen() {
 const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 10, paddingBottom: 6 },
   boost: { flex: 1 },
+  badge: {
+    position: 'absolute',
+    top: -4,
+    right: -4,
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    backgroundColor: colors.red,
+    borderWidth: 2,
+    borderColor: '#fff',
+  },
   scroll: { flex: 1 },
   // flexGrow + cimientos con flex: la casa siempre llega hasta la barra inferior.
   content: { flexGrow: 1 },
