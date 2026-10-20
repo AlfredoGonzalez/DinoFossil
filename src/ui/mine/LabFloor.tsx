@@ -7,6 +7,7 @@ import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
 import { getArt } from '../art';
 import { GameText } from '../GameText';
+import { IconLabel } from '../IconLabel';
 import { colors } from '../theme';
 import { Digger } from './Digger';
 import { Floor } from './Floor';
@@ -38,9 +39,11 @@ export function LabFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; 
           useGameStore.getState().tap('elevator');
         }}
       >
-        <GameText size={13} weight="black" color="#2F5866">
-          🔬 {t('mine.elevator')}
-        </GameText>
+        <IconLabel icon="station-lab" size={15}>
+          <GameText size={13} weight="black" color="#2F5866">
+            {t('mine.elevator')}
+          </GameText>
+        </IconLabel>
         <View style={styles.bench}>
           <Digger dinoId={manager} running={station.running} tool="🖌️" />
           <GameText size={18}>🦴</GameText>

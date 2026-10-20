@@ -18,6 +18,8 @@ import { BottomNav } from '@/ui/BottomNav';
 import { ChunkyButton } from '@/ui/ChunkyButton';
 import { CurrencyBar } from '@/ui/CurrencyBar';
 import { GameText } from '@/ui/GameText';
+import { GameIcon } from '@/ui/GameIcon';
+import { IconLabel } from '@/ui/IconLabel';
 import { useNow } from '@/ui/hooks';
 import { ResourceIcon } from '@/ui/Icons';
 import { BasementFloor } from '@/ui/mine/BasementFloor';
@@ -38,7 +40,6 @@ function Header({ onPrestige }: { onPrestige: () => void }) {
   const canBoost = useGameStore((s) => canAddAdBoost(s.game, now));
   const prestigeReady = useGameStore((s) => pendingHuellas(s.game) > 0);
   const boosting = isAdBoostActive(useGameStore.getState().game, now);
-  const settingsIcon = getArt('ui/icon-settings');
 
   return (
     <View style={styles.header}>
@@ -48,7 +49,8 @@ function Header({ onPrestige }: { onPrestige: () => void }) {
         size="sm"
         variant={boosting ? 'orange' : 'blue'}
         disabled={!canBoost}
-        label={boosting ? t('mine.boost', { time: formatDuration((boostUntil - now) / 1000) }) : `📺 ${t('mine.boostCta')}`}
+        icon={boosting ? undefined : <GameIcon name="ad" size={20} />}
+        label={boosting ? t('mine.boost', { time: formatDuration((boostUntil - now) / 1000) }) : t('mine.boostCta')}
         onPress={async () => {
           if (await watchRewardedAd()) {
             useGameStore.getState().adBoost();
@@ -56,13 +58,18 @@ function Header({ onPrestige }: { onPrestige: () => void }) {
           }
         }}
       />
-      <ChunkyButton testID="prestige" size="sm" variant={prestigeReady ? 'purple' : 'wood'} label="🐾" onPress={onPrestige} />
+      <ChunkyButton
+        testID="prestige"
+        size="sm"
+        variant={prestigeReady ? 'purple' : 'wood'}
+        icon={<GameIcon name="huellas" size={22} />}
+        onPress={onPrestige}
+      />
       <ChunkyButton
         testID="settings"
         size="sm"
         variant="wood"
-        label={settingsIcon ? undefined : '⚙️'}
-        icon={settingsIcon ? <Image source={settingsIcon} style={styles.headerIcon} /> : undefined}
+        icon={<GameIcon name="settings" size={22} />}
         onPress={() => router.push('/settings')}
       />
     </View>
@@ -95,9 +102,11 @@ function UnlockRow() {
           }
         }}
       >
-        <GameText size={16} color={colors.textLight} weight="black" outline>
-          ⛏️ {t('mine.newShaft')}
-        </GameText>
+        <IconLabel icon="station-basement" size={18}>
+          <GameText size={16} color={colors.textLight} weight="black" outline>
+            {t('mine.newShaft')}
+          </GameText>
+        </IconLabel>
         <View style={styles.cost}>
           <ResourceIcon kind="coins" size={18} />
           <GameText size={15} color={colors.textLight} weight="black" outline>
@@ -174,5 +183,4 @@ const styles = StyleSheet.create({
   foundation: { flexGrow: 1, minHeight: 70, backgroundColor: '#3A2412', overflow: 'hidden' },
   fill: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' },
   cost: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  headerIcon: { width: 22, height: 22 },
 });

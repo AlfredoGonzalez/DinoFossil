@@ -8,6 +8,7 @@ común y los prompts generales están en [`../ART_GUIDE.md`](../ART_GUIDE.md).
 | 1 | Pantalla de carga (y logo de inicio) | [01-carga.md](01-carga.md) | ✅ completo (splash nativo opcional) |
 | ~~2~~ | ~~Pantalla de inicio~~ | — | descartada: la carga lleva directo al juego |
 | 2 | La Casa-Museo (pantalla principal) | [02-casa-museo.md](02-casa-museo.md) | listo para recibir arte |
+| 3 | Iconos (34: recursos, huevos, navegación, estados, tienda) | [03-iconos.md](03-iconos.md) | listo para recibir arte |
 
 Animaciones de personajes (hojas de sprites): ver [sprites.md](sprites.md).
 

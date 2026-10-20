@@ -9,6 +9,8 @@ import { useGameStore } from '@/store/gameStore';
 import { BottomNav } from '@/ui/BottomNav';
 import { CurrencyBar } from '@/ui/CurrencyBar';
 import { GameText } from '@/ui/GameText';
+import { GameIcon } from '@/ui/GameIcon';
+import { Stars } from '@/ui/Stars';
 import { Screen } from '@/ui/Screen';
 import { colors, radius } from '@/ui/theme';
 
@@ -43,7 +45,7 @@ export default function MapScreen() {
                 </GameText>
                 {!world.playable ? (
                   <View style={styles.lock}>
-                    <GameText size={22}>🔒</GameText>
+                    <GameIcon name="lock" size={24} />
                   </View>
                 ) : null}
               </View>
@@ -53,9 +55,7 @@ export default function MapScreen() {
                   {world.id}. {name}
                 </GameText>
                 {world.playable ? (
-                  <GameText size={14} center>
-                    {[0, 1, 2].map((s) => (s < stars ? '⭐' : '☆')).join('')}
-                  </GameText>
+                  <Stars filled={stars} size={15} />
                 ) : (
                   <GameText size={11} color={colors.muted} center>
                     {t('map.locked')}

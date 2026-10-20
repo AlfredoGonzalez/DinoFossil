@@ -1,5 +1,6 @@
 import type { ImageSourcePropType } from 'react-native';
 import { ART } from './art.generated';
+import { ICONS, type IconName } from './iconNames';
 
 /**
  * Huecos de arte final. Cada clave corresponde a un archivo en
@@ -21,20 +22,17 @@ export const ART_SPECS = {
   // Hojas de sprites: cuadrícula de fotogramas (configuración en src/ui/spriteSheets.ts).
   'sprites/digger/idle': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Excavador en espera' },
   'sprites/digger/walk': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Excavador caminando (mira a la derecha)' },
-  // Iconos compartidos (cabecera y barra de la mina, ajustes…).
-  'ui/icon-settings': { size: '384×384', format: 'png/webp transparente', desc: 'Icono de Ajustes' },
-  'ui/icon-goals': { size: '384×384', format: 'png/webp transparente', desc: 'Icono de Logros/Misiones' },
-  'ui/icon-shop': { size: '384×384', format: 'png/webp transparente', desc: 'Icono de Tienda' },
-  'ui/icon-news': { size: '384×384', format: 'png/webp transparente', desc: 'Icono de Noticias' },
 } as const;
 
-export type ArtKey = keyof typeof ART_SPECS;
+/** Iconos: assets/art/icons/<nombre> (lista en src/ui/iconNames.ts). */
+export type ArtKey = keyof typeof ART_SPECS | `icons/${IconName}`;
 
 export function getArt(key: ArtKey): ImageSourcePropType | undefined {
   return ART[key];
 }
 
 if (__DEV__) {
-  const unknown = Object.keys(ART).filter((key) => !(key in ART_SPECS));
+  const iconKeys = Object.keys(ICONS).map((name) => `icons/${name}`);
+  const unknown = Object.keys(ART).filter((key) => !(key in ART_SPECS) && !iconKeys.includes(key));
   if (unknown.length) console.warn(`[art] Archivos sin hueco asignado (revisa el nombre): ${unknown.join(', ')}`);
 }

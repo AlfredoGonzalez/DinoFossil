@@ -14,19 +14,21 @@ import { BottomNav } from '@/ui/BottomNav';
 import { ChunkyButton } from '@/ui/ChunkyButton';
 import { CurrencyBar } from '@/ui/CurrencyBar';
 import { GameText } from '@/ui/GameText';
+import { GameIcon } from '@/ui/GameIcon';
+import type { IconName } from '@/ui/iconNames';
 import { useNow } from '@/ui/hooks';
 import { EggIcon, ResourceIcon } from '@/ui/Icons';
 import { Banner, Panel } from '@/ui/Panel';
 import { Screen } from '@/ui/Screen';
 import { colors, radius } from '@/ui/theme';
 
-const PRODUCT_ICON: Record<ProductId, string> = {
-  starter_pack: '🎁',
-  amber_small: '🔶',
-  amber_medium: '💰',
-  amber_large: '👑',
-  double_income: '✖️2',
-  dino_pass: '🎟️',
+const PRODUCT_ICON: Record<ProductId, IconName> = {
+  starter_pack: 'shop-starter',
+  amber_small: 'shop-amber-small',
+  amber_medium: 'shop-amber-medium',
+  amber_large: 'shop-amber-large',
+  double_income: 'shop-double-income',
+  dino_pass: 'shop-dino-pass',
 };
 
 function isOwned(product: IapProduct, purchases: { doubleIncome: boolean; dinoPass: boolean; starterPack: boolean }) {
@@ -92,7 +94,7 @@ export default function ShopScreen() {
     const owned = isOwned(product, purchases);
     const name = t(`shop.${product.id}.name`);
     return (
-      <Row key={product.id} icon={<GameText size={26}>{PRODUCT_ICON[product.id]}</GameText>} title={name} desc={t(`shop.${product.id}.desc`)}>
+      <Row key={product.id} icon={<GameIcon name={PRODUCT_ICON[product.id]} size={40} />} title={name} desc={t(`shop.${product.id}.desc`)}>
         <ChunkyButton
           testID={`buy-${product.id}`}
           size="sm"
@@ -120,7 +122,8 @@ export default function ShopScreen() {
               size="sm"
               variant="blue"
               disabled={!dailyReady}
-              label={dailyReady ? '📺' : t('shop.claimed')}
+              label={dailyReady ? undefined : t('shop.claimed')}
+              icon={dailyReady ? <GameIcon name="ad" size={22} /> : undefined}
               onPress={async () => {
                 if (await watchRewardedAd()) {
                   useGameStore.getState().dailyAmber();
@@ -129,12 +132,12 @@ export default function ShopScreen() {
               }}
             />
           </Row>
-          <Row icon={<GameText size={26}>⚡</GameText>} title={boostReady ? t('shop.boost') : t('shop.boostMaxed')}>
+          <Row icon={<GameIcon name="turbo" size={32} />} title={boostReady ? t('shop.boost') : t('shop.boostMaxed')}>
             <ChunkyButton
               size="sm"
               variant="blue"
               disabled={!boostReady}
-              label="📺"
+              icon={<GameIcon name="ad" size={22} />}
               onPress={async () => {
                 if (await watchRewardedAd()) {
                   useGameStore.getState().adBoost();
@@ -154,7 +157,8 @@ export default function ShopScreen() {
                 size="sm"
                 variant="orange"
                 disabled={amber < price}
-                label={`🔶 ${price}`}
+                label={String(price)}
+                icon={<GameIcon name="amber" size={16} />}
                 onPress={() => {
                   if (useGameStore.getState().buyEgg(rarity)) successFeedback();
                   else toast(t('shop.notEnoughAmber'), '🔶');

@@ -13,6 +13,7 @@ import { useGameStore } from '@/store/gameStore';
 import { ChunkyButton } from '../ChunkyButton';
 import { GameModal } from '../GameModal';
 import { GameText } from '../GameText';
+import { IconLabel } from '../IconLabel';
 import { useNow } from '../hooks';
 import { ResourceIcon } from '../Icons';
 import { colors, radius } from '../theme';
@@ -59,9 +60,13 @@ export function UpgradeSheet({ station, onClose }: { station: StationId | null; 
         </GameText>
       </View>
       {milestone ? (
-        <GameText size={14} color={colors.purpleDark} center>
-          ⭐ {t('upgrade.nextMilestone', { level: milestone })}
-        </GameText>
+        <View style={styles.milestone}>
+          <IconLabel icon="star" size={16}>
+            <GameText size={14} color={colors.purpleDark} center>
+              {t('upgrade.nextMilestone', { level: milestone })}
+            </GameText>
+          </IconLabel>
+        </View>
       ) : null}
       <View style={styles.amounts}>
         {AMOUNTS.map((a) => (
@@ -114,6 +119,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.parchmentDark,
   },
   amounts: { flexDirection: 'row', gap: 8 },
+  milestone: { alignItems: 'center' },
   flex: { flex: 1 },
   cost: { flexDirection: 'row', alignItems: 'center', gap: 4 },
 });

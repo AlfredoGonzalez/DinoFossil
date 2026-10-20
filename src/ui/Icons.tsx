@@ -3,17 +3,13 @@ import { DINO_BY_ID } from '@/data/dinos';
 import { EGG_COLORS } from '@/data/eggs';
 import type { Rarity } from '@/game/types';
 import { GameText } from './GameText';
-import { RESOURCE_EMOJI, SPRITES, type ResourceKind } from './sprites';
+import { getArt } from './art';
+import { GameIcon } from './GameIcon';
+import { SPRITES, type ResourceKind } from './sprites';
 import { colors, rarityColors } from './theme';
 
 export function ResourceIcon({ kind, size = 22 }: { kind: ResourceKind; size?: number }) {
-  const sprite = SPRITES.resources[kind];
-  if (sprite) return <Image source={sprite} style={{ width: size, height: size }} resizeMode="contain" />;
-  return (
-    <GameText size={size * 0.85} style={{ lineHeight: size * 1.1 }}>
-      {RESOURCE_EMOJI[kind]}
-    </GameText>
-  );
+  return <GameIcon name={kind === 'eggs' ? 'egg-common' : kind} size={size} />;
 }
 
 interface DinoAvatarProps {
@@ -54,6 +50,8 @@ export function DinoAvatar({ dinoId, size = 56, silhouette, ring }: DinoAvatarPr
 }
 
 export function EggIcon({ rarity, size = 40 }: { rarity: Rarity; size?: number }) {
+  const art = getArt(`icons/egg-${rarity}`);
+  if (art) return <Image source={art} resizeMode="contain" style={{ width: size, height: size }} />;
   return (
     <View
       style={{

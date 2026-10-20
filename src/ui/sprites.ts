@@ -1,27 +1,9 @@
 import type { ImageSourcePropType } from 'react-native';
 
 /**
- * Registro de sprites. Cuando generes un asset con IA (ver docs/ART_GUIDE.md),
- * guárdalo en assets/sprites/ y regístralo aquí, por ejemplo:
- *   dinos: { trex: require('../../assets/sprites/dinos/trex.png') }
- * Todo lo que no esté registrado se dibuja con el emoji de placeholder.
+ * Retratos de dinos. Se migrarán al sistema de assets/art/ en el módulo de la colección;
+ * mientras tanto, lo que no esté registrado aquí se dibuja con el emoji de la especie.
  */
-export const SPRITES: {
-  dinos: Partial<Record<string, ImageSourcePropType>>;
-  resources: Partial<Record<ResourceKind, ImageSourcePropType>>;
-} = {
-  dinos: {},
-  resources: {},
-};
+export const SPRITES: { dinos: Partial<Record<string, ImageSourcePropType>> } = { dinos: {} };
 
 export type ResourceKind = 'coins' | 'fossils' | 'amber' | 'huellas' | 'eggs' | 'dna' | 'plants';
-
-export const RESOURCE_EMOJI: Record<ResourceKind, string> = {
-  coins: '🪙',
-  fossils: '🦴',
-  amber: '🔶',
-  huellas: '🐾',
-  eggs: '🥚',
-  dna: '🧬',
-  plants: '🌿',
-};

@@ -7,14 +7,16 @@ import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
 import { useNow } from './hooks';
 import { GameText } from './GameText';
+import { GameIcon } from './GameIcon';
+import type { IconName } from './iconNames';
 import { colors } from './theme';
 
-const TABS: { key: 'map' | 'dinos' | 'incubator' | 'shop' | 'goals'; icon: string; href: Href }[] = [
-  { key: 'map', icon: '🗺️', href: '/map' },
-  { key: 'dinos', icon: '🦕', href: '/collection' },
-  { key: 'incubator', icon: '🥚', href: '/incubator' },
-  { key: 'shop', icon: '🏪', href: '/shop' },
-  { key: 'goals', icon: '📋', href: '/goals' },
+const TABS: { key: 'map' | 'dinos' | 'incubator' | 'shop' | 'goals'; icon: IconName; href: Href }[] = [
+  { key: 'map', icon: 'nav-map', href: '/map' },
+  { key: 'dinos', icon: 'nav-dinos', href: '/collection' },
+  { key: 'incubator', icon: 'nav-eggs', href: '/incubator' },
+  { key: 'shop', icon: 'nav-shop', href: '/shop' },
+  { key: 'goals', icon: 'nav-missions', href: '/goals' },
 ];
 
 export function BottomNav() {
@@ -39,9 +41,7 @@ export function BottomNav() {
               if (!active) router.push(tab.href);
             }}
           >
-            <GameText size={24} style={{ lineHeight: 30 }}>
-              {tab.icon}
-            </GameText>
+            <GameIcon name={tab.icon} size={30} />
             <GameText size={12} color={colors.textLight} weight="black" outline>
               {t(`nav.${tab.key}`)}
             </GameText>

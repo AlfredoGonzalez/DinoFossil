@@ -6,6 +6,7 @@ import { useTranslation } from '@/i18n';
 import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
 import { GameText } from '../GameText';
+import { IconLabel } from '../IconLabel';
 import { useNow } from '../hooks';
 import { DinoAvatar } from '../Icons';
 import { colors } from '../theme';
@@ -55,9 +56,13 @@ export function ManagerSlot({ station, onPick }: Props) {
             status.kind === 'active' && styles.turboActive,
           ]}
         >
-          <GameText size={10} color={colors.textLight} weight="black" outline>
-            {status.kind === 'ready' ? '⚡' : `${status.kind === 'active' ? '⚡' : '⏳'}${formatDuration(status.seconds)}`}
-          </GameText>
+          <IconLabel icon={status.kind === 'cooldown' ? 'timer' : 'turbo'} size={12}>
+            {status.kind === 'ready' ? null : (
+              <GameText size={10} color={colors.textLight} weight="black" outline>
+                {formatDuration(status.seconds)}
+              </GameText>
+            )}
+          </IconLabel>
         </Pressable>
       ) : null}
     </View>

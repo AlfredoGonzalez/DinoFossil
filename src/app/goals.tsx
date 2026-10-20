@@ -8,6 +8,8 @@ import { BottomNav } from '@/ui/BottomNav';
 import { ChunkyButton } from '@/ui/ChunkyButton';
 import { CurrencyBar } from '@/ui/CurrencyBar';
 import { GameText } from '@/ui/GameText';
+import { GameIcon } from '@/ui/GameIcon';
+import { Stars } from '@/ui/Stars';
 import { EggIcon, ResourceIcon } from '@/ui/Icons';
 import { Banner, Panel } from '@/ui/Panel';
 import { ProgressBar } from '@/ui/ProgressBar';
@@ -28,9 +30,12 @@ export default function GoalsScreen() {
       <ScrollView contentContainerStyle={styles.content}>
         <Banner text={t('goals.title')} />
         <Panel>
-          <GameText weight="black" center>
-            ⭐ {t('goals.stars', { stars: worldStars(game), total: goals.length })}
-          </GameText>
+          <View style={styles.starsRow}>
+            <Stars filled={worldStars(game)} total={goals.length} size={22} />
+            <GameText weight="black" center>
+              {t('goals.stars', { stars: worldStars(game), total: goals.length })}
+            </GameText>
+          </View>
         </Panel>
         {goals.map((goal) => {
           const done = game.goalsClaimed.includes(goal.id);
@@ -56,7 +61,8 @@ export default function GoalsScreen() {
                 size="sm"
                 variant={done ? 'grey' : 'green'}
                 disabled={!claimable.has(goal.id)}
-                label={done ? `✅ ${t('goals.done')}` : t('goals.claim')}
+                label={done ? t('goals.done') : t('goals.claim')}
+                icon={done ? <GameIcon name="check" size={18} /> : undefined}
                 onPress={() => {
                   if (useGameStore.getState().claimGoal(goal.id)) successFeedback();
                 }}
@@ -88,6 +94,7 @@ export default function GoalsScreen() {
 const styles = StyleSheet.create({
   content: { padding: 14, gap: 12 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  starsRow: { alignItems: 'center', gap: 4 },
   flex: { flex: 1, gap: 4 },
   reward: { alignItems: 'center', gap: 2 },
   stat: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 3 },

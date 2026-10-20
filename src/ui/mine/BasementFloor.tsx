@@ -8,6 +8,7 @@ import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
 import { getArt } from '../art';
 import { GameText } from '../GameText';
+import { IconLabel } from '../IconLabel';
 import { ResourceIcon } from '../Icons';
 import { colors } from '../theme';
 import { Digger } from './Digger';
@@ -47,9 +48,11 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
           useGameStore.getState().tap(station);
         }}
       >
-        <GameText size={13} weight="black" color={colors.textLight} outline>
-          ⛏️ {t('mine.shaft', { n: index + 1 })}
-        </GameText>
+        <IconLabel icon="station-basement" size={15}>
+          <GameText size={13} weight="black" color={colors.textLight} outline>
+            {t('mine.shaft', { n: index + 1 })}
+          </GameText>
+        </IconLabel>
         <View style={styles.dig}>
           {hasWalkerSprites() ? (
             <Walker running={shaft.running} progress={shaft.progress} managed={!!manager} speed={speed} />

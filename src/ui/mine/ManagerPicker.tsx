@@ -9,6 +9,7 @@ import { useGameStore } from '@/store/gameStore';
 import { ChunkyButton } from '../ChunkyButton';
 import { GameModal } from '../GameModal';
 import { GameText } from '../GameText';
+import { IconLabel } from '../IconLabel';
 import { DinoAvatar } from '../Icons';
 import { colors, radius, rarityColors } from '../theme';
 import { stationName } from './stations';
@@ -55,9 +56,11 @@ export function ManagerPicker({ station, onClose }: { station: StationId | null;
                   {t(`rarity.${species.rarity}`)}
                 </GameText>
               </GameText>
-              <GameText size={12} color={colors.muted}>
-                ⚡ {t('managers.turbo', { mult: ability.multiplier, seconds: ability.seconds })}
-              </GameText>
+              <IconLabel icon="turbo" size={14}>
+                <GameText size={12} color={colors.muted}>
+                  {t('managers.turbo', { mult: ability.multiplier, seconds: ability.seconds })}
+                </GameText>
+              </IconLabel>
               {workingAt ? (
                 <GameText size={12} color={colors.orangeDark}>
                   {t('managers.workingAt', { station: stationName(t, workingAt) })}

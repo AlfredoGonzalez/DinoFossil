@@ -1,6 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from '@/i18n';
 import { GameText } from '../GameText';
+import { IconLabel } from '../IconLabel';
 import { ProgressBar } from '../ProgressBar';
 import { colors } from '../theme';
 
@@ -10,9 +11,11 @@ export function StationStatus({ idle, progress, color }: { idle: boolean; progre
   if (idle) {
     return (
       <View style={styles.tapHint}>
-        <GameText size={13} color={colors.text} weight="black">
-          👆 {t('mine.tap')}
-        </GameText>
+        <IconLabel icon="tap" size={15}>
+          <GameText size={13} color={colors.text} weight="black">
+            {t('mine.tap')}
+          </GameText>
+        </IconLabel>
       </View>
     );
   }

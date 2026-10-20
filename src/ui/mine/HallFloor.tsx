@@ -10,6 +10,7 @@ import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
 import { getArt } from '../art';
 import { GameText } from '../GameText';
+import { IconLabel } from '../IconLabel';
 import { DinoAvatar, ResourceIcon } from '../Icons';
 import { colors } from '../theme';
 import { Floor } from './Floor';
@@ -61,9 +62,11 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
         }}
       >
         <View style={styles.titleRow}>
-          <GameText size={13} weight="black" color={colors.text}>
-            🏛️ {t('mine.museum')}
-          </GameText>
+          <IconLabel icon="station-hall" size={15}>
+            <GameText size={13} weight="black" color={colors.text}>
+              {t('mine.museum')}
+            </GameText>
+          </IconLabel>
           <View style={styles.stock}>
             <ResourceIcon kind="fossils" size={14} />
             <GameText size={12} weight="black" color={colors.text}>

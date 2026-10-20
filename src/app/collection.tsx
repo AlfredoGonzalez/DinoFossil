@@ -11,6 +11,7 @@ import { ChunkyButton } from '@/ui/ChunkyButton';
 import { CurrencyBar } from '@/ui/CurrencyBar';
 import { GameModal } from '@/ui/GameModal';
 import { GameText } from '@/ui/GameText';
+import { IconLabel } from '@/ui/IconLabel';
 import { DinoAvatar } from '@/ui/Icons';
 import { Banner, Panel } from '@/ui/Panel';
 import { Screen } from '@/ui/Screen';
@@ -106,9 +107,11 @@ export default function CollectionScreen() {
               <GameText size={13} weight="black">
                 {t('collection.ability')}
               </GameText>
-              <GameText size={14}>
-                ⚡ {t('managers.turbo', { mult: ABILITY[species.rarity].multiplier, seconds: ABILITY[species.rarity].seconds })}
-              </GameText>
+              <IconLabel icon="turbo" size={14}>
+                <GameText size={14}>
+                  {t('managers.turbo', { mult: ABILITY[species.rarity].multiplier, seconds: ABILITY[species.rarity].seconds })}
+                </GameText>
+              </IconLabel>
             </View>
             <ChunkyButton label={t('common.close')} onPress={() => setSelected(null)} />
           </>

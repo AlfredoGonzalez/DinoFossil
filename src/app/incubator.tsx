@@ -17,6 +17,7 @@ import { ChunkyButton } from '@/ui/ChunkyButton';
 import { CurrencyBar } from '@/ui/CurrencyBar';
 import { GameModal } from '@/ui/GameModal';
 import { GameText } from '@/ui/GameText';
+import { GameIcon } from '@/ui/GameIcon';
 import { useNow } from '@/ui/hooks';
 import { DinoAvatar, EggIcon } from '@/ui/Icons';
 import { Banner, Panel } from '@/ui/Panel';
@@ -77,13 +78,14 @@ function Capsule() {
                   style={styles.flex}
                   disabled={amber < amberCost}
                   label={t('incubator.speedUp')}
-                  sublabel={`🔶 ${amberCost}`}
+                  sublabel={`${amberCost} ${t('resources.amber')}`}
                   onPress={() => useGameStore.getState().finishWithAmber()}
                 />
                 <ChunkyButton
                   style={styles.flex}
                   variant="blue"
-                  label={`📺 ${t('incubator.skipAd')}`}
+                  label={t('incubator.skipAd')}
+                  icon={<GameIcon name="ad" size={20} />}
                   onPress={async () => {
                     if (await watchRewardedAd()) useGameStore.getState().skipIncubation(AD_REWARDS.eggSkipMinutes * 60);
                   }}

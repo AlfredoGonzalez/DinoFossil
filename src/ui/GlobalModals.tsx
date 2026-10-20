@@ -10,6 +10,8 @@ import { useUiStore } from '@/store/uiStore';
 import { ChunkyButton } from './ChunkyButton';
 import { GameModal } from './GameModal';
 import { GameText } from './GameText';
+import { GameIcon } from './GameIcon';
+import { Stars } from './Stars';
 import { DinoAvatar, EggIcon, ResourceIcon } from './Icons';
 import { colors } from './theme';
 
@@ -38,7 +40,8 @@ function OfflineModal() {
         <ChunkyButton
           style={styles.flex}
           variant="green"
-          label={`${t('offline.double')} 📺`}
+          label={t('offline.double')}
+          icon={<GameIcon name="ad" size={22} />}
           onPress={async () => {
             if (await watchRewardedAd()) {
               useGameStore.getState().addCoins(report.coins);
@@ -65,9 +68,7 @@ function GoalModal() {
   };
   return (
     <GameModal visible title={t('goal.title')} testID="goal-modal">
-      <GameText size={44} center>
-        {[0, 1, 2].map((i) => (i < stars + 1 ? '⭐' : '☆')).join(' ')}
-      </GameText>
+      <Stars filled={stars + 1} size={44} />
       <DinoAvatar dinoId="trex" size={84} />
       <GameText center>{t('goal.desc', { n: goal.shafts })}</GameText>
       <GameText center weight="black">
