@@ -63,7 +63,8 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
       >
         <View style={styles.titleRow}>
           <IconLabel icon="station-hall" size={15}>
-            <GameText size={13} weight="black" color={colors.text}>
+            {/* Texto claro con contorno: se lee sobre el arte de la sala, que es oscuro y detallado. */}
+            <GameText size={13} weight="black" color={colors.textLight} outline>
               {t('mine.museum')}
             </GameText>
           </IconLabel>
@@ -86,7 +87,7 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
       </Pressable>
       <View style={styles.side}>
         <UpgradeChip station="museum" level={station.level} onPress={onUpgrade} />
-        <GameText size={10} weight="black" color={colors.text} center>
+        <GameText size={10} weight="black" color={colors.textLight} outline center>
           {t('mine.perCycle', { value: formatNumber(capacity) })}
         </GameText>
       </View>
