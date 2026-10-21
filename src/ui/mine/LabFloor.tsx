@@ -41,7 +41,7 @@ export function LabFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; 
         }}
       >
         <IconLabel icon="station-lab" size={15}>
-          <GameText size={13} weight="black" color="#2F5866">
+          <GameText size={13} weight="black" color={colors.textLight} outline>
             {t('mine.elevator')}
           </GameText>
         </IconLabel>
@@ -53,7 +53,7 @@ export function LabFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; 
       </Pressable>
       <View style={styles.side}>
         <UpgradeChip station="elevator" level={station.level} onPress={onUpgrade} />
-        <GameText size={10} weight="black" color="#2F5866" center>
+        <GameText size={10} weight="black" color={colors.textLight} outline center>
           {t('mine.perTrip', { value: formatNumber(capacity) })}
         </GameText>
       </View>
