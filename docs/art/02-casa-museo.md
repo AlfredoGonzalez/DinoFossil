@@ -42,14 +42,15 @@ Todos en `assets/art/museum/`.
 
 | Archivo | Formato | Tamaño | Contenido | Si falta… |
 |---|---|---|---|---|
-| `sky.jpg` | JPG/WebP opaco | **1290 × 2796** | Paisaje detrás de la casa: cielo, colinas, palmeras lejanas. Solo se ve alrededor del tejado. *Opcional.* | fondo de la carga |
-| `roof.png` | PNG/WebP transparente | **1290 × 430** | Tejado de tejas de fieltro con chimenea y alero. **Deja libre un hueco central abajo** (≈ 520 × 170 px) para el cartel "Casa-Museo". | tejado de código |
-| `hall.png` | JPG/WebP opaco | **1290 × 480** | Interior de la sala de exposición: papel pintado cálido, zócalo de madera, cuadros con huesos, cordón rojo. **Sin personajes.** | color crema |
-| `lab.png` | JPG/WebP opaco | **1290 × 480** | Interior del laboratorio: azulejos claros, estanterías con frascos, lupa gigante, mesa de trabajo baja. | color azul claro |
-| `basement.png` | JPG/WebP opaco | **1290 × 480** | Pared de tierra con vigas de madera, raíces, piedrecitas y algún hueso incrustado, **sin objetos grandes** (el montón de tierra y la canasta van encima, ver [04-sotanos.md](04-sotanos.md)). Se repite en cada sótano: que los bordes izquierdo/derecho no tengan elementos llamativos cortados. | color tierra |
-| `foundation.png` | JPG/WebP opaco | **1290 × 360** | Roca y tierra profunda bajo la casa (cimientos de piedra, cristales pequeños). La parte de arriba debe empalmar con el sótano. | color tierra oscura |
-| `crate.png` | PNG/WebP transparente | **256 × 256** | Caja/cesta de madera con fósiles asomando, que sube y baja en el montacargas. | caja de código con 🦴 |
-| `visitor.png` | PNG/WebP transparente | **512 × 512** | Un visitante adorable (un dino bebé de peluche con gorra y cámara) caminando hacia la derecha, de perfil. | emoji 🧒 |
+| `sky.jpg` ✅ | JPG/WebP opaco | **1290 × 2796** | Paisaje detrás de la casa: cielo, colinas, palmeras lejanas. Solo se ve alrededor del tejado. *Opcional.* | fondo de la carga |
+| `roof.png` ✅ | PNG/WebP transparente | **1290 × 430** | Tejado de tejas de fieltro con chimenea y alero. **Deja libre un hueco central abajo** (≈ 520 × 170 px) para el cartel "Casa-Museo". | tejado de código |
+| `hall.png` ✅ | JPG/WebP opaco | **1290 × 480** | Interior de la sala de exposición: papel pintado cálido, zócalo de madera, cuadros con huesos, cordón rojo. **Sin personajes.** | color crema |
+| `lab.png` ✅ | JPG/WebP opaco | **1290 × 480** | Interior del laboratorio: azulejos claros, estanterías con frascos, lupa gigante, mesa de trabajo baja. | color azul claro |
+| `basement.png` ✅ | JPG/WebP opaco | **1290 × 480** | Pared de tierra con vigas de madera, raíces, piedrecitas y algún hueso incrustado, **sin objetos grandes** (el montón de tierra y la canasta van encima, ver [04-sotanos.md](04-sotanos.md)). Se repite en cada sótano: que los bordes izquierdo/derecho no tengan elementos llamativos cortados. | color tierra |
+| `foundation.png` ✅ | JPG/WebP opaco | **1290 × 360** | Roca y tierra profunda bajo la casa (cimientos de piedra, cristales pequeños). La parte de arriba debe empalmar con el sótano. | color tierra oscura |
+| `crate-empty.png` ✅ | PNG/WebP transparente | **256 × 256** | Caja del montacargas **vacía**: se ve mientras baja. | `crate.png` o caja de código |
+| `crate-full.png` ✅ | PNG/WebP transparente | **256 × 256** | La misma caja **llena de huesos**: se ve mientras sube. Que ambas tengan la misma perspectiva. | `crate.png` o caja de código |
+| `visitor.png` | PNG/WebP transparente | **512 × 512** | *(Reemplazado por los visitantes animados de [sprites.md](sprites.md#visitantes-de-la-sala-assetsartspritesvisitors).)* | emoji 🧒 |
 
 ### Zonas seguras de las plantas (`hall`, `lab`, `basement`)
 

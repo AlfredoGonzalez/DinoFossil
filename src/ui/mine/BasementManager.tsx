@@ -9,8 +9,9 @@ import { SpriteSheet } from '../SpriteSheet';
 import { colors } from '../theme';
 import { TurboButton } from './ManagerSlot';
 
-const SIZE = 64;
-const BADGE = 22;
+/** Un poco mayor que el excavador: el jefe es ancho y bajito, así queda de su altura. */
+const SIZE = 72;
+const BADGE = 16;
 
 /**
  * Manager de un sótano, de pie junto a la bolsa:
@@ -67,8 +68,8 @@ const styles = StyleSheet.create({
   wrap: { alignItems: 'center', gap: 1 },
   figure: { width: SIZE, height: SIZE },
   flipped: { width: SIZE, height: SIZE, transform: [{ scaleX: -1 }] },
-  // Gafete: retrato de la especie asignada, a la altura del pecho.
-  badge: { position: 'absolute', left: SIZE / 2 - BADGE / 2 - 4, bottom: SIZE * 0.28 },
+  // Gafete: retrato de la especie asignada, en la solapa del saco (el jefe mira a la izquierda).
+  badge: { position: 'absolute', left: SIZE * 0.39 - BADGE / 2, bottom: SIZE * 0.26 },
   wanted: { alignItems: 'center', marginBottom: -2 },
   board: {
     paddingHorizontal: 6,

@@ -50,7 +50,7 @@ Un solo personaje para todos los managers: el retrato de la especie que contrate
 
 | Archivo | Estado | Cuándo se usa |
 |---|---|---|
-| `idle.png` | ⏳ pendiente | De pie junto a la bolsa, anotando en su tabla mientras vigila al excavador (el juego lo voltea para que mire a la tierra) |
+| `idle.png` | ✅ entregado (pies bajados 21 px por Claude para alinearlos con el excavador) | De pie junto a la bolsa, anotando en su tabla mientras vigila al excavador (el juego lo voltea para que mire a la tierra) |
 
 Mientras no exista, se ve el retrato redondo del dino contratado. Sin manager se ve el letrero "Se busca".
 
@@ -90,3 +90,12 @@ loops seamlessly.
 ```
 
 *(Opcional, más adelante)*: `cheer.png`, levantando la tabla con alegría, para cuando actives Turbo.
+
+## Visitantes de la sala (`assets/art/sprites/visitors/`)
+
+| Archivo | Estado | Cuándo se usa |
+|---|---|---|
+| `a.png`, `b.png`, `c.png` | ✅ entregados | Mientras la sala trabaja, un visitante cruza de izquierda a derecha; en cada vuelta entra uno al azar |
+
+Caminando hacia la **derecha**, en el mismo formato 5 × 5. Se pueden añadir más (`d`, `e`…): se
+registran en `src/ui/art.ts`, `src/ui/spriteSheets.ts` y la lista `VISITOR_SHEETS` de `HallFloor.tsx`.

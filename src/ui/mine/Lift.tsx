@@ -8,8 +8,9 @@ import { FLOOR_HEIGHT, LIFT_WIDTH } from './Floor';
 const CRATE = 34;
 
 /**
- * Montacargas: columna a la derecha del laboratorio y los sótanos. La caja baja
- * durante la primera mitad del ciclo del laboratorio y sube llena en la segunda.
+ * Montacargas: columna a la derecha del laboratorio y los sótanos. La caja baja vacía
+ * durante la primera mitad del ciclo del laboratorio y sube llena en la segunda
+ * (arte: museum/crate-empty y museum/crate-full; si faltan, museum/crate o la caja de código).
  */
 export function Lift() {
   const basements = useGameStore((s) => s.game.mine.shafts.length);
@@ -17,14 +18,19 @@ export function Lift() {
   const height = (basements + 1) * FLOOR_HEIGHT;
   const depth = progress < 0.5 ? progress * 2 : (1 - progress) * 2;
   const top = 30 + depth * (height - FLOOR_HEIGHT);
-  const art = getArt('museum/crate');
+  const goingDown = progress < 0.5;
+  const art = getArt(goingDown ? 'museum/crate-empty' : 'museum/crate-full') ?? getArt('museum/crate');
   return (
     <View pointerEvents="none" style={[styles.column, { height }]}>
       <View style={styles.rail} />
       <View style={[styles.rail, { right: 8, left: undefined }]} />
-      <View style={[styles.crate, { top }]}>
-        {art ? <Image source={art} style={styles.crateArt} resizeMode="contain" /> : <GameIcon name="fossils" size={22} />}
-      </View>
+      {art ? (
+        <Image source={art} style={[styles.crateArt, { top }]} resizeMode="contain" />
+      ) : (
+        <View style={[styles.crate, { top }]}>
+          <GameIcon name="fossils" size={22} />
+        </View>
+      )}
     </View>
   );
 }
@@ -53,5 +59,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  crateArt: { width: CRATE + 6, height: CRATE + 6 },
+  crateArt: { position: 'absolute', width: CRATE + 6, height: CRATE + 6 },
 });

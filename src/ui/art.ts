@@ -18,6 +18,8 @@ export const ART_SPECS = {
   'museum/basement': { size: '1290×480', format: 'jpg/webp opaco', desc: 'Interior de un sótano (se repite en cada uno)' },
   'museum/foundation': { size: '1290×360', format: 'jpg/webp opaco', desc: 'Cimientos y roca bajo el último sótano' },
   'museum/crate': { size: '256×256', format: 'png/webp transparente', desc: 'Caja de fósiles del montacargas' },
+  'museum/crate-empty': { size: '≈256×256', format: 'png/webp transparente', desc: 'Caja del montacargas vacía (baja)' },
+  'museum/crate-full': { size: '≈256×256', format: 'png/webp transparente', desc: 'Caja del montacargas llena de huesos (sube)' },
   'museum/visitor': { size: '512×512', format: 'png/webp transparente', desc: 'Visitante que pasea por la sala' },
   // Módulo 4 · Sótanos (docs/art/04-sotanos.md).
   'museum/basket': { size: '≈365×420', format: 'png/webp transparente', desc: 'Bolsa de huesos de cada sótano' },
@@ -28,6 +30,9 @@ export const ART_SPECS = {
   'sprites/digger/dig': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Excavador escarbando (mira a la derecha)' },
   'sprites/digger/carry': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Excavador caminando con tierra y huesos' },
   'sprites/manager/idle': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Jefe de traje anotando en su tabla (mira a la derecha)' },
+  'sprites/visitors/a': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Visitante caminando (mira a la derecha)' },
+  'sprites/visitors/b': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Visitante caminando (mira a la derecha)' },
+  'sprites/visitors/c': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Visitante caminando (mira a la derecha)' },
 } as const;
 
 /** Iconos: assets/art/icons/<nombre> (lista en src/ui/iconNames.ts). */

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
-import Animated, { Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { DINOS } from '@/data/dinos';
 import { carrierCapacity } from '@/game/economy';
 import { formatNumber } from '@/game/format';
@@ -12,6 +12,8 @@ import { getArt } from '../art';
 import { GameText } from '../GameText';
 import { IconLabel } from '../IconLabel';
 import { DinoAvatar, ResourceIcon } from '../Icons';
+import { getSheet } from '../spriteSheets';
+import { SpriteSheet } from '../SpriteSheet';
 import { colors } from '../theme';
 import { Floor } from './Floor';
 import { ManagerSlot } from './ManagerSlot';
@@ -20,17 +22,40 @@ import { UpgradeChip } from './UpgradeChip';
 
 const MAX_EXHIBITS = 4;
 
-/** Visitante que cruza la sala de un lado a otro. */
+const VISITOR_SHEETS = ['sprites/visitors/a', 'sprites/visitors/b', 'sprites/visitors/c'] as const;
+const VISITOR_SIZE = 52;
+const LAP_MS = 9000;
+
+/**
+ * Visitante que cruza la sala de izquierda a derecha. En cada vuelta entra uno de los
+ * visitantes animados al azar (sprites/visitors/a|b|c); si no hay ninguno, el arte fijo
+ * museum/visitor o un emoji.
+ */
 function Visitor({ width }: { width: number }) {
   const x = useSharedValue(0);
+  const [lap, setLap] = useState({ n: 0, pick: 0 });
+  const sheets = VISITOR_SHEETS.map((key) => getSheet(key)).filter((sheet) => sheet !== undefined);
+  const sheet = sheets.length ? sheets[lap.pick % sheets.length] : undefined;
+
   useEffect(() => {
-    x.value = withRepeat(withTiming(1, { duration: 9000, easing: Easing.linear }), -1);
-  }, [x]);
-  const style = useAnimatedStyle(() => ({ transform: [{ translateX: -30 + x.value * (width + 60) }] }));
+    x.value = 0;
+    x.value = withTiming(1, { duration: LAP_MS, easing: Easing.linear });
+    // Al terminar la vuelta entra otro visitante, elegido al azar.
+    const id = setTimeout(() => setLap((l) => ({ n: l.n + 1, pick: Math.floor(Math.random() * VISITOR_SHEETS.length) })), LAP_MS);
+    return () => clearTimeout(id);
+  }, [lap.n, x]);
+
+  const style = useAnimatedStyle(() => ({ transform: [{ translateX: -VISITOR_SIZE + x.value * (width + VISITOR_SIZE * 2) }] }));
   const art = getArt('museum/visitor');
   return (
     <Animated.View pointerEvents="none" style={[styles.visitor, style]}>
-      {art ? <Image source={art} style={styles.visitorArt} resizeMode="contain" /> : <GameText size={22}>🧒</GameText>}
+      {sheet ? (
+        <SpriteSheet sheet={sheet} size={VISITOR_SIZE} />
+      ) : art ? (
+        <Image source={art} style={styles.visitorArt} resizeMode="contain" />
+      ) : (
+        <GameText size={22}>🧒</GameText>
+      )}
     </Animated.View>
   );
 }
@@ -101,7 +126,7 @@ const styles = StyleSheet.create({
   stock: { flexDirection: 'row', alignItems: 'center', gap: 2, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: 8, paddingHorizontal: 5 },
   exhibits: { flexDirection: 'row', gap: 6 },
   pedestal: { paddingBottom: 3, borderBottomWidth: 5, borderBottomColor: '#C9A06A', borderRadius: 4 },
-  visitor: { position: 'absolute', bottom: 12, left: 0 },
+  visitor: { position: 'absolute', bottom: 4, left: 0 },
   visitorArt: { width: 30, height: 30 },
   side: { alignItems: 'center', gap: 3, width: 70 },
 });
