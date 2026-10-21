@@ -26,6 +26,8 @@ Estilo: el mismo "peluche/fieltro con costuras" de siempre → bloque **Biblia d
   3. regresa cargando huesos;
   4. al dejarlos, la bolsa da un saltito y sube el contador.
 - **Manager** a la izquierda del dino en reposo; el dino le pasa por delante al ir y venir.
+  Sin manager es un letrero "Se busca"; con manager, el **jefe de traje** anotando en su tabla, con
+  el retrato de la especie en el gafete y el Turbo sobre la cabeza ([sprites.md](sprites.md#jefe-de-traje-manager-de-los-sótanos-assetsartspritesmanager)).
   Con manager el ciclo se repite solo.
 - **Bolsa** pegada al montacargas, que es quien se la lleva.
 

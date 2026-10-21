@@ -42,3 +42,51 @@ alinea los pies en la misma línea.
   of brown dirt and pebbles fly backward over its shoulder… In-place animation… loops seamlessly.*
 - **Carry**: *Side view, facing right. The cute plush T-Rex walks forward while hugging a small pile of
   brown dirt with a cream fossil bone sticking out on top… In-place animation… loops seamlessly.*
+
+## Jefe de traje (manager de los sótanos, `assets/art/sprites/manager/`)
+
+Un solo personaje para todos los managers: el retrato de la especie que contrates se pone en su
+**gafete** con código, así que no hace falta un sprite por especie.
+
+| Archivo | Estado | Cuándo se usa |
+|---|---|---|
+| `idle.png` | ⏳ pendiente | De pie junto a la bolsa, anotando en su tabla mientras vigila al excavador (el juego lo voltea para que mire a la tierra) |
+
+Mientras no exista, se ve el retrato redondo del dino contratado. Sin manager se ve el letrero "Se busca".
+
+Reglas extra:
+- **Mismo tamaño en pantalla que el excavador**: misma altura de cuerpo y pies a la misma línea.
+  Si sale más pequeño, Claude lo reescala como con `dig` y `carry`.
+- **El pecho despejado**: el gafete (un círculo de ~22 pt) se dibuja encima, a la altura del pecho,
+  un poco a la izquierda del centro del fotograma. Que ahí no haya nada importante (corbata pequeña o
+  solapa lisa).
+- Sin cambios bruscos de pose: es un bucle tranquilo.
+
+### Paso 1 · Personaje base (generador de imágenes)
+
+Pásale `docs/art/referencias/mascot.webp` como referencia de estilo y añade la **Biblia de estilo** de
+[`../ART_GUIDE.md`](../ART_GUIDE.md):
+
+```
+Full body, side view facing right. A cute chubby plush baby dinosaur foreman in a tiny dark-brown felt
+suit jacket with stitched lapels, a cream shirt and a small red bow tie, wearing round glasses on its
+snout. It holds a small wooden clipboard with a sheet of paper in one little arm and a pencil in the
+other. Mint-green felt body with a cream belly, like the mascot. Standing upright on its two feet,
+calm and confident smile. Keep the center of the chest plain (no badges or pins).
+[BIBLIA DE ESTILO]
+```
+
+### Paso 2 · Animación en AutoSprite (side-scroller, 25 fotogramas, 256 px, Sharpen: None)
+
+- **Name**: `idle` (manager)
+- **Action**:
+
+```
+Side view, facing right. The cute plush dinosaur foreman stands in place holding its clipboard,
+looks down at it and writes a few quick notes with the pencil, then looks up and to the right as if
+checking on a worker, gives a small satisfied nod, and looks back down at the clipboard. Gentle
+breathing bob, tail sways slightly. In-place animation, feet stay planted on the same line,
+loops seamlessly.
+```
+
+*(Opcional, más adelante)*: `cheer.png`, levantando la tabla con alegría, para cuando actives Turbo.

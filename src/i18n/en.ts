@@ -70,6 +70,7 @@ const en: Translations = {
     boost: '×2 · {{time}}',
     boostCta: '×2 4h',
     prestige: 'Prestige',
+    wanted: 'Wanted',
     hire: 'Manager',
   },
   upgrade: {

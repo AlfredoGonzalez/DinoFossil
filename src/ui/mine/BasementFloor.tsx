@@ -14,7 +14,7 @@ import { Digger } from './Digger';
 import { DirtMound, MOUND_CUT, MOUND_WIDTH } from './DirtMound';
 import { Floor, FLOOR_HEIGHT } from './Floor';
 import { LevelSign } from './LevelSign';
-import { ManagerSlot } from './ManagerSlot';
+import { BasementManager } from './BasementManager';
 import { TapHint } from './TapHint';
 import { hasWalkerSprites, Walker, WALKER_SIZE } from './Walker';
 
@@ -63,7 +63,7 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
       >
         <DirtMound style={styles.mound} />
         <View style={styles.manager}>
-          <ManagerSlot station={station} onPick={onPickManager} size={40} turboAbove />
+          <BasementManager station={station} onPick={onPickManager} />
         </View>
         <BoneBasket amount={shaft.deposit} style={styles.basket} />
         {hasWalkerSprites() ? (
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   level: { position: 'absolute', left: '25%', top: 2, width: 0, alignItems: 'center' },
   basket: { position: 'absolute', right: BAG_RIGHT, bottom: 0 },
   // A la izquierda del dino en reposo: siempre a la vista y tocable (el dino no captura toques).
-  manager: { position: 'absolute', right: HOME_RIGHT + WALKER_SIZE - 6, bottom: 2 },
+  manager: { position: 'absolute', right: HOME_RIGHT + WALKER_SIZE - 6, bottom: 0 },
   walk: { position: 'absolute', left: MOUND_WIDTH - MOUND_CUT - FLOOR_PADDING - DIG_REACH, right: HOME_RIGHT, bottom: 0 },
   home: { position: 'absolute', right: HOME_RIGHT, bottom: 0 },
   // Manita centrada sobre la cabeza del dino en reposo; el globo "¡Toca!" queda a su izquierda.

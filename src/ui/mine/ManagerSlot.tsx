@@ -16,21 +16,49 @@ interface Props {
   onPick: () => void;
   /** Diámetro del retrato. */
   size?: number;
-  /** Turbo encima del retrato en vez de debajo (sótanos: el retrato va en el suelo). */
-  turboAbove?: boolean;
 }
 
-/** Avatar del manager (o hueco vacío) + botón de habilidad Turbo. */
-export function ManagerSlot({ station, onPick, size = 46, turboAbove = false }: Props) {
-  const { t } = useTranslation();
+/** Botón de la habilidad Turbo del manager (nada si la estación no tiene manager). */
+export function TurboButton({ station }: { station: StationId }) {
   const now = useNow(500);
   const dinoId = useGameStore((s) => s.game.managers[station]);
   // Selecciona solo datos estables: un selector que crea objetos nuevos provoca renders infinitos.
   const ability = useGameStore((s) => s.game.abilities[station]);
   const status = abilityStatus({ managers: { [station]: dinoId }, abilities: { [station]: ability } }, station, now);
+  if (status.kind === 'none') return null;
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`turbo-${station}`}
+      disabled={status.kind !== 'ready'}
+      onPress={() => {
+        tapFeedback(true);
+        useGameStore.getState().activateAbility(station);
+      }}
+      style={[
+        styles.turbo,
+        status.kind === 'ready' && styles.turboReady,
+        status.kind === 'active' && styles.turboActive,
+      ]}
+    >
+      <IconLabel icon={status.kind === 'cooldown' ? 'timer' : 'turbo'} size={12}>
+        {status.kind === 'ready' ? null : (
+          <GameText size={10} color={colors.textLight} weight="black" outline>
+            {formatDuration(status.seconds)}
+          </GameText>
+        )}
+      </IconLabel>
+    </Pressable>
+  );
+}
+
+/** Avatar del manager (o hueco vacío) + botón de habilidad Turbo. */
+export function ManagerSlot({ station, onPick, size = 46 }: Props) {
+  const { t } = useTranslation();
+  const dinoId = useGameStore((s) => s.game.managers[station]);
 
   return (
-    <View style={[styles.wrap, turboAbove && styles.above]}>
+    <View style={styles.wrap}>
       <Pressable accessibilityRole="button" accessibilityLabel={`manager-${station}`} onPress={onPick}>
         {dinoId ? (
           <DinoAvatar dinoId={dinoId} size={size} ring />
@@ -45,37 +73,13 @@ export function ManagerSlot({ station, onPick, size = 46, turboAbove = false }: 
           </View>
         )}
       </Pressable>
-      {status.kind !== 'none' ? (
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={`turbo-${station}`}
-          disabled={status.kind !== 'ready'}
-          onPress={() => {
-            tapFeedback(true);
-            useGameStore.getState().activateAbility(station);
-          }}
-          style={[
-            styles.turbo,
-            status.kind === 'ready' && styles.turboReady,
-            status.kind === 'active' && styles.turboActive,
-          ]}
-        >
-          <IconLabel icon={status.kind === 'cooldown' ? 'timer' : 'turbo'} size={12}>
-            {status.kind === 'ready' ? null : (
-              <GameText size={10} color={colors.textLight} weight="black" outline>
-                {formatDuration(status.seconds)}
-              </GameText>
-            )}
-          </IconLabel>
-        </Pressable>
-      ) : null}
+      <TurboButton station={station} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   wrap: { alignItems: 'center', gap: 2, width: 54 },
-  above: { flexDirection: 'column-reverse' },
   empty: {
     borderWidth: 2,
     borderStyle: 'dashed',

@@ -27,6 +27,7 @@ export const ART_SPECS = {
   'sprites/digger/walk': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Excavador caminando (mira a la derecha)' },
   'sprites/digger/dig': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Excavador escarbando (mira a la derecha)' },
   'sprites/digger/carry': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Excavador caminando con tierra y huesos' },
+  'sprites/manager/idle': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Jefe de traje anotando en su tabla (mira a la derecha)' },
 } as const;
 
 /** Iconos: assets/art/icons/<nombre> (lista en src/ui/iconNames.ts). */
