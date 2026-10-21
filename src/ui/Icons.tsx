@@ -22,7 +22,7 @@ interface DinoAvatarProps {
 
 export function DinoAvatar({ dinoId, size = 56, silhouette, ring }: DinoAvatarProps) {
   const species = DINO_BY_ID[dinoId];
-  const sprite = SPRITES.dinos[dinoId];
+  const sprite = getArt(`dinos/${dinoId}`) ?? SPRITES.dinos[dinoId];
   const bg = silhouette ? '#CFC6B8' : (species?.color ?? colors.grass);
   return (
     <View

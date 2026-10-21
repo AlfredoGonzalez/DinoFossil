@@ -25,9 +25,10 @@ Estilo: el mismo "peluche/fieltro con costuras" de siempre → bloque **Biblia d
   2. escarba;
   3. regresa cargando huesos;
   4. al dejarlos, la bolsa da un saltito y sube el contador.
-- **Manager** a la izquierda del dino en reposo; el dino le pasa por delante al ir y venir.
-  Sin manager es un letrero "Se busca"; con manager, el **jefe de traje** anotando en su tabla, con
-  el retrato de la especie en el gafete y el Turbo sobre la cabeza ([sprites.md](sprites.md#jefe-de-traje-manager-de-los-sótanos-assetsartspritesmanager)).
+- **Manager**: un cartel "Se busca" clavado en la pared, detrás del camino del dino. Vacío lleva
+  un **+** (abre la lista de dinos); con manager, la foto de la especie ([05-retratos.md](05-retratos.md)),
+  su nombre y su "recompensa": el Turbo de su rareza (de ×2 · 30 s a ×5 · 90 s). La chincheta ⚡ de
+  la esquina activa el Turbo; mientras dura, el cartel se balancea y todo el piso brilla en dorado.
   Con manager el ciclo se repite solo.
 - **Bolsa** pegada al montacargas, que es quien se la lleva.
 
@@ -39,6 +40,16 @@ Todos en `assets/art/museum/` (PNG o WebP **con transparencia**):
 |---|---|---|---|
 | `basket.png` ✅ | ~**365 × 420** | Bolsa de tela con huesos asomando. La base toca el borde inferior. | bolsa de código |
 | `dirt-mound.png` ✅ | ~**640 × 478** | Montón de tierra de fieltro marrón con piedritas, alguna raíz y la punta de un hueso. **El lado donde se escarba mira a la derecha**, hacia el dino (más empinado y con tierra suelta). La base toca el borde inferior. | loma de código |
+
+Y el cartel del manager, también en `assets/art/museum/`:
+
+| Archivo | Tamaño | Contenido | Si falta… |
+|---|---|---|---|
+| `wanted-poster.png` | ~**300 × 380** | Cartel de papel viejo **vacío** colgado de un clavo (ver prompt abajo). | cartel de código |
+
+El código escribe encima, de arriba abajo: "SE BUSCA" (franja superior, ~15 % del alto), la foto
+(un cuadro centrado de ~45 % del ancho, a media altura), y el nombre + la recompensa (franja inferior,
+~25 % del alto). Deja esas zonas **lisas**.
 
 Y en `assets/art/icons/`, siguiendo las reglas de [03-iconos.md](03-iconos.md):
 
@@ -85,6 +96,18 @@ the image, centered with padding.
 ```
 A single cute plush cartoon hand made of felt with stitched seams, index finger pointing straight down,
 other fingers curled, chunky rounded shape, centered with padding.
+[BIBLIA DE ESTILO]
+```
+
+**Cartel "Se busca"**
+
+```
+A single old western-style WANTED poster made of soft aged parchment felt with stitched edges,
+slightly wrinkled with torn corners and a couple of small stains, hanging from one small iron nail at
+the top center by a short piece of twine. The poster is completely blank: NO text, no letters, no
+numbers, no drawings. In the middle there is an empty square photo frame drawn as a thin dashed brown
+border. Leave the top band and the bottom third plain and empty for text added later. Front view,
+straight, centered with padding, portrait proportion 300:380.
 [BIBLIA DE ESTILO]
 ```
 

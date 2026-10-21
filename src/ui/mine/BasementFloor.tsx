@@ -6,6 +6,7 @@ import { useTranslation } from '@/i18n';
 import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
 import { getArt } from '../art';
+import { useNow } from '../hooks';
 import { GameText } from '../GameText';
 import { IconLabel } from '../IconLabel';
 import { colors } from '../theme';
@@ -14,7 +15,8 @@ import { Digger } from './Digger';
 import { DirtMound, MOUND_CUT, MOUND_WIDTH } from './DirtMound';
 import { Floor, FLOOR_HEIGHT } from './Floor';
 import { LevelSign } from './LevelSign';
-import { BasementManager } from './BasementManager';
+import { TurboGlow } from './TurboGlow';
+import { WantedPoster } from './WantedPoster';
 import { TapHint } from './TapHint';
 import { hasWalkerSprites, Walker, WALKER_SIZE } from './Walker';
 
@@ -29,9 +31,9 @@ const FLOOR_PADDING = 6;
 
 /**
  * Un sótano de excavación (estación "shaft-i" del motor), de izquierda a derecha:
- * montón de tierra (con el letrero de nivel encima, al 25 % del ancho) · camino del dino · manager · dino en reposo ·
- * bolsa de huesos,
- * pegada al montacargas que se la lleva. Los sótanos no se numeran: el letrero "Sótanos"
+ * montón de tierra (con el letrero de nivel encima, al 25 % del ancho) · camino del dino (con el
+ * cartel "Se busca" del manager en la pared) · dino en reposo · bolsa de huesos, pegada al
+ * montacargas que se la lleva. Con el Turbo activo, el piso brilla y el cartel se balancea. Los sótanos no se numeran: el letrero "Sótanos"
  * va una sola vez, entre el laboratorio y el primero (BasementsSign).
  */
 export function BasementFloor({ index, onUpgrade, onPickManager }: { index: number; onUpgrade: () => void; onPickManager: () => void }) {
@@ -44,6 +46,9 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
     return sh ? shaftRate(index, sh.level) * getModifiers(s.game, now).shaftSpeed * stationSpeed(s.game, station, now) : 0;
   });
   const speed = useGameStore((s) => stationSpeed(s.game, station, Date.now()));
+  const turboUntil = useGameStore((s) => s.game.abilities[station]?.activeUntil ?? 0);
+  const now = useNow(500);
+  const turbo = turboUntil > now;
   if (!shaft) return null;
   const idle = !manager && !shaft.running;
   // Cada sótano es un poco más oscuro que el anterior: se nota la profundidad.
@@ -61,10 +66,12 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
           useGameStore.getState().tap(station);
         }}
       >
-        <DirtMound style={styles.mound} />
-        <View style={styles.manager}>
-          <BasementManager station={station} onPick={onPickManager} />
+        {turbo ? <TurboGlow /> : null}
+        {/* En la pared, detrás del camino del dino (el dino no captura toques). */}
+        <View style={styles.poster}>
+          <WantedPoster station={station} active={turbo} onPick={onPickManager} />
         </View>
+        <DirtMound style={styles.mound} />
         <BoneBasket amount={shaft.deposit} style={styles.basket} />
         {hasWalkerSprites() ? (
           <Walker running={shaft.running} progress={shaft.progress} managed={!!manager} speed={speed} style={styles.walk} />
@@ -106,11 +113,11 @@ const styles = StyleSheet.create({
   // Ancho 0 y centrado: el letrero queda centrado justo sobre el 25 %.
   level: { position: 'absolute', left: '25%', top: 2, width: 0, alignItems: 'center' },
   basket: { position: 'absolute', right: BAG_RIGHT, bottom: 0 },
-  // A la izquierda del dino en reposo: siempre a la vista y tocable (el dino no captura toques).
-  manager: { position: 'absolute', right: HOME_RIGHT + WALKER_SIZE - 6, bottom: 0 },
+  // Cartel del manager: en la pared, entre el letrero de nivel y el dino en reposo.
+  poster: { position: 'absolute', left: '55%', top: 12, width: 0, alignItems: 'center' },
   walk: { position: 'absolute', left: MOUND_WIDTH - MOUND_CUT - FLOOR_PADDING - DIG_REACH, right: HOME_RIGHT, bottom: 0 },
   home: { position: 'absolute', right: HOME_RIGHT, bottom: 0 },
-  // Manita centrada sobre la cabeza del dino en reposo; el globo "¡Toca!" queda a su izquierda.
+  // Manita centrada sobre la cabeza del dino en reposo.
   hint: { position: 'absolute', right: HOME_RIGHT + WALKER_SIZE / 2 - 14, bottom: WALKER_SIZE - 6 },
   signRow: { position: 'absolute', left: 0, right: 0, top: FLOOR_HEIGHT - 14, alignItems: 'center', zIndex: 2 },
   sign: {

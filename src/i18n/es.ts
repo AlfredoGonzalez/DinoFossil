@@ -68,6 +68,7 @@ const es = {
     boost: '×2 · {{time}}',
     boostCta: '×2 4h',
     prestige: 'Prestigio',
+    reward: '×{{multiplier}} · {{seconds}} s',
     wanted: 'Se busca',
     hire: 'Manager',
   },

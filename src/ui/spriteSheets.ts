@@ -18,7 +18,6 @@ export const SHEET_LAYOUTS: Partial<Record<ArtKey, SheetLayout>> = {
   'sprites/digger/walk': { cols: 5, rows: 5, frames: 25, fps: 16 },
   'sprites/digger/dig': { cols: 5, rows: 5, frames: 25, fps: 18 },
   'sprites/digger/carry': { cols: 5, rows: 5, frames: 25, fps: 16 },
-  'sprites/manager/idle': { cols: 5, rows: 5, frames: 25, fps: 10 },
   'sprites/visitors/a': { cols: 5, rows: 5, frames: 25, fps: 14 },
   'sprites/visitors/b': { cols: 5, rows: 5, frames: 25, fps: 14 },
   'sprites/visitors/c': { cols: 5, rows: 5, frames: 25, fps: 14 },
