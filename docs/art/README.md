@@ -9,7 +9,7 @@ común y los prompts generales están en [`../ART_GUIDE.md`](../ART_GUIDE.md).
 | ~~2~~ | ~~Pantalla de inicio~~ | — | descartada: la carga lleva directo al juego |
 | 2 | La Casa-Museo (pantalla principal) | [02-casa-museo.md](02-casa-museo.md) | listo para recibir arte |
 | 3 | Iconos (36: recursos, huevos, navegación, estados, tienda) | [03-iconos.md](03-iconos.md) | listo para recibir arte |
-| 4 | Los sótanos (canasta y montón de tierra) | [04-sotanos.md](04-sotanos.md) | listo para recibir arte |
+| 4 | Los sótanos (canasta y montón de tierra) | [04-sotanos.md](04-sotanos.md) | ✅ completo |
 
 Animaciones de personajes (hojas de sprites): ver [sprites.md](sprites.md).
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
-import Animated, { cancelAnimation, Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming, type SharedValue } from 'react-native-reanimated';
+import Animated, { cancelAnimation, Easing, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming, type SharedValue } from 'react-native-reanimated';
 import { MINE_BALANCE } from '@/data/mine';
 import { getSheet, type Sheet } from '../spriteSheets';
 import { SpriteSheet } from '../SpriteSheet';
@@ -60,12 +60,19 @@ export function Walker({ running, progress, managed, speed, style }: Props) {
       p.value = 0;
       return;
     }
-    if (managed) {
-      p.value = withRepeat(withTiming(1, { duration: cycleMs, easing: Easing.linear }), -1, false);
-    } else {
-      p.value = progress;
-      p.value = withTiming(1, { duration: cycleMs * (1 - progress), easing: Easing.linear });
-    }
+    // Siempre se arranca desde el progreso real del motor: al contratar un manager o activar
+    // Turbo a mitad de camino, el dino termina el ciclo en curso en vez de reiniciarlo.
+    const start = Math.min(Math.max(progress, 0), 1);
+    const rest = withTiming(1, { duration: cycleMs * (1 - start), easing: Easing.linear });
+    p.value = start;
+    p.value = managed
+      ? // Con manager: acaba este ciclo y luego repite ciclos completos desde 0. (Un withRepeat
+        // directo repetiría desde el punto de partida y el dino quedaría atrapado a medio ciclo.)
+        withSequence(
+          rest,
+          withRepeat(withSequence(withTiming(0, { duration: 0 }), withTiming(1, { duration: cycleMs, easing: Easing.linear })), -1, false),
+        )
+      : rest;
     // progress solo se usa para sincronizar al arrancar.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [running, managed, cycleMs, p]);
@@ -83,7 +90,7 @@ export function Walker({ running, progress, managed, speed, style }: Props) {
   if (!idle || !walk || !dig || !carry) return null;
 
   return (
-    <View style={[styles.track, style]} onLayout={(e) => setTrack(Math.max(0, e.nativeEvent.layout.width - SIZE))}>
+    <View pointerEvents="none" style={[styles.track, style]} onLayout={(e) => setTrack(Math.max(0, e.nativeEvent.layout.width - SIZE))}>
       <Animated.View style={[styles.mover, running ? moveStyle : { transform: [{ translateX: track }] }]}>
         {running ? (
           <Animated.View style={[styles.sprite, faceStyle]}>

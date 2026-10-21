@@ -16,12 +16,12 @@ interface Props {
   onPick: () => void;
   /** Diámetro del retrato. */
   size?: number;
-  /** Turbo a la izquierda del retrato en vez de debajo (sótanos, donde falta altura). */
-  row?: boolean;
+  /** Turbo encima del retrato en vez de debajo (sótanos: el retrato va en el suelo). */
+  turboAbove?: boolean;
 }
 
 /** Avatar del manager (o hueco vacío) + botón de habilidad Turbo. */
-export function ManagerSlot({ station, onPick, size = 46, row = false }: Props) {
+export function ManagerSlot({ station, onPick, size = 46, turboAbove = false }: Props) {
   const { t } = useTranslation();
   const now = useNow(500);
   const dinoId = useGameStore((s) => s.game.managers[station]);
@@ -30,7 +30,7 @@ export function ManagerSlot({ station, onPick, size = 46, row = false }: Props) 
   const status = abilityStatus({ managers: { [station]: dinoId }, abilities: { [station]: ability } }, station, now);
 
   return (
-    <View style={row ? styles.row : styles.wrap}>
+    <View style={[styles.wrap, turboAbove && styles.above]}>
       <Pressable accessibilityRole="button" accessibilityLabel={`manager-${station}`} onPress={onPick}>
         {dinoId ? (
           <DinoAvatar dinoId={dinoId} size={size} ring />
@@ -75,7 +75,7 @@ export function ManagerSlot({ station, onPick, size = 46, row = false }: Props) 
 
 const styles = StyleSheet.create({
   wrap: { alignItems: 'center', gap: 2, width: 54 },
-  row: { flexDirection: 'row-reverse', alignItems: 'center', gap: 2 },
+  above: { flexDirection: 'column-reverse' },
   empty: {
     borderWidth: 2,
     borderStyle: 'dashed',

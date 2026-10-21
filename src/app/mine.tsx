@@ -23,7 +23,7 @@ import { GameIcon } from '@/ui/GameIcon';
 import { IconLabel } from '@/ui/IconLabel';
 import { useNow } from '@/ui/hooks';
 import { ResourceIcon } from '@/ui/Icons';
-import { BasementFloor } from '@/ui/mine/BasementFloor';
+import { BasementFloor, BasementsSign } from '@/ui/mine/BasementFloor';
 import { HallFloor } from '@/ui/mine/HallFloor';
 import { LabFloor } from '@/ui/mine/LabFloor';
 import { Lift } from '@/ui/mine/Lift';
@@ -166,6 +166,7 @@ export default function MineScreen() {
             />
           ))}
           <Lift />
+          {shaftCount > 0 ? <BasementsSign /> : null}
         </View>
         <UnlockRow />
         <Foundation />

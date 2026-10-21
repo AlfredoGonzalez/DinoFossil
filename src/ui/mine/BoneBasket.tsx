@@ -7,12 +7,13 @@ import { GameIcon } from '../GameIcon';
 import { GameText } from '../GameText';
 import { colors } from '../theme';
 
-export const BASKET_WIDTH = 66;
-export const BASKET_HEIGHT = 52;
+/** Proporción del arte entregado (365 × 420). */
+export const BASKET_WIDTH = 54;
+export const BASKET_HEIGHT = 62;
 
 /**
- * Canasta de huesos de un sótano (arte: museum/basket) con el contador encima.
- * Da un saltito cada vez que el dino deja huesos.
+ * Bolsa de huesos de un sótano (arte: museum/basket) con el contador encima. Va pegada
+ * al montacargas, que es quien se la lleva. Da un saltito cada vez que el dino deja huesos.
  */
 export function BoneBasket({ amount, style }: { amount: number; style?: StyleProp<ViewStyle> }) {
   const art = getArt('museum/basket');
@@ -38,7 +39,7 @@ export function BoneBasket({ amount, style }: { amount: number; style?: StylePro
         {art ? (
           <Image source={art} resizeMode="contain" style={styles.art} />
         ) : (
-          // Placeholder: canasta de mimbre con huesos asomando.
+          // Placeholder: bolsa con huesos asomando.
           <View style={styles.art}>
             <View style={styles.bones}>
               <GameIcon name="fossils" size={20} />
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 2,
-    // Monta un poco sobre el borde de la canasta y deja aire al manager de arriba.
+    // Monta un poco sobre la boca de la bolsa.
     marginBottom: -6,
     zIndex: 1,
     paddingLeft: 2,

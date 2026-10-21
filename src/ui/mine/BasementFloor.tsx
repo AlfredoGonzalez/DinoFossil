@@ -1,6 +1,5 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 import { shaftRate } from '@/game/economy';
-import { formatNumber } from '@/game/format';
 import { getModifiers } from '@/game/modifiers';
 import { shaftStationId, stationSpeed } from '@/game/simulate';
 import { useTranslation } from '@/i18n';
@@ -12,25 +11,28 @@ import { IconLabel } from '../IconLabel';
 import { colors } from '../theme';
 import { BASKET_WIDTH, BoneBasket } from './BoneBasket';
 import { Digger } from './Digger';
-import { DirtMound, MOUND_WIDTH } from './DirtMound';
-import { Floor } from './Floor';
+import { DirtMound, MOUND_CUT, MOUND_WIDTH } from './DirtMound';
+import { Floor, FLOOR_HEIGHT } from './Floor';
+import { LevelSign } from './LevelSign';
 import { ManagerSlot } from './ManagerSlot';
 import { TapHint } from './TapHint';
-import { UpgradeChip } from './UpgradeChip';
 import { hasWalkerSprites, Walker, WALKER_SIZE } from './Walker';
 
-/** El dino escarba metido un poco en el montón y descansa tapando el borde izquierdo de la canasta. */
-const DIG_REACH = 34;
-const BASKET_OVERLAP = 30;
-const HOME_RIGHT = BASKET_WIDTH - BASKET_OVERLAP;
+/** El dino escarba metido en la cara derecha del montón. */
+const DIG_REACH = 30;
+/** En reposo, el dino queda delante del borde izquierdo de la bolsa. */
+const HOME_RIGHT = BASKET_WIDTH - 24;
+/** Margen interior de la planta (Floor): el montón se recorta contra la pared, no contra él. */
+const FLOOR_PADDING = 6;
 
 /**
  * Un sótano de excavación (estación "shaft-i" del motor), de izquierda a derecha:
- * montón de tierra · camino del dino · canasta de huesos (con el manager encima) · nivel.
- * Solo el primero lleva el letrero "Sótanos"; los demás no se numeran.
+ * montón de tierra (con el letrero de nivel) · camino del dino · manager · dino en reposo ·
+ * bolsa de huesos,
+ * pegada al montacargas que se la lleva. Los sótanos no se numeran: el letrero "Sótanos"
+ * va una sola vez, entre el laboratorio y el primero (BasementsSign).
  */
 export function BasementFloor({ index, onUpgrade, onPickManager }: { index: number; onUpgrade: () => void; onPickManager: () => void }) {
-  const { t } = useTranslation();
   const station = shaftStationId(index);
   const shaft = useGameStore((s) => s.game.mine.shafts[index]);
   const manager = useGameStore((s) => s.game.managers[station]);
@@ -58,6 +60,12 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
         }}
       >
         <DirtMound style={styles.mound} />
+        <View style={styles.level}>
+          <LevelSign station={station} level={shaft.level} rate={rate} onPress={onUpgrade} />
+        </View>
+        <View style={styles.manager}>
+          <ManagerSlot station={station} onPick={onPickManager} size={40} turboAbove />
+        </View>
         <BoneBasket amount={shaft.deposit} style={styles.basket} />
         {hasWalkerSprites() ? (
           <Walker running={shaft.running} progress={shaft.progress} managed={!!manager} speed={speed} style={styles.walk} />
@@ -66,49 +74,46 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
             <Digger dinoId={manager} running={shaft.running} />
           </View>
         )}
-        {index === 0 ? (
-          <View pointerEvents="none" style={styles.sign}>
-            <IconLabel icon="station-basement" size={14}>
-              <GameText size={12} weight="black" color={colors.textLight} outline>
-                {t('mine.basements')}
-              </GameText>
-            </IconLabel>
-          </View>
-        ) : null}
-        <View style={styles.manager}>
-          <ManagerSlot station={station} onPick={onPickManager} size={40} row />
-        </View>
         {idle ? <TapHint style={styles.hint} /> : null}
       </Pressable>
-      <View style={styles.side}>
-        <UpgradeChip station={station} level={shaft.level} onPress={onUpgrade} />
-        <GameText size={10} color={colors.textLight} weight="black" outline center>
-          {formatNumber(rate)}/s
-        </GameText>
-      </View>
     </Floor>
+  );
+}
+
+/** Tablita "Sótanos" centrada sobre la unión entre el laboratorio y el primer sótano. */
+export function BasementsSign() {
+  const { t } = useTranslation();
+  return (
+    <View pointerEvents="none" style={styles.signRow}>
+      <View style={styles.sign}>
+        <IconLabel icon="station-basement" size={14}>
+          <GameText size={12} weight="black" color={colors.textLight} outline>
+            {t('mine.basements')}
+          </GameText>
+        </IconLabel>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   scene: { flex: 1, alignSelf: 'stretch' },
-  mound: { position: 'absolute', left: 0, bottom: 0 },
+  mound: { position: 'absolute', left: -(MOUND_CUT + FLOOR_PADDING), bottom: 0 },
+  level: { position: 'absolute', left: 8, top: 2 },
   basket: { position: 'absolute', right: 0, bottom: 0 },
-  walk: { position: 'absolute', left: MOUND_WIDTH - DIG_REACH, right: HOME_RIGHT, bottom: 0 },
+  // A la izquierda del dino en reposo: siempre a la vista y tocable (el dino no captura toques).
+  manager: { position: 'absolute', right: HOME_RIGHT + WALKER_SIZE - 6, bottom: 2 },
+  walk: { position: 'absolute', left: MOUND_WIDTH - MOUND_CUT - FLOOR_PADDING - DIG_REACH, right: HOME_RIGHT, bottom: 0 },
   home: { position: 'absolute', right: HOME_RIGHT, bottom: 0 },
+  // Manita centrada sobre la cabeza del dino en reposo; el globo "¡Toca!" queda a su izquierda.
+  hint: { position: 'absolute', right: HOME_RIGHT + WALKER_SIZE / 2 - 14, bottom: WALKER_SIZE - 6 },
+  signRow: { position: 'absolute', left: 0, right: 0, top: FLOOR_HEIGHT - 14, alignItems: 'center', zIndex: 2 },
   sign: {
-    position: 'absolute',
-    top: 4,
-    left: 0,
-    paddingHorizontal: 8,
-    paddingVertical: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 2,
     borderRadius: 8,
     backgroundColor: colors.wood,
     borderWidth: 2,
     borderColor: colors.woodDark,
   },
-  manager: { position: 'absolute', top: 0, right: 0 },
-  // Manita centrada sobre la cabeza del dino en reposo; el globo "¡Toca!" queda a su izquierda.
-  hint: { position: 'absolute', right: HOME_RIGHT + WALKER_SIZE / 2 - 14, bottom: WALKER_SIZE - 6 },
-  side: { alignItems: 'center', gap: 3, width: 70 },
 });

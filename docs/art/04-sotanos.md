@@ -7,22 +7,25 @@ Estilo: el mismo "peluche/fieltro con costuras" de siempre → bloque **Biblia d
 ## Cómo se ve
 
 ```
-┌───────────────────────────────────────────────┬────┐
-│ [⛏️ Sótanos]                         (👤 M)   │    │  ← letrero solo en el primer sótano
-│               [¡Toca!] 👇           [🦴 1.2K] │ Nv │
-│  ⛰️⛰️⛰️  ← ← ← ← ← ← ← ←  🦖 🧺                │ ⬆️ │  ▒ montacargas
-│  montón de tierra        dino  canasta        │1.5/s│
-└───────────────────────────────────────────────┴────┘
+┌───────────────────── [⛏️ Sótanos] ─────────────────┬────┐  ← tablita centrada, una sola vez
+│ ⛰️[Nv 12 ⬆]                             [🦴 1.2K]  │ ▒  │
+│ ⛰️⛰️1.5/s           [¡Toca!] 👇                    │ ▒  │
+│ ⛰️⛰️⛰️  ← ← ← ← ← ←  (👤M)  🦖 👜                  │ ▒  │  ▒ montacargas
+└───────────────────────────────────────────────────┴────┘
+ ↑ el 25 % izquierdo del montón queda fuera de cuadro
 ```
 
-- **En reposo**, el dino está delante de la canasta mirando a la izquierda, y encima flota la
-  manita con "¡Toca!". Al tocar cualquier parte del sótano:
-  1. camina a la izquierda hasta el montón;
+- **Montón de tierra** grande, casi del alto del sótano y cortado por la izquierda. Encima va
+  clavado el **letrero de nivel** (madera; verde con la flecha cuando alcanza para mejorar).
+- **En reposo**, el dino está delante de la bolsa mirando a la izquierda, con la manita "¡Toca!"
+  encima. Al tocar cualquier parte del sótano:
+  1. camina hasta el montón;
   2. escarba;
   3. regresa cargando huesos;
-  4. al dejarlos, la canasta da un saltito y sube el contador.
-- **Con manager** (retrato arriba a la derecha), el ciclo se repite solo y la manita no aparece.
-- **Botón de nivel**: va a la derecha, junto al montacargas. Es código y no necesita imagen.
+  4. al dejarlos, la bolsa da un saltito y sube el contador.
+- **Manager** a la izquierda del dino en reposo; el dino le pasa por delante al ir y venir.
+  Con manager el ciclo se repite solo.
+- **Bolsa** pegada al montacargas, que es quien se la lleva.
 
 ## Archivos
 
@@ -30,17 +33,18 @@ Todos en `assets/art/museum/` (PNG o WebP **con transparencia**):
 
 | Archivo | Tamaño | Contenido | Si falta… |
 |---|---|---|---|
-| `basket.png` | **512 × 400** | Canasta de mimbre de fieltro, vista de frente/lado, llena de huesos color crema que asoman por arriba. La base de la canasta toca el borde inferior de la imagen. | canasta de código |
-| `dirt-mound.png` | **512 × 400** | Montón de tierra de fieltro marrón con piedritas, alguna raíz y la punta de un hueso. **El lado donde se escarba mira a la derecha**, hacia el dino (más empinado y con tierra suelta). La base toca el borde inferior. | loma de código |
+| `basket.png` ✅ | ~**365 × 420** | Bolsa de tela con huesos asomando. La base toca el borde inferior. | bolsa de código |
+| `dirt-mound.png` ✅ | ~**640 × 478** | Montón de tierra de fieltro marrón con piedritas, alguna raíz y la punta de un hueso. **El lado donde se escarba mira a la derecha**, hacia el dino (más empinado y con tierra suelta). La base toca el borde inferior. | loma de código |
 
 Y en `assets/art/icons/`, siguiendo las reglas de [03-iconos.md](03-iconos.md):
 
 | Archivo | Contenido |
 |---|---|
-| `tap.png` | Manita tierna de peluche con el índice **apuntando hacia abajo** (va sobre la cabeza del dino) |
-| `upgrade.png` | Flecha verde gordita hacia arriba (sale en el botón de nivel cuando te alcanza para mejorar) |
+| `tap.png` ✅ | Manita tierna de peluche con el índice **apuntando hacia abajo** (va sobre la cabeza del dino) |
+| `upgrade.png` ✅ | Flecha verde gordita hacia arriba (sale en el botón de nivel cuando te alcanza para mejorar) |
 
-En pantalla, la canasta mide unos 66 × 52 pt y el montón unos 84 × 64 pt. Dibuja formas grandes y
+En pantalla, la bolsa mide unos 54 × 62 pt y el montón unos 134 × 100 pt (se ve ~75 %).
+Claude recorta el aire transparente y las pasa a WebP al recibirlas. Dibuja formas grandes y
 legibles, sin detalles finos que se pierdan al reducir.
 
 ## Sprites
@@ -53,7 +57,7 @@ en el mismo formato 5 × 5.
 
 ## Prompts sugeridos
 
-**Canasta**
+**Bolsa / canasta**
 
 ```
 A cute wicker basket made of soft felt and fabric with visible stitched seams, filled to the top with
@@ -95,7 +99,7 @@ déjalo como una **pared de tierra sin objetos grandes**: la tierra, la canasta 
 
 ## Checklist antes de entregar
 
-- [ ] `basket` y `dirt-mound` en `assets/art/museum/`, con transparencia real (sin fondo blanco).
+- [x] `basket` y `dirt-mound` en `assets/art/museum/`, con transparencia real (sin fondo blanco).
 - [ ] La base de cada objeto toca el borde de abajo, para que se apoyen en el suelo.
 - [ ] El lado escarbado del montón mira a la **derecha**.
 - [ ] La manita apunta hacia **abajo**.
