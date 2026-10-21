@@ -8,7 +8,7 @@ Estilo: el mismo "peluche/fieltro con costuras" de siempre → bloque **Biblia d
 
 ```
 ┌───────────────────── [⛏️ Sótanos] ─────────────────┬────┐  ← tablita centrada, una sola vez
-│ ⛰️[Nv 12 ⬆]                             [🦴 1.2K]  │ ▒  │
+│ ⛰️⛰️[Nv 12 ⬆]                           [🦴 1.2K]  │ ▒  │
 │ ⛰️⛰️1.5/s           [¡Toca!] 👇                    │ ▒  │
 │ ⛰️⛰️⛰️  ← ← ← ← ← ←  (👤M)  🦖 👜                  │ ▒  │  ▒ montacargas
 └───────────────────────────────────────────────────┴────┘
@@ -16,7 +16,9 @@ Estilo: el mismo "peluche/fieltro con costuras" de siempre → bloque **Biblia d
 ```
 
 - **Montón de tierra** grande, casi del alto del sótano y cortado por la izquierda. Encima va
-  clavado el **letrero de nivel** (madera; verde con la flecha cuando alcanza para mejorar).
+  clavado el **letrero de nivel**, centrado al 25 % del ancho (entre la pared y la tablita
+  "Sótanos") para que se vea el hueso. Es madera; se pone verde con una flecha que late cuando
+  alcanza para mejorar, y con **doble flecha** si alcanza para llegar al siguiente ×2.
 - **En reposo**, el dino está delante de la bolsa mirando a la izquierda, con la manita "¡Toca!"
   encima. Al tocar cualquier parte del sótano:
   1. camina hasta el montón;
@@ -43,7 +45,7 @@ Y en `assets/art/icons/`, siguiendo las reglas de [03-iconos.md](03-iconos.md):
 | `tap.png` ✅ | Manita tierna de peluche con el índice **apuntando hacia abajo** (va sobre la cabeza del dino) |
 | `upgrade.png` ✅ | Flecha verde gordita hacia arriba (sale en el botón de nivel cuando te alcanza para mejorar) |
 
-En pantalla, la bolsa mide unos 54 × 62 pt y el montón unos 134 × 100 pt (se ve ~75 %).
+En pantalla, la bolsa mide unos 33 × 38 pt (~60 % del dino) y el montón unos 134 × 100 pt (se ve ~75 %).
 Claude recorta el aire transparente y las pasa a WebP al recibirlas. Dibuja formas grandes y
 legibles, sin detalles finos que se pierdan al reducir.
 

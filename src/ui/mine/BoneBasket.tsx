@@ -7,9 +7,9 @@ import { GameIcon } from '../GameIcon';
 import { GameText } from '../GameText';
 import { colors } from '../theme';
 
-/** Proporción del arte entregado (365 × 420). */
-export const BASKET_WIDTH = 54;
-export const BASKET_HEIGHT = 62;
+/** ~60 % de la altura del dino, con la proporción del arte entregado (365 × 420). */
+export const BASKET_HEIGHT = 38;
+export const BASKET_WIDTH = Math.round((BASKET_HEIGHT * 365) / 420);
 
 /**
  * Bolsa de huesos de un sótano (arte: museum/basket) con el contador encima. Va pegada
@@ -42,9 +42,8 @@ export function BoneBasket({ amount, style }: { amount: number; style?: StylePro
           // Placeholder: bolsa con huesos asomando.
           <View style={styles.art}>
             <View style={styles.bones}>
-              <GameIcon name="fossils" size={20} />
-              <GameIcon name="fossils" size={24} />
-              <GameIcon name="fossils" size={20} />
+              <GameIcon name="fossils" size={14} />
+              <GameIcon name="fossils" size={16} />
             </View>
             <View style={styles.basket}>
               <View style={styles.weave} />
@@ -57,7 +56,7 @@ export function BoneBasket({ amount, style }: { amount: number; style?: StylePro
 }
 
 const styles = StyleSheet.create({
-  wrap: { width: BASKET_WIDTH, alignItems: 'center' },
+  wrap: { minWidth: BASKET_WIDTH, alignItems: 'center' },
   counter: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -73,10 +72,10 @@ const styles = StyleSheet.create({
     borderColor: '#1F140B',
   },
   art: { width: BASKET_WIDTH, height: BASKET_HEIGHT, justifyContent: 'flex-end' },
-  bones: { flexDirection: 'row', justifyContent: 'center', marginBottom: -12, zIndex: 0 },
+  bones: { flexDirection: 'row', justifyContent: 'center', marginBottom: -8, zIndex: 0 },
   basket: {
-    height: 32,
-    marginHorizontal: 4,
+    height: 24,
+    marginHorizontal: 2,
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
     borderBottomLeftRadius: 16,

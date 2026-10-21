@@ -5,26 +5,30 @@ import {
   carrierFirstCost,
   carrierMaxLevel,
   maxAffordable,
+  nextMilestone,
   shaftFirstCost,
   shaftUnlockCost,
 } from './economy';
 import { getModifiers } from './modifiers';
 import type { GameState, StationId } from './types';
 
-export type BuyAmount = 1 | 10 | 'max';
+/** 'milestone': los niveles justos para llegar al siguiente hito ×2 (solo sótanos). */
+export type BuyAmount = 1 | 10 | 'milestone' | 'max';
 
 interface LevelInfo {
   level: number;
   maxLevel: number;
   first: number;
   growth: number;
+  /** Solo los sótanos tienen hitos. */
+  milestones: boolean;
 }
 
 function levelInfo(state: GameState, station: StationId, now: number): LevelInfo | null {
   const discount = getModifiers(state, now).costMultiplier;
   if (station === 'elevator' || station === 'museum') {
     const level = state.mine[station].level;
-    return { level, maxLevel: carrierMaxLevel(station), first: carrierFirstCost(station, level) * discount, growth: carrierCostGrowth(station) };
+    return { level, maxLevel: carrierMaxLevel(station), first: carrierFirstCost(station, level) * discount, growth: carrierCostGrowth(station), milestones: false };
   }
   const index = Number(station.slice('shaft-'.length));
   const shaft = state.mine.shafts[index];
@@ -34,6 +38,7 @@ function levelInfo(state: GameState, station: StationId, now: number): LevelInfo
     maxLevel: MINE_BALANCE.shaft.maxLevel,
     first: shaftFirstCost(index, shaft.level) * discount,
     growth: MINE_BALANCE.shaft.levelCostGrowth,
+    milestones: true,
   };
 }
 
@@ -42,8 +47,12 @@ export function upgradeQuote(state: GameState, station: StationId, amount: BuyAm
   const info = levelInfo(state, station, now);
   if (!info) return { levels: 0, cost: 0 };
   const room = info.maxLevel - info.level;
-  const levels =
-    amount === 'max' ? Math.max(1, Math.min(room, maxAffordable(info.first, info.growth, state.coins, room))) : Math.min(amount, room);
+  let levels: number;
+  if (amount === 'max') levels = Math.max(1, Math.min(room, maxAffordable(info.first, info.growth, state.coins, room)));
+  else if (amount === 'milestone') {
+    const target = info.milestones ? nextMilestone(info.level) : null;
+    levels = target === null ? 0 : Math.min(target - info.level, room);
+  } else levels = Math.min(amount, room);
   return { levels, cost: bulkCost(info.first, info.growth, levels) };
 }
 

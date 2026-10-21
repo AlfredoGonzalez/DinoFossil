@@ -77,6 +77,7 @@ const en: Translations = {
     production: 'Production',
     capacity: 'Capacity',
     nextMilestone: 'Next ×2 at level {{level}}',
+    toMilestone: '{{level}}',
     maxed: 'Max level!',
     buy: 'Upgrade +{{levels}}',
   },

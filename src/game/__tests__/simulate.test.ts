@@ -93,6 +93,17 @@ describe('upgrades', () => {
     expect(quote.levels).toBeGreaterThan(10);
     expect(quote.cost).toBeLessThanOrEqual(5000);
   });
+
+  it('"hasta el hito" compra justo los niveles que faltan para el siguiente ×2', () => {
+    let s = { ...createInitialState(T0), coins: 1e9 };
+    expect(upgradeQuote(s, 'shaft-0', 'milestone', T0).levels).toBe(9);
+    s = buyUpgrade(s, 'shaft-0', 'milestone', T0)!;
+    expect(s.mine.shafts[0]?.level).toBe(10);
+    expect(upgradeQuote(s, 'shaft-0', 'milestone', T0).levels).toBe(15);
+    // El laboratorio y la sala no tienen hitos.
+    expect(upgradeQuote(s, 'elevator', 'milestone', T0).levels).toBe(0);
+    expect(buyUpgrade(s, 'elevator', 'milestone', T0)).toBeNull();
+  });
 });
 
 describe('offline', () => {

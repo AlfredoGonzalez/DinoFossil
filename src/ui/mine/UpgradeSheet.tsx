@@ -11,6 +11,7 @@ import { playSfx } from '@/services/audio';
 import { successFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
 import { ChunkyButton } from '../ChunkyButton';
+import { GameIcon } from '../GameIcon';
 import { GameModal } from '../GameModal';
 import { GameText } from '../GameText';
 import { IconLabel } from '../IconLabel';
@@ -19,7 +20,6 @@ import { ResourceIcon } from '../Icons';
 import { colors, radius } from '../theme';
 import { shaftIndex, stationName } from './stations';
 
-const AMOUNTS: BuyAmount[] = [1, 10, 'max'];
 
 function stat(station: StationId, level: number, game: GameState, now: number): number {
   const mods = getModifiers(game, now);
@@ -31,7 +31,7 @@ function stat(station: StationId, level: number, game: GameState, now: number): 
 
 export function UpgradeSheet({ station, onClose }: { station: StationId | null; onClose: () => void }) {
   const { t } = useTranslation();
-  const [amount, setAmount] = useState<BuyAmount>(1);
+  const [chosen, setAmount] = useState<BuyAmount>(1);
   const game = useGameStore((s) => s.game);
   const time = useNow(1000);
   if (!station) return null;
@@ -39,9 +39,12 @@ export function UpgradeSheet({ station, onClose }: { station: StationId | null; 
   const index = shaftIndex(station);
   const level = index !== null ? (game.mine.shafts[index]?.level ?? 1) : game.mine[station as 'elevator' | 'museum'].level;
   const maxLevel = index !== null ? MINE_BALANCE.shaft.maxLevel : carrierMaxLevel(station as 'elevator' | 'museum');
-  const quote = upgradeQuote(game, station, amount, time);
   const maxed = level >= maxLevel;
   const milestone = index !== null ? nextMilestone(level) : null;
+  // "Hasta el hito" solo existe en los sótanos y mientras quede algún hito por delante.
+  const amounts: BuyAmount[] = milestone ? [1, 10, 'milestone', 'max'] : [1, 10, 'max'];
+  const amount = amounts.includes(chosen) ? chosen : 1;
+  const quote = upgradeQuote(game, station, amount, time);
   const now = stat(station, level, game, time);
   const next = stat(station, level + quote.levels, game, time);
   const label = index !== null ? t('upgrade.production') : t('upgrade.capacity');
@@ -69,13 +72,15 @@ export function UpgradeSheet({ station, onClose }: { station: StationId | null; 
         </View>
       ) : null}
       <View style={styles.amounts}>
-        {AMOUNTS.map((a) => (
+        {amounts.map((a) => (
           <ChunkyButton
             key={String(a)}
+            testID={`amount-${a}`}
             size="sm"
             style={styles.flex}
             variant={amount === a ? 'orange' : 'wood'}
-            label={a === 'max' ? t('common.max') : `×${a}`}
+            icon={a === 'milestone' ? <GameIcon name="star" size={16} /> : undefined}
+            label={a === 'max' ? t('common.max') : a === 'milestone' ? t('upgrade.toMilestone', { level: milestone }) : `×${a}`}
             onPress={() => setAmount(a)}
           />
         ))}

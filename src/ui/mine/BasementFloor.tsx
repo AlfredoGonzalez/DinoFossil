@@ -20,14 +20,16 @@ import { hasWalkerSprites, Walker, WALKER_SIZE } from './Walker';
 
 /** El dino escarba metido en la cara derecha del montón. */
 const DIG_REACH = 30;
+/** Hueco entre la bolsa y el montacargas (lo justo para el contador). */
+const BAG_RIGHT = 4;
 /** En reposo, el dino queda delante del borde izquierdo de la bolsa. */
-const HOME_RIGHT = BASKET_WIDTH - 24;
+const HOME_RIGHT = BAG_RIGHT + BASKET_WIDTH - 12;
 /** Margen interior de la planta (Floor): el montón se recorta contra la pared, no contra él. */
 const FLOOR_PADDING = 6;
 
 /**
  * Un sótano de excavación (estación "shaft-i" del motor), de izquierda a derecha:
- * montón de tierra (con el letrero de nivel) · camino del dino · manager · dino en reposo ·
+ * montón de tierra (con el letrero de nivel encima, al 25 % del ancho) · camino del dino · manager · dino en reposo ·
  * bolsa de huesos,
  * pegada al montacargas que se la lleva. Los sótanos no se numeran: el letrero "Sótanos"
  * va una sola vez, entre el laboratorio y el primero (BasementsSign).
@@ -60,9 +62,6 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
         }}
       >
         <DirtMound style={styles.mound} />
-        <View style={styles.level}>
-          <LevelSign station={station} level={shaft.level} rate={rate} onPress={onUpgrade} />
-        </View>
         <View style={styles.manager}>
           <ManagerSlot station={station} onPick={onPickManager} size={40} turboAbove />
         </View>
@@ -76,6 +75,11 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
         )}
         {idle ? <TapHint style={styles.hint} /> : null}
       </Pressable>
+      {/* Fuera de la escena: se centra en el 25 % del ancho de la planta, a medio camino entre
+          la pared y la tablita "Sótanos" (que va al centro), dejando ver el hueso del montón. */}
+      <View style={styles.level}>
+        <LevelSign station={station} level={shaft.level} rate={rate} onPress={onUpgrade} />
+      </View>
     </Floor>
   );
 }
@@ -99,8 +103,9 @@ export function BasementsSign() {
 const styles = StyleSheet.create({
   scene: { flex: 1, alignSelf: 'stretch' },
   mound: { position: 'absolute', left: -(MOUND_CUT + FLOOR_PADDING), bottom: 0 },
-  level: { position: 'absolute', left: 8, top: 2 },
-  basket: { position: 'absolute', right: 0, bottom: 0 },
+  // Ancho 0 y centrado: el letrero queda centrado justo sobre el 25 %.
+  level: { position: 'absolute', left: '25%', top: 2, width: 0, alignItems: 'center' },
+  basket: { position: 'absolute', right: BAG_RIGHT, bottom: 0 },
   // A la izquierda del dino en reposo: siempre a la vista y tocable (el dino no captura toques).
   manager: { position: 'absolute', right: HOME_RIGHT + WALKER_SIZE - 6, bottom: 2 },
   walk: { position: 'absolute', left: MOUND_WIDTH - MOUND_CUT - FLOOR_PADDING - DIG_REACH, right: HOME_RIGHT, bottom: 0 },

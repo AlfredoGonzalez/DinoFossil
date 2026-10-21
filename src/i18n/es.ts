@@ -75,6 +75,7 @@ const es = {
     production: 'Producción',
     capacity: 'Capacidad',
     nextMilestone: 'Próximo ×2 en el nivel {{level}}',
+    toMilestone: '{{level}}',
     maxed: '¡Nivel máximo!',
     buy: 'Mejorar +{{levels}}',
   },

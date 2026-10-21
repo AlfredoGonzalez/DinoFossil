@@ -35,7 +35,7 @@ Galerías (excavan fósiles) → Ascensor (sube fósiles) → Museo (vende por D
 | Duración del ciclo | `2 s + 0.6 s · galerías` | 4 s |
 | Coste de mejora | `15 · 1.1^(n-1)` | `15 · 1.1^(n-1)` |
 
-Comprar ×10 / MAX usa la serie geométrica `primero · (g^n − 1)/(g − 1)`.
+Comprar ×10 / ⭐ hito (los niveles justos hasta el siguiente ×2, solo sótanos) / MAX usa la serie geométrica `primero · (g^n − 1)/(g − 1)`.
 
 ### Valor de venta
 
