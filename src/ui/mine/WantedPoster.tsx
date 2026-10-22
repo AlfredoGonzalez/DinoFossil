@@ -15,24 +15,28 @@ const INK = '#4A2C12';
  * Dos formatos del cuadro del manager:
  * - `wall`: colgado de un clavo en una viga (sótanos y laboratorio); se balancea con el Turbo.
  * - `easel`: sobre un tripié, en el suelo de la sala; con el Turbo se tambalea desde las patas.
- * `window` es la ventanita de la foto, en fracciones del arte (se mide al recibirlo).
+ * Cada arte trae su hueco para la foto (en fracciones del arte, medido al recibirlo): el de
+ * "HIRING" es una ventanita con un "+", el de "HIRED" es casi todo el papel bajo el título.
  */
 const VARIANTS = {
   wall: {
-    hiring: 'museum/poster-hiring',
-    hired: 'museum/poster-hired',
-    aspect: 279 / 420,
-    window: { left: 0.27, top: 0.395, width: 0.46, height: 0.3 },
+    hiring: { art: 'museum/poster-hiring', window: { left: 0.278, top: 0.393, width: 0.455, height: 0.294 } },
+    hired: { art: 'museum/poster-hired', window: { left: 0.2, top: 0.36, width: 0.6, height: 0.44 } },
+    aspect: 278 / 420,
     pivot: 'top',
   },
   easel: {
-    hiring: 'museum/easel-hiring',
-    hired: 'museum/easel-hired',
-    aspect: 0.62,
-    window: { left: 0.27, top: 0.2, width: 0.46, height: 0.28 },
+    hiring: { art: 'museum/easel-hiring', window: { left: 0.286, top: 0.31, width: 0.437, height: 0.25 } },
+    hired: { art: 'museum/easel-hired', window: { left: 0.17, top: 0.26, width: 0.66, height: 0.4 } },
+    aspect: 247 / 420,
     pivot: 'bottom',
   },
-} as const satisfies Record<string, { hiring: ArtKey; hired: ArtKey; aspect: number; window: object; pivot: string }>;
+} as const;
+
+/** Las palabras "HIRING"/"HIRED" van dibujadas: si existe la versión en el idioma (…-es), se usa esa. */
+function localizedArt(key: ArtKey) {
+  return currentLanguage() === 'es' ? (getArt(`${key}-es` as ArtKey) ?? getArt(key)) : getArt(key);
+}
 
 export type PosterVariant = keyof typeof VARIANTS;
 
@@ -64,10 +68,9 @@ interface Props {
 }
 
 /**
- * Cuadro del manager (sótanos, laboratorio y sala). Sin textos, solo imagen:
- * - Sin manager: cartel "HIRING" (o, en español, el cuadro liso: el texto dibujado no se
- *   traduce) con un "+" en la ventanita. Al tocarlo se abre la lista de dinos.
- * - Con manager: el cuadro "HIRED" con su foto tipo busto en la ventanita.
+ * Cuadro del manager (sótanos, laboratorio y sala). Sin textos de código, solo imagen:
+ * - Sin manager: cartel "HIRING" con un "+" en la ventanita. Al tocarlo se abre la lista de dinos.
+ * - Con manager: cartel "HIRED" con su foto tipo busto.
  * El Turbo se activa con la chincheta ⚡ de la esquina; mientras dura, el cuadro se mueve.
  * Arte: museum/poster-* (pared) y museum/easel-* (tripié); si faltan, papel dibujado con código.
  */
@@ -75,9 +78,8 @@ export function WantedPoster({ station, active, onPick, variant = 'wall', height
   const v = VARIANTS[variant];
   const width = Math.round(height * v.aspect);
   const dinoId = useGameStore((s) => s.game.managers[station]);
-  const hired = getArt(v.hired);
-  const hiring = currentLanguage() === 'en' ? getArt(v.hiring) : undefined;
-  const art = dinoId ? hired : (hiring ?? hired);
+  const state = dinoId ? v.hired : v.hiring;
+  const art = localizedArt(state.art);
   const swing = useSharedValue(0);
 
   useEffect(() => {
@@ -101,10 +103,10 @@ export function WantedPoster({ station, active, onPick, variant = 'wall', height
   const swingStyle = useAnimatedStyle(() => ({ transform: [{ rotate: `${swing.value * maxDeg}deg` }] }));
 
   const win = {
-    left: width * v.window.left,
-    top: height * v.window.top,
-    width: width * v.window.width,
-    height: height * v.window.height,
+    left: width * state.window.left,
+    top: height * state.window.top,
+    width: width * state.window.width,
+    height: height * state.window.height,
   };
 
   return (
@@ -126,7 +128,7 @@ export function WantedPoster({ station, active, onPick, variant = 'wall', height
           )}
         </View>
       </Pressable>
-      <View style={[styles.pin, { left: width - 10 }]}>
+      <View style={[styles.pin, { left: width - 4 }]}>
         <TurboButton station={station} />
       </View>
     </Animated.View>
@@ -164,5 +166,6 @@ const styles = StyleSheet.create({
   window: { position: 'absolute', alignItems: 'center', justifyContent: 'center' },
   photo: { width: '100%', height: '100%', borderRadius: 2, overflow: 'hidden', alignItems: 'center', justifyContent: 'center' },
   portrait: { width: '100%', height: '100%' },
-  pin: { position: 'absolute', top: -2 },
+  // Fuera del borde derecho, para no tapar el título dibujado (HIRED/HIRING).
+  pin: { position: 'absolute', top: 8 },
 });

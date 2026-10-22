@@ -52,7 +52,7 @@ Todos en `assets/art/museum/`.
 | `crate-full.png` ✅ | PNG/WebP transparente | **256 × 256** | La misma caja **llena de huesos**: se ve mientras sube. Que ambas tengan la misma perspectiva. | `crate.png` o caja de código |
 | `pulley.png` (pendiente) | PNG/WebP transparente | **256 × 256** | Polea de madera y hierro vista de frente: solo la **rueda** con su canal (el código la hace girar, así que sin soporte que gire con ella). Va arriba del montacargas, en el laboratorio. | rueda de código |
 | `rope.png` (pendiente) | PNG/WebP transparente | **32 × 256** | Tramo **vertical** de cuerda trenzada, que empalme arriba con abajo: el código lo repite hasta la caja. | cuerda de código |
-| `easel-hiring.png` / `easel-hired.png` (pendiente) | PNG/WebP transparente | ~**300 × 480** | El cuadro del manager sobre un tripié, para la sala. "Hiring" con el texto (solo inglés) y "Hired" liso con la **misma ventanita** para la foto en el mismo lugar. | cuadro de código con patas |
+| `easel-hiring.png` / `easel-hired.png` ✅ | PNG/WebP transparente | ~**300 × 480** | El cuadro del manager sobre un tripié, para la sala. "Hiring" con el texto (solo inglés) y "Hired" liso con la **misma ventanita** para la foto en el mismo lugar. | cuadro de código con patas |
 | `visitor.png` | PNG/WebP transparente | **512 × 512** | *(Reemplazado por los visitantes animados de [sprites.md](sprites.md#visitantes-de-la-sala-assetsartspritesvisitors).)* | emoji 🧒 |
 
 ### Zonas seguras de las plantas (`hall`, `lab`, `basement`)

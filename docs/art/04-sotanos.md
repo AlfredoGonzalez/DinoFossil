@@ -50,8 +50,12 @@ Y el cartel del manager, también en `assets/art/museum/`:
 
 | Archivo | Tamaño | Contenido | Si falta… |
 |---|---|---|---|
-| `poster-hired.png` | ~**280 × 420** | Cuadro de fieltro liso colgado de un clavo, con ventanita para la foto. Con manager, la foto del dino va en la ventanita (sin nombre ni textos). En español también se usa vacío, con un "+". | papel de código |
-| `poster-hiring.png` | ~**280 × 420** | El mismo cuadro con "HIRING" dibujado: solo se usa en inglés y sin manager (el texto dibujado no se puede traducir). | `poster-hired` + texto |
+| `poster-hired.png` ✅ | ~**280 × 420** | Cuadro de fieltro liso colgado de un clavo, con ventanita para la foto. Cuadro "HIRED": la foto del dino ocupa el papel bajo el título. | papel de código |
+| `poster-hiring.png` ✅ | ~**280 × 420** | Cuadro "HIRING" con ventanita y un "+". | papel de código |
+
+Las palabras van dibujadas, así que en español se ven en inglés. Si quieres, sube versiones con
+"SE BUSCA" / "CONTRATADO" con el mismo nombre + `-es` (p. ej. `poster-hiring-es.png`, también
+`easel-hiring-es` y `easel-hired-es`), con la ventanita en el mismo sitio: se usan solas en español.
 
 El código escribe encima, de arriba abajo: "SE BUSCA" (franja superior, ~15 % del alto), la foto
 (un cuadro centrado de ~45 % del ancho, a media altura), y el nombre + la recompensa (franja inferior,
