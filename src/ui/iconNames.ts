@@ -35,6 +35,13 @@ export const ICONS = {
   'star-empty': '☆',
   lock: '🔒',
   check: '✅',
+  // Ficha de cada dino en la colección
+  'diet-herbivore': '🌿',
+  'diet-carnivore': '🍖',
+  'fact-era': '⏳',
+  'fact-size': '📏',
+  'fact-region': '🌍',
+  'fact-curious': '💡',
   // Plantas de la Casa-Museo (junto al nombre de cada planta)
   'station-hall': '🏛️',
   'station-lab': '🔬',

@@ -1,6 +1,7 @@
 import { getLocales } from 'expo-localization';
 import { createInstance } from 'i18next';
 import { initReactI18next, useTranslation } from 'react-i18next';
+import { DINO_FACT_TEXTS } from './dinoFacts';
 import { DINO_NAMES } from './dinoNames';
 import en from './en';
 import es from './es';
@@ -32,6 +33,11 @@ export function currentLanguage(): Language {
 
 export function dinoName(id: string): string {
   return DINO_NAMES[currentLanguage()][id] ?? id;
+}
+
+/** Región y dato curioso de la ficha de una especie. */
+export function dinoFactText(id: string): { region: string; fact: string } | undefined {
+  return DINO_FACT_TEXTS[currentLanguage()][id];
 }
 
 export { useTranslation };

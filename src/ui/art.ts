@@ -1,5 +1,5 @@
 import type { ImageSourcePropType } from 'react-native';
-import { ART } from './art.generated';
+import { ART, VIDEOS } from './art.generated';
 import { DINOS } from '@/data/dinos';
 import { ICONS, type IconName } from './iconNames';
 
@@ -59,6 +59,11 @@ export type ArtKey = keyof typeof ART_SPECS | `icons/${IconName}` | `dinos/${str
 
 export function getArt(key: ArtKey): ImageSourcePropType | undefined {
   return ART[key];
+}
+
+/** Video de la ficha de un dino (assets/art/dinos/<id>.mp4, en bucle y sin sonido). */
+export function getDinoVideo(dinoId: string): number | undefined {
+  return VIDEOS[`dinos/${dinoId}`];
 }
 
 if (__DEV__) {

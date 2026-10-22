@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { ABILITY, DINOS, DINO_BY_ID } from '@/data/dinos';
-import { collectionBonuses, dinoBonusValue } from '@/game/modifiers';
+import { DINOS, DINO_BY_ID } from '@/data/dinos';
+import { collectionBonuses } from '@/game/modifiers';
 import type { BonusType } from '@/game/types';
 import { dinoName, useTranslation } from '@/i18n';
 import { tapFeedback } from '@/services/feedback';
@@ -11,7 +11,7 @@ import { ChunkyButton } from '@/ui/ChunkyButton';
 import { CurrencyBar } from '@/ui/CurrencyBar';
 import { GameModal } from '@/ui/GameModal';
 import { GameText } from '@/ui/GameText';
-import { IconLabel } from '@/ui/IconLabel';
+import { DinoProfile } from '@/ui/DinoProfile';
 import { DinoAvatar } from '@/ui/Icons';
 import { Banner, Panel } from '@/ui/Panel';
 import { Screen } from '@/ui/Screen';
@@ -86,33 +86,7 @@ export default function CollectionScreen() {
       <GameModal visible={!!species} onClose={() => setSelected(null)} title={species && owned ? dinoName(species.id) : t('collection.unknown')}>
         {species ? (
           <>
-            <DinoAvatar dinoId={species.id} size={110} silhouette={!owned} ring={!!owned} />
-            <GameText color={rarityColors[species.rarity]} weight="black" center>
-              {t(`rarity.${species.rarity}`)}
-            </GameText>
-            {owned ? (
-              <GameText center>
-                {t('common.level', { level: owned.level })} · {t('collection.copies', { count: owned.count })}
-              </GameText>
-            ) : null}
-            <View style={styles.infoBox}>
-              <GameText size={13} weight="black">
-                {t('collection.bonus')}
-              </GameText>
-              <GameText size={14}>
-                {bonusText(species.bonus, dinoBonusValue(species, owned?.level ?? 1))}
-              </GameText>
-            </View>
-            <View style={styles.infoBox}>
-              <GameText size={13} weight="black">
-                {t('collection.ability')}
-              </GameText>
-              <IconLabel icon="turbo" size={14}>
-                <GameText size={14}>
-                  {t('managers.turbo', { mult: ABILITY[species.rarity].multiplier, seconds: ABILITY[species.rarity].seconds })}
-                </GameText>
-              </IconLabel>
-            </View>
+            <DinoProfile dinoId={species.id} owned={owned} />
             <ChunkyButton label={t('common.close')} onPress={() => setSelected(null)} />
           </>
         ) : null}
@@ -135,5 +109,4 @@ const styles = StyleSheet.create({
     borderWidth: 3,
   },
   level: { position: 'absolute', top: 4, right: 4, borderRadius: 8, paddingHorizontal: 5 },
-  infoBox: { padding: 10, borderRadius: radius.sm, backgroundColor: colors.parchmentDark, gap: 2 },
 });

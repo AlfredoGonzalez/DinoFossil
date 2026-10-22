@@ -25,11 +25,14 @@ interface UiStore {
   hatchReveal: HatchReveal | null;
   fakeAdPlaying: boolean;
   lastEgg: Rarity | null;
+  /** Modo prueba (oculto: 7 toques a la versión en Ajustes). Permite desbloquear dinos. */
+  testMode: boolean;
   toast: (text: string, icon?: string) => void;
   dismissToast: (id: number) => void;
   setOfflineReport: (report: OfflineReport | null) => void;
   setHatchReveal: (reveal: HatchReveal | null) => void;
   setFakeAdPlaying: (playing: boolean) => void;
+  setTestMode: (on: boolean) => void;
 }
 
 let nextId = 1;
@@ -41,6 +44,8 @@ export const useUiStore = create<UiStore>((set, get) => ({
   hatchReveal: null,
   fakeAdPlaying: false,
   lastEgg: null,
+  testMode: false,
+  setTestMode: (testMode) => set({ testMode }),
   toast: (text, icon) => {
     const id = nextId++;
     set({ toasts: [...get().toasts.slice(-2), { id, text, icon }] });

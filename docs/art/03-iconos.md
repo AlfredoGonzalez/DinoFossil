@@ -57,6 +57,17 @@ Estilo: el mismo "peluche/fieltro con costuras" del logo → bloque **Biblia de 
 | `dna.png` | Hélice de ADN | Recurso de mundos futuros |
 | `plants.png` | Hoja de helecho jurásico | Recurso de mundos futuros |
 
+### Prioridad 2b · Ficha del dino en la colección (6)
+
+| Archivo | Qué dibujar | Dónde sale |
+|---|---|---|
+| `diet-herbivore.png` | Hoja verde | Dieta (los omnívoros llevan este y el de carne) |
+| `diet-carnivore.png` | Pierna de carne con hueso | Dieta |
+| `fact-era.png` | Reloj de arena antiguo o capas de roca | Época |
+| `fact-size.png` | Cinta métrica / regla | Tamaño |
+| `fact-region.png` | Globo terráqueo | Región del descubrimiento |
+| `fact-curious.png` | Foquito o lupa | Dato curioso |
+
 ### Prioridad 3 · Tienda (6, 384 × 384)
 
 | Archivo | Qué dibujar |
@@ -68,7 +79,7 @@ Estilo: el mismo "peluche/fieltro con costuras" del logo → bloque **Biblia de 
 | `shop-double-income.png` | Dos monedas DinoCoin apiladas con un brillo (ingresos ×2) |
 | `shop-dino-pass.png` | Ticket/pase dorado con una huella de dino |
 
-**Total: 36 iconos.** Si hay que priorizar, la tanda 1 ya cambia por completo el aspecto del juego.
+**Total: 42 iconos.** Si hay que priorizar, la tanda 1 ya cambia por completo el aspecto del juego.
 
 ## No hace falta crear
 

@@ -32,7 +32,8 @@ expo-router y TypeScript. Diseño y fórmulas: `docs/GAME_DESIGN.md`. Arte: `doc
   genera `src/ui/art.generated.ts` (ignorado en git); las pantallas usan `getArt('<módulo>/<pieza>')` de
   `src/ui/art.ts` y caen al placeholder si falta. Al añadir un hueco nuevo, decláralo en `ART_SPECS` y
   documéntalo en `docs/art/`. Iconos: usa `<GameIcon name=… />` (lista en `src/ui/iconNames.ts`, arte en `assets/art/icons/`), nunca
-  emojis sueltos en la UI. Retratos de dinos: `assets/art/dinos/<id>` (los usa `DinoAvatar`; ficha en `docs/art/05-retratos.md`).
+  emojis sueltos en la UI. Retratos de dinos: `assets/art/dinos/<id>` (los usa `DinoAvatar`; ficha en `docs/art/05-retratos.md`);
+  videos opcionales `assets/art/dinos/<id>.mp4` para la ficha de la colección (`DinoProfile`, vía `getDinoVideo`).
 
 ## Comandos
 

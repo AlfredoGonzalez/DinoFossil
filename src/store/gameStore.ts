@@ -4,6 +4,7 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import type { ProductId } from '@/data/shop';
 import {
   activateAbility,
+  addDino,
   applyAdBoost,
   applyOfflineProgress,
   applyPurchase,
@@ -53,6 +54,8 @@ interface GameStore {
   finishWithAmber: () => boolean;
   claimGoal: (goalId: string) => boolean;
   addCoins: (coins: number) => void;
+  /** Solo modo prueba: añade una copia del dino a la colección. */
+  grantDino: (dinoId: string) => void;
   adBoost: () => void;
   dailyAmber: () => boolean;
   buyEgg: (rarity: Rarity) => boolean;
@@ -120,6 +123,8 @@ export const useGameStore = create<GameStore>()(
             },
           });
         },
+
+        grantDino: (dinoId) => apply(addDino(get().game, dinoId)),
 
         adBoost: () => apply(applyAdBoost(get().game, Date.now())),
         dailyAmber: () => apply(claimDailyAmber(get().game, Date.now())),
