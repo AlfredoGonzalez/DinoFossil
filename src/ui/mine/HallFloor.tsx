@@ -10,13 +10,13 @@ import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
 import { getArt } from '../art';
 import { GameText } from '../GameText';
-import { IconLabel } from '../IconLabel';
 import { DinoAvatar, ResourceIcon } from '../Icons';
 import { getSheet } from '../spriteSheets';
 import { SpriteSheet } from '../SpriteSheet';
 import { colors } from '../theme';
 import { Floor } from './Floor';
-import { ManagerSlot } from './ManagerSlot';
+import { TurboGlow, useTurboActive } from './TurboGlow';
+import { WantedPoster } from './WantedPoster';
 import { StationStatus } from './StationStatus';
 import { UpgradeChip } from './UpgradeChip';
 
@@ -71,10 +71,12 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
   const capacity = useGameStore((s) => carrierCapacity('museum', s.game.mine.museum.level) * getModifiers(s.game, Date.now()).museumCapacity);
   const exhibits = DINOS.filter((d) => dinos[d.id]).slice(0, MAX_EXHIBITS);
   const idle = !manager && !station.running;
+  const turbo = useTurboActive('museum');
 
   return (
     <Floor art={getArt('museum/hall')} color="#F3D9A4" floorColor="#A4693B">
-      <ManagerSlot station="museum" onPick={onPickManager} />
+      {turbo ? <TurboGlow /> : null}
+      <WantedPoster station="museum" active={turbo} onPick={onPickManager} />
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="tap-museum"
@@ -86,13 +88,8 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
           useGameStore.getState().tap('museum');
         }}
       >
+        {/* Sin título: el cartel del tejado ya la nombra. Arriba, los fósiles listos para exponer. */}
         <View style={styles.titleRow}>
-          <IconLabel icon="station-hall" size={15}>
-            {/* Texto claro con contorno: se lee sobre el arte de la sala, que es oscuro y detallado. */}
-            <GameText size={13} weight="black" color={colors.textLight} outline>
-              {t('mine.museum')}
-            </GameText>
-          </IconLabel>
           <View style={styles.stock}>
             <ResourceIcon kind="fossils" size={14} />
             <GameText size={12} weight="black" color={colors.text}>
@@ -122,7 +119,7 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
 
 const styles = StyleSheet.create({
   body: { flex: 1, height: '86%', justifyContent: 'space-between', paddingVertical: 4 },
-  titleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  titleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' },
   stock: { flexDirection: 'row', alignItems: 'center', gap: 2, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: 8, paddingHorizontal: 5 },
   exhibits: { flexDirection: 'row', gap: 6 },
   pedestal: { paddingBottom: 3, borderBottomWidth: 5, borderBottomColor: '#C9A06A', borderRadius: 4 },

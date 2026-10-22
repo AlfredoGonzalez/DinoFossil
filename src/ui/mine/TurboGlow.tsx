@@ -1,6 +1,16 @@
 import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
+import type { StationId } from '@/game/types';
+import { useGameStore } from '@/store/gameStore';
+import { useNow } from '../hooks';
 import Animated, { cancelAnimation, Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
+
+/** ¿Está activo ahora el Turbo del manager de esta planta? (se revisa cada medio segundo) */
+export function useTurboActive(station: StationId): boolean {
+  const until = useGameStore((s) => s.game.abilities[station]?.activeUntil ?? 0);
+  const now = useNow(500);
+  return until > now;
+}
 
 /** Resplandor dorado que late sobre toda la planta mientras el Turbo del manager está activo. */
 export function TurboGlow() {

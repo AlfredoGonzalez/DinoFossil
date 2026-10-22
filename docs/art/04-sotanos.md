@@ -9,7 +9,7 @@ Estilo: el mismo "peluche/fieltro con costuras" de siempre → bloque **Biblia d
 ```
 ┌───────────────────── [⛏️ Sótanos] ─────────────────┬────┐  ← tablita centrada, una sola vez
 │ ⛰️⛰️[Nv 12 ⬆]                           [🦴 1.2K]  │ ▒  │
-│ ⛰️⛰️1.5/s           [¡Toca!] 👇                    │ ▒  │
+│ ⛰️⛰️1.5/s   [SE BUSCA]          👇 (⏱ al escarbar)  │ ▒  │
 │ ⛰️⛰️⛰️  ← ← ← ← ← ←  (👤M)  🦖 👜                  │ ▒  │  ▒ montacargas
 └───────────────────────────────────────────────────┴────┘
  ↑ el 25 % izquierdo del montón queda fuera de cuadro
@@ -19,13 +19,17 @@ Estilo: el mismo "peluche/fieltro con costuras" de siempre → bloque **Biblia d
   clavado el **letrero de nivel**, centrado al 25 % del ancho (entre la pared y la tablita
   "Sótanos") para que se vea el hueso. Es madera; se pone verde con una flecha que late cuando
   alcanza para mejorar, y con **doble flecha** si alcanza para llegar al siguiente ×2.
-- **En reposo**, el dino está delante de la bolsa mirando a la izquierda, con la manita "¡Toca!"
-  encima. Al tocar cualquier parte del sótano:
+- **En reposo**, el dino está delante de la bolsa mirando a la izquierda, con la manita encima
+  (sin texto). Al tocar cualquier parte del sótano:
   1. camina hasta el montón;
   2. escarba;
   3. regresa cargando huesos;
   4. al dejarlos, la bolsa da un saltito y sube el contador.
-- **Manager**: un cartel "Se busca" clavado en la pared, detrás del camino del dino. Vacío lleva
+
+  Ida y vuelta duran siempre ~1.3 s; en los sótanos profundos solo se alarga el escarbado, y
+  mientras escarba aparece un **reloj circular** junto a su cabeza con el tiempo que falta.
+- **Manager**: un cuadro "Se busca" clavado en la pared, detrás del camino del dino (el mismo cuadro
+  está en el laboratorio y la sala). Vacío lleva
   un **+** (abre la lista de dinos); con manager, la foto de la especie ([05-retratos.md](05-retratos.md)),
   su nombre y su "recompensa": el Turbo de su rareza (de ×2 · 30 s a ×5 · 90 s). La chincheta ⚡ de
   la esquina activa el Turbo; mientras dura, el cartel se balancea y todo el piso brilla en dorado.
@@ -45,7 +49,8 @@ Y el cartel del manager, también en `assets/art/museum/`:
 
 | Archivo | Tamaño | Contenido | Si falta… |
 |---|---|---|---|
-| `wanted-poster.png` | ~**300 × 380** | Cartel de papel viejo **vacío** colgado de un clavo (ver prompt abajo). | cartel de código |
+| `poster-hired.png` ✅ | ~**280 × 420** | Cuadro de fieltro liso colgado de un clavo, con ventanita para la foto. Se usa siempre en español y, en inglés, cuando hay manager. | papel de código |
+| `poster-hiring.png` ✅ | ~**280 × 420** | El mismo cuadro con "HIRING" dibujado: solo se usa en inglés y sin manager (el texto dibujado no se puede traducir). | `poster-hired` + texto |
 
 El código escribe encima, de arriba abajo: "SE BUSCA" (franja superior, ~15 % del alto), la foto
 (un cuadro centrado de ~45 % del ancho, a media altura), y el nombre + la recompensa (franja inferior,
@@ -96,18 +101,6 @@ the image, centered with padding.
 ```
 A single cute plush cartoon hand made of felt with stitched seams, index finger pointing straight down,
 other fingers curled, chunky rounded shape, centered with padding.
-[BIBLIA DE ESTILO]
-```
-
-**Cartel "Se busca"**
-
-```
-A single old western-style WANTED poster made of soft aged parchment felt with stitched edges,
-slightly wrinkled with torn corners and a couple of small stains, hanging from one small iron nail at
-the top center by a short piece of twine. The poster is completely blank: NO text, no letters, no
-numbers, no drawings. In the middle there is an empty square photo frame drawn as a thin dashed brown
-border. Leave the top band and the bottom third plain and empty for text added later. Front view,
-straight, centered with padding, portrait proportion 300:380.
 [BIBLIA DE ESTILO]
 ```
 

@@ -22,8 +22,14 @@ export function shaftRate(index: number, level: number): number {
   return S.baseRate * S.rateGrowth ** index * level * milestoneMultiplier(level);
 }
 
+/** Segundos de un ciclo de excavación de la galería `index` (sin Turbo). */
+export function shaftCycleSeconds(index: number): number {
+  return S.cycleSeconds * S.cycleGrowth ** index;
+}
+
+/** Fósiles por ciclo: la producción por segundo no depende de la duración del ciclo. */
 export function shaftCycleYield(index: number, level: number, speedMultiplier = 1): number {
-  return shaftRate(index, level) * speedMultiplier * S.cycleSeconds;
+  return shaftRate(index, level) * speedMultiplier * shaftCycleSeconds(index);
 }
 
 export function shaftFirstCost(index: number, level: number): number {

@@ -1,3 +1,4 @@
+import { shaftCycleSeconds, shaftCycleYield, shaftRate } from '../economy';
 import { activateAbility, assignManager } from '../managers';
 import { applyOfflineProgress } from '../offline';
 import { tapStation, tick } from '../simulate';
@@ -32,14 +33,21 @@ describe('tick', () => {
     let s = createInitialState(T0);
     s = tapStation(s, 'shaft-0');
     s = run(s, 5);
-    expect(s.mine.shafts[0]?.deposit).toBeCloseTo(4.5 * 1.02); // 1.5/s × 3 s, +2 % del T-Rex inicial
+    expect(s.mine.shafts[0]?.deposit).toBeCloseTo(6 * 1.02); // 1.5/s × 4 s, +2 % del T-Rex inicial
     expect(s.mine.shafts[0]?.running).toBe(false);
     s = tapStation(s, 'elevator');
     s = run(s, 5);
-    expect(s.mine.surface).toBeCloseTo(4.5 * 1.02);
+    expect(s.mine.surface).toBeCloseTo(6 * 1.02);
     s = tapStation(s, 'museum');
     s = run(s, 5);
-    expect(s.coins).toBeCloseTo(4.5 * 1.02);
+    expect(s.coins).toBeCloseTo(6 * 1.02);
+  });
+
+  it('las galerías profundas tardan más por ciclo pero rinden más por segundo', () => {
+    expect(shaftCycleSeconds(0)).toBe(4);
+    expect(shaftCycleSeconds(1)).toBe(6);
+    expect(shaftRate(1, 1)).toBeGreaterThan(shaftRate(0, 1));
+    expect(shaftCycleYield(1, 1) / shaftCycleSeconds(1)).toBeCloseTo(shaftRate(1, 1));
   });
 
   it('con managers produce de forma continua', () => {

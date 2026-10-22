@@ -25,7 +25,7 @@ Galerías (excavan fósiles) → Ascensor (sube fósiles) → Museo (vende por D
 | Hitos ×2 | niveles 10, 25, 50, 100, 150, 200 (máx. 200) |
 | Coste nivel → nivel+1 | `10 · 40^i · 1.12^(nivel-1)` |
 | Coste de desbloqueo | `100 · 45^(i-1)` |
-| Ciclo | 3 s |
+| Ciclo | `4 s · 1.5^i` (galería i: 4 s, 6 s, 9 s, 13.5 s…). La producción por segundo no cambia; las profundas dan más huesos por viaje |
 
 ### Ascensor y museo
 

@@ -8,17 +8,18 @@ import { useGameStore } from '@/store/gameStore';
 import { getArt } from '../art';
 import { GameText } from '../GameText';
 import { GameIcon } from '../GameIcon';
-import { IconLabel } from '../IconLabel';
 import { colors } from '../theme';
 import { Digger } from './Digger';
 import { Floor } from './Floor';
-import { ManagerSlot } from './ManagerSlot';
+import { TurboGlow, useTurboActive } from './TurboGlow';
+import { WantedPoster } from './WantedPoster';
 import { StationStatus } from './StationStatus';
 import { UpgradeChip } from './UpgradeChip';
 
 /**
  * Planta del laboratorio. En el motor es la estación "elevator": recoge los fósiles
- * de los sótanos con el montacargas y los deja limpios para la sala.
+ * de los sótanos con el montacargas y los deja limpios para la sala. Su nombre va en la
+ * tablita "Laboratorio" sobre la unión con la sala (FloorSign, en la pantalla de la mina).
  */
 export function LabFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; onPickManager: () => void }) {
   const { t } = useTranslation();
@@ -26,10 +27,12 @@ export function LabFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; 
   const manager = useGameStore((s) => s.game.managers.elevator);
   const capacity = useGameStore((s) => carrierCapacity('elevator', s.game.mine.elevator.level) * getModifiers(s.game, Date.now()).elevatorCapacity);
   const idle = !manager && !station.running;
+  const turbo = useTurboActive('elevator');
 
   return (
     <Floor art={getArt('museum/lab')} color="#D3EAF0" floorColor="#6FB553" withLift>
-      <ManagerSlot station="elevator" onPick={onPickManager} />
+      {turbo ? <TurboGlow /> : null}
+      <WantedPoster station="elevator" active={turbo} onPick={onPickManager} />
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="tap-elevator"
@@ -40,11 +43,6 @@ export function LabFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; 
           useGameStore.getState().tap('elevator');
         }}
       >
-        <IconLabel icon="station-lab" size={15}>
-          <GameText size={13} weight="black" color={colors.textLight} outline>
-            {t('mine.elevator')}
-          </GameText>
-        </IconLabel>
         <View style={styles.bench}>
           <Digger dinoId={manager} running={station.running} tool="🖌️" />
           <GameIcon name="fossils" size={22} />
@@ -62,7 +60,7 @@ export function LabFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; 
 }
 
 const styles = StyleSheet.create({
-  body: { flex: 1, height: '86%', justifyContent: 'space-between', paddingVertical: 4 },
+  body: { flex: 1, height: '86%', justifyContent: 'flex-end', gap: 6, paddingVertical: 4 },
   bench: { flexDirection: 'row', alignItems: 'flex-end', gap: 4 },
   side: { alignItems: 'center', gap: 3, width: 70 },
 });

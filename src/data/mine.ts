@@ -6,8 +6,10 @@
 export const MINE_BALANCE = {
   maxShafts: 10,
   shaft: {
-    /** Segundos por ciclo de excavación. */
-    cycleSeconds: 3,
+    /** Segundos por ciclo de excavación de la galería i: cycleSeconds * cycleGrowth^i. */
+    cycleSeconds: 4,
+    /** Las galerías profundas tardan más por viaje (pero rinden más: ver rateGrowth). */
+    cycleGrowth: 1.5,
     /** Fósiles/s de la galería i a nivel 1: baseRate * rateGrowth^i. */
     baseRate: 1.5,
     rateGrowth: 6,

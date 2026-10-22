@@ -1,7 +1,7 @@
 import { ABILITY, DINO_BY_ID } from '@/data/dinos';
 import { EGG_DROP_ODDS } from '@/data/eggs';
 import { MINE_BALANCE } from '@/data/mine';
-import { carrierCapacity, elevatorTripSeconds, shaftCycleYield } from './economy';
+import { carrierCapacity, elevatorTripSeconds, shaftCycleSeconds, shaftCycleYield } from './economy';
 import { getModifiers } from './modifiers';
 import { rollRarity, type Rng } from './random';
 import type { CarrierState, GameEvent, GameState, ShaftState, StationId } from './types';
@@ -56,7 +56,7 @@ export function tick(state: GameState, dt: number, now: number, rng: Rng = Math.
   const shafts: ShaftState[] = mine.shafts.map((shaft, i) => {
     const id = shaftStationId(i);
     const speed = stationSpeed(state, id, now);
-    const { station, completed } = advance(shaft, !!state.managers[id], dt * speed, MINE_BALANCE.shaft.cycleSeconds);
+    const { station, completed } = advance(shaft, !!state.managers[id], dt * speed, shaftCycleSeconds(i));
     if (completed > 0) station.deposit += completed * shaftCycleYield(i, shaft.level, mods.shaftSpeed);
     return station;
   });

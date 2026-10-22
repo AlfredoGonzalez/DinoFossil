@@ -23,7 +23,8 @@ import { GameIcon } from '@/ui/GameIcon';
 import { IconLabel } from '@/ui/IconLabel';
 import { useNow } from '@/ui/hooks';
 import { ResourceIcon } from '@/ui/Icons';
-import { BasementFloor, BasementsSign } from '@/ui/mine/BasementFloor';
+import { BasementFloor, FloorSign } from '@/ui/mine/BasementFloor';
+import { FLOOR_HEIGHT } from '@/ui/mine/Floor';
 import { HallFloor } from '@/ui/mine/HallFloor';
 import { LabFloor } from '@/ui/mine/LabFloor';
 import { Lift } from '@/ui/mine/Lift';
@@ -143,6 +144,7 @@ function Foundation() {
 
 /** Pantalla principal: la Casa-Museo (sótanos → laboratorio → sala de exposición). */
 export default function MineScreen() {
+  const { t } = useTranslation();
   const shaftCount = useGameStore((s) => s.game.mine.shafts.length);
   const [upgrading, setUpgrading] = useState<StationId | null>(null);
   const [picking, setPicking] = useState<StationId | null>(null);
@@ -166,7 +168,9 @@ export default function MineScreen() {
             />
           ))}
           <Lift />
-          {shaftCount > 0 ? <BasementsSign /> : null}
+          {/* Tablitas centradas sobre las uniones: "Laboratorio" (sala/lab) y "Sótanos" (lab/sótanos). */}
+          <FloorSign icon="station-lab" label={t('mine.elevator')} top={-14} />
+          {shaftCount > 0 ? <FloorSign icon="station-basement" label={t('mine.basements')} top={FLOOR_HEIGHT - 14} /> : null}
         </View>
         <UnlockRow />
         <Foundation />
@@ -205,7 +209,17 @@ const styles = StyleSheet.create({
     borderRightWidth: 6,
     borderColor: colors.woodDark,
   },
-  foundation: { flexGrow: 1, minHeight: 70, backgroundColor: '#3A2412', overflow: 'hidden' },
+  // Mismo ancho que las plantas (margen 10 + pared de madera de 6): la casa no se ensancha abajo.
+  foundation: {
+    flexGrow: 1,
+    minHeight: 70,
+    marginHorizontal: 10,
+    borderLeftWidth: 6,
+    borderRightWidth: 6,
+    borderColor: colors.woodDark,
+    backgroundColor: '#3A2412',
+    overflow: 'hidden',
+  },
   fill: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' },
   cost: { flexDirection: 'row', alignItems: 'center', gap: 4 },
 });

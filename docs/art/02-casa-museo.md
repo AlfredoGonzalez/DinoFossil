@@ -50,6 +50,7 @@ Todos en `assets/art/museum/`.
 | `foundation.png` ✅ | JPG/WebP opaco | **1290 × 360** | Roca y tierra profunda bajo la casa (cimientos de piedra, cristales pequeños). La parte de arriba debe empalmar con el sótano. | color tierra oscura |
 | `crate-empty.png` ✅ | PNG/WebP transparente | **256 × 256** | Caja del montacargas **vacía**: se ve mientras baja. | `crate.png` o caja de código |
 | `crate-full.png` ✅ | PNG/WebP transparente | **256 × 256** | La misma caja **llena de huesos**: se ve mientras sube. Que ambas tengan la misma perspectiva. | `crate.png` o caja de código |
+| `pulley.png` (pendiente) | PNG/WebP transparente | **256 × 256** | Polea de madera y hierro vista de frente (una rueda con canal para la cuerda y su soporte para colgarla de una viga). El código la hace girar y dibuja la cuerda. | sin polea |
 | `visitor.png` | PNG/WebP transparente | **512 × 512** | *(Reemplazado por los visitantes animados de [sprites.md](sprites.md#visitantes-de-la-sala-assetsartspritesvisitors).)* | emoji 🧒 |
 
 ### Zonas seguras de las plantas (`hall`, `lab`, `basement`)

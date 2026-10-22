@@ -1,21 +1,20 @@
 import { Pressable, StyleSheet, View } from 'react-native';
-import { shaftRate } from '@/game/economy';
+import { shaftCycleSeconds, shaftRate } from '@/game/economy';
 import { getModifiers } from '@/game/modifiers';
 import { shaftStationId, stationSpeed } from '@/game/simulate';
-import { useTranslation } from '@/i18n';
 import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
 import { getArt } from '../art';
-import { useNow } from '../hooks';
 import { GameText } from '../GameText';
 import { IconLabel } from '../IconLabel';
+import type { IconName } from '../iconNames';
 import { colors } from '../theme';
 import { BASKET_WIDTH, BoneBasket } from './BoneBasket';
 import { Digger } from './Digger';
 import { DirtMound, MOUND_CUT, MOUND_WIDTH } from './DirtMound';
-import { Floor, FLOOR_HEIGHT } from './Floor';
+import { Floor } from './Floor';
 import { LevelSign } from './LevelSign';
-import { TurboGlow } from './TurboGlow';
+import { TurboGlow, useTurboActive } from './TurboGlow';
 import { WantedPoster } from './WantedPoster';
 import { TapHint } from './TapHint';
 import { hasWalkerSprites, Walker, WALKER_SIZE } from './Walker';
@@ -29,12 +28,22 @@ const HOME_RIGHT = BAG_RIGHT + BASKET_WIDTH - 12;
 /** Margen interior de la planta (Floor): el montón se recorta contra la pared, no contra él. */
 const FLOOR_PADDING = 6;
 
+/** Tiempo de escarbado que falta (la ida y la vuelta duran ~1.3 s cada una sin Turbo). */
+function digLeft(progress: number, cycleSeconds: number, speed: number): string {
+  const walkFrac = Math.min(1 / 3, 4 / 3 / cycleSeconds);
+  const left = Math.ceil(Math.max(0, 1 - walkFrac - progress) * (cycleSeconds / speed));
+  // Formato de reloj compacto para que quepa en el anillo: 45 · 4:05 · 1h05.
+  if (left < 60) return String(left);
+  if (left < 3600) return `${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}`;
+  return `${Math.floor(left / 3600)}h${String(Math.floor((left % 3600) / 60)).padStart(2, '0')}`;
+}
+
 /**
  * Un sótano de excavación (estación "shaft-i" del motor), de izquierda a derecha:
  * montón de tierra (con el letrero de nivel encima, al 25 % del ancho) · camino del dino (con el
  * cartel "Se busca" del manager en la pared) · dino en reposo · bolsa de huesos, pegada al
- * montacargas que se la lleva. Con el Turbo activo, el piso brilla y el cartel se balancea. Los sótanos no se numeran: el letrero "Sótanos"
- * va una sola vez, entre el laboratorio y el primero (BasementsSign).
+ * montacargas que se la lleva. Con el Turbo activo, el piso brilla y el cartel se balancea.
+ * Los sótanos no se numeran: la tablita "Sótanos" (FloorSign) va una sola vez, sobre el primero.
  */
 export function BasementFloor({ index, onUpgrade, onPickManager }: { index: number; onUpgrade: () => void; onPickManager: () => void }) {
   const station = shaftStationId(index);
@@ -46,10 +55,9 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
     return sh ? shaftRate(index, sh.level) * getModifiers(s.game, now).shaftSpeed * stationSpeed(s.game, station, now) : 0;
   });
   const speed = useGameStore((s) => stationSpeed(s.game, station, Date.now()));
-  const turboUntil = useGameStore((s) => s.game.abilities[station]?.activeUntil ?? 0);
-  const now = useNow(500);
-  const turbo = turboUntil > now;
+  const turbo = useTurboActive(station);
   if (!shaft) return null;
+  const cycleSeconds = shaftCycleSeconds(index);
   const idle = !manager && !shaft.running;
   // Cada sótano es un poco más oscuro que el anterior: se nota la profundidad.
   const shade = Math.min(index * 6, 40);
@@ -74,7 +82,15 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
         <DirtMound style={styles.mound} />
         <BoneBasket amount={shaft.deposit} style={styles.basket} />
         {hasWalkerSprites() ? (
-          <Walker running={shaft.running} progress={shaft.progress} managed={!!manager} speed={speed} style={styles.walk} />
+          <Walker
+            running={shaft.running}
+            progress={shaft.progress}
+            managed={!!manager}
+            speed={speed}
+            cycleSeconds={cycleSeconds}
+            timerLabel={digLeft(shaft.progress, cycleSeconds, speed)}
+            style={styles.walk}
+          />
         ) : (
           <View style={styles.home}>
             <Digger dinoId={manager} running={shaft.running} />
@@ -91,15 +107,14 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
   );
 }
 
-/** Tablita "Sótanos" centrada sobre la unión entre el laboratorio y el primer sótano. */
-export function BasementsSign() {
-  const { t } = useTranslation();
+/** Tablita con el nombre de un grupo de plantas, centrada sobre la unión entre dos plantas. */
+export function FloorSign({ icon, label, top }: { icon: IconName; label: string; top: number }) {
   return (
-    <View pointerEvents="none" style={styles.signRow}>
+    <View pointerEvents="none" style={[styles.signRow, { top }]}>
       <View style={styles.sign}>
-        <IconLabel icon="station-basement" size={14}>
+        <IconLabel icon={icon} size={14}>
           <GameText size={12} weight="black" color={colors.textLight} outline>
-            {t('mine.basements')}
+            {label}
           </GameText>
         </IconLabel>
       </View>
@@ -119,7 +134,7 @@ const styles = StyleSheet.create({
   home: { position: 'absolute', right: HOME_RIGHT, bottom: 0 },
   // Manita centrada sobre la cabeza del dino en reposo.
   hint: { position: 'absolute', right: HOME_RIGHT + WALKER_SIZE / 2 - 14, bottom: WALKER_SIZE - 6 },
-  signRow: { position: 'absolute', left: 0, right: 0, top: FLOOR_HEIGHT - 14, alignItems: 'center', zIndex: 2 },
+  signRow: { position: 'absolute', left: 0, right: 0, alignItems: 'center', zIndex: 2 },
   sign: {
     paddingHorizontal: 10,
     paddingVertical: 2,
