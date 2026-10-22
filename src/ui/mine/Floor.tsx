@@ -3,6 +3,10 @@ import { Image, StyleSheet, View, type ImageSourcePropType } from 'react-native'
 import { colors } from '../theme';
 
 export const FLOOR_HEIGHT = 124;
+/** Viga del suelo de cada planta. */
+const BEAM = 9;
+/** Alto útil de la planta (sin la viga): el de la escena donde trabajan los dinos. */
+export const FLOOR_SCENE_HEIGHT = FLOOR_HEIGHT - BEAM;
 /** Ancho reservado a la derecha para el montacargas (laboratorio y sótanos). */
 export const LIFT_WIDTH = 46;
 
@@ -38,5 +42,5 @@ const styles = StyleSheet.create({
   },
   art: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' },
   content: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 6 },
-  beam: { height: 9, borderTopWidth: 2, borderTopColor: 'rgba(0,0,0,0.25)' },
+  beam: { height: BEAM, borderTopWidth: 2, borderTopColor: 'rgba(0,0,0,0.25)' },
 });

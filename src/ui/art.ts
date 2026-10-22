@@ -28,6 +28,7 @@ export const ART_SPECS = {
   'museum/poster-hired-es': { size: '≈280×420', format: 'png/webp transparente', desc: 'poster-hired en español' },
   'museum/easel-hiring-es': { size: '≈250×420', format: 'png/webp transparente', desc: 'easel-hiring en español' },
   'museum/easel-hired-es': { size: '≈250×420', format: 'png/webp transparente', desc: 'easel-hired en español' },
+  'museum/dirt': { size: '≈320×190', format: 'png/webp transparente', desc: 'Nube de tierra que levanta el laboratorista al arrastrar los pies' },
   'museum/pulley': { size: '256×256', format: 'png/webp transparente', desc: 'Polea de frente (gira con la cuerda del montacargas)' },
   'museum/rope': { size: '32×256', format: 'png/webp transparente', desc: 'Tramo vertical de cuerda que se repite (montacargas)' },
   'museum/crate-empty': { size: '≈256×256', format: 'png/webp transparente', desc: 'Caja del montacargas vacía (baja)' },
@@ -44,6 +45,9 @@ export const ART_SPECS = {
   'sprites/visitors/a': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Visitante caminando (mira a la derecha)' },
   'sprites/visitors/b': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Visitante caminando (mira a la derecha)' },
   'sprites/visitors/c': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Visitante caminando (mira a la derecha)' },
+  'sprites/lab/idle': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Laboratorista esperando con la cuerda (mira a la derecha)' },
+  'sprites/lab/pull': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Laboratorista tirando de la cuerda (mira a la derecha, en el sitio)' },
+  'sprites/lab/walk': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Laboratorista volviendo a su sitio (mira a la derecha)' },
 } as const;
 
 /**

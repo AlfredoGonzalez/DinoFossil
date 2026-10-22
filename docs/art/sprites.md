@@ -52,13 +52,21 @@ alinea los pies en la misma línea.
 Caminando hacia la **derecha**, en el mismo formato 5 × 5. Se pueden añadir más (`d`, `e`…): se
 registran en `src/ui/art.ts`, `src/ui/spriteSheets.ts` y la lista `VISITOR_SHEETS` de `HallFloor.tsx`.
 
-## Laboratorista (`assets/art/sprites/lab/`) · pendiente
+## Laboratorista (`assets/art/sprites/lab/`) · ✅ entregado
 
 Un dino **fuerte** (brazos gordos, delantal de laboratorio, guantes) que sube la caja del
 montacargas tirando de una cuerda. En reposo está a la **derecha**, junto al montacargas, mirando
 a la derecha (hacia la cuerda). Al tocar: tira de la cuerda **caminando hacia atrás, a la
 izquierda** (la caja sube), suelta y regresa a la derecha (la caja baja). La cuerda y la polea las
 dibuja el código (polea: `museum/pulley.png` en [02-casa-museo.md](02-casa-museo.md)).
+
+En reposo la caja del montacargas espera **abajo**, vacía. Al tocar, él tira caminando hacia atrás
+(unos 96 pt) y la caja sube llena; al soltar vuelve a su sitio y la caja baja vacía. Mientras tira,
+`museum/dirt.png` (nube de tierra) sale de sus pies, crece y se desvanece. La cuerda de sus garras a
+la polea la dibuja el código; si se entrega `museum/rope.png`, se usará para el tramo vertical.
+
+Entregados como Therizinosaurio; Claude bajó `pull` 4 px y `walk` 7 px para que los pies pisen la
+misma línea que `idle`.
 
 | Archivo | Qué hace | Cómo |
 |---|---|---|

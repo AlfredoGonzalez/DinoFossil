@@ -1,7 +1,8 @@
 import { Pressable, StyleSheet, View } from 'react-native';
-import { carrierCapacity } from '@/game/economy';
+import { carrierCapacity, elevatorTripSeconds } from '@/game/economy';
 import { formatNumber } from '@/game/format';
 import { getModifiers } from '@/game/modifiers';
+import { stationSpeed } from '@/game/simulate';
 import { useTranslation } from '@/i18n';
 import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
@@ -9,7 +10,8 @@ import { getArt } from '../art';
 import { ProgressBar } from '../ProgressBar';
 import { colors } from '../theme';
 import { Digger } from './Digger';
-import { Floor } from './Floor';
+import { Floor, FLOOR_SCENE_HEIGHT } from './Floor';
+import { hasLabWorkerSprites, LabWorker } from './LabWorker';
 import { LevelSign } from './LevelSign';
 import { TapHint } from './TapHint';
 import { TurboGlow, useTurboActive } from './TurboGlow';
@@ -21,7 +23,7 @@ const POSTER_HEIGHT = 48;
  * Planta del laboratorio. En el motor es la estación "elevator": sube la caja de los sótanos
  * por el montacargas y deja los huesos limpios para la sala. De izquierda a derecha: letrero de
  * nivel · cuadro del manager colgado de la viga (al centro) · el laboratorista, a la derecha
- * junto al montacargas (cuando lleguen sus sprites, tirará de la cuerda de la polea).
+ * junto al montacargas, que sube la caja tirando de la cuerda de la polea (LabWorker).
  * Su nombre va en la tablita "Laboratorio" sobre la unión con la sala (FloorSign).
  */
 export function LabFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; onPickManager: () => void }) {
@@ -31,6 +33,8 @@ export function LabFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; 
   const capacity = useGameStore((s) => carrierCapacity('elevator', s.game.mine.elevator.level) * getModifiers(s.game, Date.now()).elevatorCapacity);
   const idle = !manager && !station.running;
   const turbo = useTurboActive('elevator');
+  const shafts = useGameStore((s) => s.game.mine.shafts.length);
+  const speed = useGameStore((s) => stationSpeed(s.game, 'elevator', Date.now()));
 
   return (
     <Floor art={getArt('museum/lab')} color="#D3EAF0" floorColor="#6FB553" withLift>
@@ -57,11 +61,24 @@ export function LabFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; 
         <View style={styles.poster}>
           <WantedPoster station="elevator" active={turbo} onPick={onPickManager} height={POSTER_HEIGHT} />
         </View>
-        <View style={styles.worker}>
-          {idle ? <TapHint style={styles.hint} /> : null}
-          <Digger dinoId={manager} running={station.running} tool="🖌️" />
-        </View>
-        {station.running ? (
+        {hasLabWorkerSprites() ? (
+          <View style={styles.labWorker}>
+            <LabWorker
+              running={station.running}
+              progress={station.progress}
+              managed={!!manager}
+              cycleMs={(elevatorTripSeconds(shafts) * 1000) / speed}
+              sceneHeight={FLOOR_SCENE_HEIGHT}
+            />
+            {idle ? <TapHint style={styles.workerHint} /> : null}
+          </View>
+        ) : (
+          <View style={styles.worker}>
+            {idle ? <TapHint style={styles.hint} /> : null}
+            <Digger dinoId={manager} running={station.running} tool="🖌️" />
+          </View>
+        )}
+        {station.running && !hasLabWorkerSprites() ? (
           <View style={styles.progress}>
             <ProgressBar value={station.progress} height={6} color={colors.blue} />
           </View>
@@ -78,5 +95,8 @@ const styles = StyleSheet.create({
   poster: { position: 'absolute', left: '50%', marginLeft: 26, top: 14, width: 0, alignItems: 'center' },
   worker: { position: 'absolute', right: 0, bottom: 2, alignItems: 'center' },
   hint: { marginBottom: -4 },
+  labWorker: { position: 'absolute', right: 0, bottom: 2 },
+  // Manita sobre el laboratorista en su sitio (a la derecha).
+  workerHint: { position: 'absolute', right: 18, bottom: 58 },
   progress: { position: 'absolute', left: '30%', right: '30%', bottom: 4 },
 });
