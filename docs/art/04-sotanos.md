@@ -28,8 +28,9 @@ Estilo: el mismo "peluche/fieltro con costuras" de siempre → bloque **Biblia d
 
   Ida y vuelta duran siempre ~1.3 s; en los sótanos profundos solo se alarga el escarbado, y
   mientras escarba aparece un **reloj circular** junto a su cabeza con el tiempo que falta.
-- **Manager**: un cuadro "Se busca" clavado en la pared, detrás del camino del dino (el mismo cuadro
-  está en el laboratorio y la sala). Vacío lleva
+- **Manager**: un cuadro pequeño (~32 × 48 pt) colgado de la viga, justo debajo de la tablita
+  "Sótanos" y detrás del camino del dino. Vacío lleva un **+**; con manager, solo su foto. El mismo
+  cuadro cuelga en el laboratorio; en la sala va sobre un tripié (`easel-*`). Vacío lleva
   un **+** (abre la lista de dinos); con manager, la foto de la especie ([05-retratos.md](05-retratos.md)),
   su nombre y su "recompensa": el Turbo de su rareza (de ×2 · 30 s a ×5 · 90 s). La chincheta ⚡ de
   la esquina activa el Turbo; mientras dura, el cartel se balancea y todo el piso brilla en dorado.
@@ -49,8 +50,8 @@ Y el cartel del manager, también en `assets/art/museum/`:
 
 | Archivo | Tamaño | Contenido | Si falta… |
 |---|---|---|---|
-| `poster-hired.png` ✅ | ~**280 × 420** | Cuadro de fieltro liso colgado de un clavo, con ventanita para la foto. Se usa siempre en español y, en inglés, cuando hay manager. | papel de código |
-| `poster-hiring.png` ✅ | ~**280 × 420** | El mismo cuadro con "HIRING" dibujado: solo se usa en inglés y sin manager (el texto dibujado no se puede traducir). | `poster-hired` + texto |
+| `poster-hired.png` | ~**280 × 420** | Cuadro de fieltro liso colgado de un clavo, con ventanita para la foto. Con manager, la foto del dino va en la ventanita (sin nombre ni textos). En español también se usa vacío, con un "+". | papel de código |
+| `poster-hiring.png` | ~**280 × 420** | El mismo cuadro con "HIRING" dibujado: solo se usa en inglés y sin manager (el texto dibujado no se puede traducir). | `poster-hired` + texto |
 
 El código escribe encima, de arriba abajo: "SE BUSCA" (franja superior, ~15 % del alto), la foto
 (un cuadro centrado de ~45 % del ancho, a media altura), y el nombre + la recompensa (franja inferior,

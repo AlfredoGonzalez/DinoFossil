@@ -76,7 +76,6 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
   return (
     <Floor art={getArt('museum/hall')} color="#F3D9A4" floorColor="#A4693B">
       {turbo ? <TurboGlow /> : null}
-      <WantedPoster station="museum" active={turbo} onPick={onPickManager} />
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="tap-museum"
@@ -106,6 +105,10 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
         </View>
         {width > 0 && (manager || station.running) ? <Visitor width={width} /> : null}
         <StationStatus idle={idle} progress={station.progress} color={colors.gold} />
+        {/* Cuadro del manager sobre un tripié, en el suelo de la sala, junto al nivel. */}
+        <View style={styles.easel}>
+          <WantedPoster station="museum" variant="easel" active={turbo} onPick={onPickManager} height={60} />
+        </View>
       </Pressable>
       <View style={styles.side}>
         <UpgradeChip station="museum" level={station.level} onPress={onUpgrade} />
@@ -118,12 +121,13 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
 }
 
 const styles = StyleSheet.create({
-  body: { flex: 1, height: '86%', justifyContent: 'space-between', paddingVertical: 4 },
+  body: { flex: 1, height: '86%', justifyContent: 'space-between', paddingVertical: 4, paddingLeft: 6 },
   titleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' },
   stock: { flexDirection: 'row', alignItems: 'center', gap: 2, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: 8, paddingHorizontal: 5 },
   exhibits: { flexDirection: 'row', gap: 6 },
   pedestal: { paddingBottom: 3, borderBottomWidth: 5, borderBottomColor: '#C9A06A', borderRadius: 4 },
   visitor: { position: 'absolute', bottom: 4, left: 0 },
+  easel: { position: 'absolute', right: 0, bottom: 0 },
   visitorArt: { width: 30, height: 30 },
   side: { alignItems: 'center', gap: 3, width: 70 },
 });

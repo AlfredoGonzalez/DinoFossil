@@ -6,20 +6,23 @@ import { useTranslation } from '@/i18n';
 import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
 import { getArt } from '../art';
-import { GameText } from '../GameText';
-import { GameIcon } from '../GameIcon';
+import { ProgressBar } from '../ProgressBar';
 import { colors } from '../theme';
 import { Digger } from './Digger';
 import { Floor } from './Floor';
+import { LevelSign } from './LevelSign';
+import { TapHint } from './TapHint';
 import { TurboGlow, useTurboActive } from './TurboGlow';
 import { WantedPoster } from './WantedPoster';
-import { StationStatus } from './StationStatus';
-import { UpgradeChip } from './UpgradeChip';
+
+const POSTER_HEIGHT = 48;
 
 /**
- * Planta del laboratorio. En el motor es la estación "elevator": recoge los fósiles
- * de los sótanos con el montacargas y los deja limpios para la sala. Su nombre va en la
- * tablita "Laboratorio" sobre la unión con la sala (FloorSign, en la pantalla de la mina).
+ * Planta del laboratorio. En el motor es la estación "elevator": sube la caja de los sótanos
+ * por el montacargas y deja los huesos limpios para la sala. De izquierda a derecha: letrero de
+ * nivel · cuadro del manager colgado de la viga (al centro) · el laboratorista, a la derecha
+ * junto al montacargas (cuando lleguen sus sprites, tirará de la cuerda de la polea).
+ * Su nombre va en la tablita "Laboratorio" sobre la unión con la sala (FloorSign).
  */
 export function LabFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; onPickManager: () => void }) {
   const { t } = useTranslation();
@@ -31,36 +34,49 @@ export function LabFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; 
 
   return (
     <Floor art={getArt('museum/lab')} color="#D3EAF0" floorColor="#6FB553" withLift>
-      {turbo ? <TurboGlow /> : null}
-      <WantedPoster station="elevator" active={turbo} onPick={onPickManager} />
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="tap-elevator"
-        style={styles.body}
+        style={styles.scene}
         onPress={() => {
           if (!idle) return;
           tapFeedback();
           useGameStore.getState().tap('elevator');
         }}
       >
-        <View style={styles.bench}>
-          <Digger dinoId={manager} running={station.running} tool="🖌️" />
-          <GameIcon name="fossils" size={22} />
+        {turbo ? <TurboGlow /> : null}
+        <View style={styles.level}>
+          <LevelSign
+            station="elevator"
+            level={station.level}
+            detail={t('mine.perTrip', { value: formatNumber(capacity) })}
+            post={false}
+            onPress={onUpgrade}
+          />
         </View>
-        <StationStatus idle={idle} progress={station.progress} color={colors.blue} />
+        <View style={styles.poster}>
+          <WantedPoster station="elevator" active={turbo} onPick={onPickManager} height={POSTER_HEIGHT} />
+        </View>
+        <View style={styles.worker}>
+          {idle ? <TapHint style={styles.hint} /> : null}
+          <Digger dinoId={manager} running={station.running} tool="🖌️" />
+        </View>
+        {station.running ? (
+          <View style={styles.progress}>
+            <ProgressBar value={station.progress} height={6} color={colors.blue} />
+          </View>
+        ) : null}
       </Pressable>
-      <View style={styles.side}>
-        <UpgradeChip station="elevator" level={station.level} onPress={onUpgrade} />
-        <GameText size={10} weight="black" color={colors.textLight} outline center>
-          {t('mine.perTrip', { value: formatNumber(capacity) })}
-        </GameText>
-      </View>
     </Floor>
   );
 }
 
 const styles = StyleSheet.create({
-  body: { flex: 1, height: '86%', justifyContent: 'flex-end', gap: 6, paddingVertical: 4 },
-  bench: { flexDirection: 'row', alignItems: 'flex-end', gap: 4 },
-  side: { alignItems: 'center', gap: 3, width: 70 },
+  scene: { flex: 1, alignSelf: 'stretch' },
+  level: { position: 'absolute', left: 0, top: 4 },
+  // Colgado de la viga, al centro de la planta (misma cuenta que en los sótanos: 0.5·64 − 6 = 26).
+  poster: { position: 'absolute', left: '50%', marginLeft: 26, top: 14, width: 0, alignItems: 'center' },
+  worker: { position: 'absolute', right: 0, bottom: 2, alignItems: 'center' },
+  hint: { marginBottom: -4 },
+  progress: { position: 'absolute', left: '30%', right: '30%', bottom: 4 },
 });

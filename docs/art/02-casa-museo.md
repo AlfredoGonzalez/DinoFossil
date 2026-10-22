@@ -50,7 +50,9 @@ Todos en `assets/art/museum/`.
 | `foundation.png` ✅ | JPG/WebP opaco | **1290 × 360** | Roca y tierra profunda bajo la casa (cimientos de piedra, cristales pequeños). La parte de arriba debe empalmar con el sótano. | color tierra oscura |
 | `crate-empty.png` ✅ | PNG/WebP transparente | **256 × 256** | Caja del montacargas **vacía**: se ve mientras baja. | `crate.png` o caja de código |
 | `crate-full.png` ✅ | PNG/WebP transparente | **256 × 256** | La misma caja **llena de huesos**: se ve mientras sube. Que ambas tengan la misma perspectiva. | `crate.png` o caja de código |
-| `pulley.png` (pendiente) | PNG/WebP transparente | **256 × 256** | Polea de madera y hierro vista de frente (una rueda con canal para la cuerda y su soporte para colgarla de una viga). El código la hace girar y dibuja la cuerda. | sin polea |
+| `pulley.png` (pendiente) | PNG/WebP transparente | **256 × 256** | Polea de madera y hierro vista de frente: solo la **rueda** con su canal (el código la hace girar, así que sin soporte que gire con ella). Va arriba del montacargas, en el laboratorio. | rueda de código |
+| `rope.png` (pendiente) | PNG/WebP transparente | **32 × 256** | Tramo **vertical** de cuerda trenzada, que empalme arriba con abajo: el código lo repite hasta la caja. | cuerda de código |
+| `easel-hiring.png` / `easel-hired.png` (pendiente) | PNG/WebP transparente | ~**300 × 480** | El cuadro del manager sobre un tripié, para la sala. "Hiring" con el texto (solo inglés) y "Hired" liso con la **misma ventanita** para la foto en el mismo lugar. | cuadro de código con patas |
 | `visitor.png` | PNG/WebP transparente | **512 × 512** | *(Reemplazado por los visitantes animados de [sprites.md](sprites.md#visitantes-de-la-sala-assetsartspritesvisitors).)* | emoji 🧒 |
 
 ### Zonas seguras de las plantas (`hall`, `lab`, `basement`)

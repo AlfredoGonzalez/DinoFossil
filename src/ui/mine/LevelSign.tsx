@@ -40,11 +40,26 @@ function BeatingArrow({ double }: { double: boolean }) {
 }
 
 /**
- * Letrero de madera clavado en el montón de tierra: nivel del sótano y producción.
+ * Letrero de madera con el nivel de la planta: clavado en el montón de tierra en los sótanos,
+ * arriba a la izquierda en el laboratorio.
  * Se pone verde con una flecha que late cuando alcanza para mejorar, y con doble flecha
  * si alcanza para llegar al siguiente hito ×2. Abre el panel de mejora.
  */
-export function LevelSign({ station, level, rate, onPress }: { station: StationId; level: number; rate: number; onPress: () => void }) {
+export function LevelSign({
+  station,
+  level,
+  detail,
+  post = true,
+  onPress,
+}: {
+  station: StationId;
+  level: number;
+  /** Segunda línea: producción o capacidad ya formateada. */
+  detail: string;
+  /** Palo para clavarlo en la tierra (sótanos); en el laboratorio cuelga sin él. */
+  post?: boolean;
+  onPress: () => void;
+}) {
   const { t } = useTranslation();
   // Devuelve un número: los selectores deben dar valores estables.
   const reach = useGameStore((s): Reach => {
@@ -78,10 +93,10 @@ export function LevelSign({ station, level, rate, onPress }: { station: StationI
           </GameText>
         </View>
         <GameText size={10} color={colors.textLight} weight="black" outline center>
-          {formatNumber(rate)}/s
+          {detail}
         </GameText>
       </View>
-      <View style={styles.post} />
+      {post ? <View style={styles.post} /> : null}
     </Pressable>
   );
 }

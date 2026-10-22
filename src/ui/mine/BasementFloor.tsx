@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 import { shaftCycleSeconds, shaftRate } from '@/game/economy';
+import { formatNumber } from '@/game/format';
 import { getModifiers } from '@/game/modifiers';
 import { shaftStationId, stationSpeed } from '@/game/simulate';
 import { tapFeedback } from '@/services/feedback';
@@ -21,6 +22,8 @@ import { hasWalkerSprites, Walker, WALKER_SIZE } from './Walker';
 
 /** El dino escarba metido en la cara derecha del montón. */
 const DIG_REACH = 30;
+/** Alto del cuadro del manager colgado de la viga. */
+const POSTER_HEIGHT = 48;
 /** Hueco entre la bolsa y el montacargas (lo justo para el contador). */
 const BAG_RIGHT = 4;
 /** En reposo, el dino queda delante del borde izquierdo de la bolsa. */
@@ -77,7 +80,7 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
         {turbo ? <TurboGlow /> : null}
         {/* En la pared, detrás del camino del dino (el dino no captura toques). */}
         <View style={styles.poster}>
-          <WantedPoster station={station} active={turbo} onPick={onPickManager} />
+          <WantedPoster station={station} active={turbo} onPick={onPickManager} height={POSTER_HEIGHT} />
         </View>
         <DirtMound style={styles.mound} />
         <BoneBasket amount={shaft.deposit} style={styles.basket} />
@@ -101,7 +104,7 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
       {/* Fuera de la escena: se centra en el 25 % del ancho de la planta, a medio camino entre
           la pared y la tablita "Sótanos" (que va al centro), dejando ver el hueso del montón. */}
       <View style={styles.level}>
-        <LevelSign station={station} level={shaft.level} rate={rate} onPress={onUpgrade} />
+        <LevelSign station={station} level={shaft.level} detail={`${formatNumber(rate)}/s`} onPress={onUpgrade} />
       </View>
     </Floor>
   );
@@ -128,8 +131,9 @@ const styles = StyleSheet.create({
   // Ancho 0 y centrado: el letrero queda centrado justo sobre el 25 %.
   level: { position: 'absolute', left: '25%', top: 2, width: 0, alignItems: 'center' },
   basket: { position: 'absolute', right: BAG_RIGHT, bottom: 0 },
-  // Cartel del manager: en la pared, entre el letrero de nivel y el dino en reposo.
-  poster: { position: 'absolute', left: '55%', top: 12, width: 0, alignItems: 'center' },
+  // Cuadro del manager colgado de la viga bajo la tablita, al ~47 % del ancho de la planta (la escena empieza
+  // 6 pt dentro de la planta y deja 64 pt a la derecha para el montacargas: 0.47·64 − 6 ≈ 24).
+  poster: { position: 'absolute', left: '47%', marginLeft: 24, top: 14, width: 0, alignItems: 'center' },
   walk: { position: 'absolute', left: MOUND_WIDTH - MOUND_CUT - FLOOR_PADDING - DIG_REACH, right: HOME_RIGHT, bottom: 0 },
   home: { position: 'absolute', right: HOME_RIGHT, bottom: 0 },
   // Manita centrada sobre la cabeza del dino en reposo.

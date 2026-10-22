@@ -1,24 +1,43 @@
 import { useEffect } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import Animated, { cancelAnimation, Easing, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
-import { ABILITY, DINO_BY_ID } from '@/data/dinos';
+import { DINO_BY_ID } from '@/data/dinos';
 import type { StationId } from '@/game/types';
-import { currentLanguage, dinoName, useTranslation } from '@/i18n';
+import { currentLanguage } from '@/i18n';
 import { useGameStore } from '@/store/gameStore';
-import { getArt } from '../art';
-import { GameIcon } from '../GameIcon';
+import { getArt, type ArtKey } from '../art';
 import { GameText } from '../GameText';
 import { TurboButton } from './ManagerSlot';
 
-/** Proporción del arte entregado (279 × 420). */
-export const POSTER_HEIGHT = 84;
-export const POSTER_WIDTH = Math.round((POSTER_HEIGHT * 279) / 420);
-/** Ventanita de la foto en el arte: 27 %–73 % del ancho y 39.5 %–69.5 % del alto. */
-const WINDOW = { left: POSTER_WIDTH * 0.27, top: POSTER_HEIGHT * 0.395, width: POSTER_WIDTH * 0.46, height: POSTER_HEIGHT * 0.3 };
 const INK = '#4A2C12';
 
+/**
+ * Dos formatos del cuadro del manager:
+ * - `wall`: colgado de un clavo en una viga (sótanos y laboratorio); se balancea con el Turbo.
+ * - `easel`: sobre un tripié, en el suelo de la sala; con el Turbo se tambalea desde las patas.
+ * `window` es la ventanita de la foto, en fracciones del arte (se mide al recibirlo).
+ */
+const VARIANTS = {
+  wall: {
+    hiring: 'museum/poster-hiring',
+    hired: 'museum/poster-hired',
+    aspect: 279 / 420,
+    window: { left: 0.27, top: 0.395, width: 0.46, height: 0.3 },
+    pivot: 'top',
+  },
+  easel: {
+    hiring: 'museum/easel-hiring',
+    hired: 'museum/easel-hired',
+    aspect: 0.62,
+    window: { left: 0.27, top: 0.2, width: 0.46, height: 0.28 },
+    pivot: 'bottom',
+  },
+} as const satisfies Record<string, { hiring: ArtKey; hired: ArtKey; aspect: number; window: object; pivot: string }>;
+
+export type PosterVariant = keyof typeof VARIANTS;
+
 /** Foto tipo carné del manager: su retrato (dinos/<id>) sobre el color de la especie. */
-function Photo({ dinoId }: { dinoId: string }) {
+function Photo({ dinoId, size }: { dinoId: string; size: number }) {
   const species = DINO_BY_ID[dinoId];
   const portrait = getArt(`dinos/${dinoId}`);
   return (
@@ -26,7 +45,7 @@ function Photo({ dinoId }: { dinoId: string }) {
       {portrait ? (
         <Image source={portrait} resizeMode="cover" style={styles.portrait} />
       ) : (
-        <GameText size={WINDOW.height * 0.62} style={{ lineHeight: WINDOW.height * 0.9 }}>
+        <GameText size={size * 0.62} style={{ lineHeight: size * 0.9 }}>
           {species?.emoji ?? '🦖'}
         </GameText>
       )}
@@ -34,24 +53,31 @@ function Photo({ dinoId }: { dinoId: string }) {
   );
 }
 
+interface Props {
+  station: StationId;
+  /** Turbo activo: el cuadro se mueve. */
+  active: boolean;
+  onPick: () => void;
+  variant?: PosterVariant;
+  /** Alto en pantalla; el ancho sale de la proporción del arte. */
+  height: number;
+}
+
 /**
- * Cuadro del manager colgado de un clavo (sótanos, laboratorio y sala).
- * - Sin manager: cartel "Se busca" con un "+" en la ventanita; al tocarlo se abre la lista.
- *   (El arte "HIRING" trae el texto en inglés: en español se usa el cuadro liso + texto.)
- * - Con manager: su foto tipo busto, su nombre y su "recompensa" (el Turbo de su rareza).
- *   El Turbo se activa con la chincheta ⚡ de la esquina; mientras dura, el cuadro se balancea.
- * Arte: museum/poster-hiring y museum/poster-hired (si faltan, papel dibujado con código).
+ * Cuadro del manager (sótanos, laboratorio y sala). Sin textos, solo imagen:
+ * - Sin manager: cartel "HIRING" (o, en español, el cuadro liso: el texto dibujado no se
+ *   traduce) con un "+" en la ventanita. Al tocarlo se abre la lista de dinos.
+ * - Con manager: el cuadro "HIRED" con su foto tipo busto en la ventanita.
+ * El Turbo se activa con la chincheta ⚡ de la esquina; mientras dura, el cuadro se mueve.
+ * Arte: museum/poster-* (pared) y museum/easel-* (tripié); si faltan, papel dibujado con código.
  */
-export function WantedPoster({ station, active, onPick }: { station: StationId; active: boolean; onPick: () => void }) {
-  const { t } = useTranslation();
+export function WantedPoster({ station, active, onPick, variant = 'wall', height }: Props) {
+  const v = VARIANTS[variant];
+  const width = Math.round(height * v.aspect);
   const dinoId = useGameStore((s) => s.game.managers[station]);
-  const species = dinoId ? DINO_BY_ID[dinoId] : undefined;
-  const ability = species ? ABILITY[species.rarity] : undefined;
-  const framed = getArt('museum/poster-hired');
-  // El cartel "HIRING" lleva el texto dibujado: solo sirve tal cual en inglés.
-  const hiringArt = currentLanguage() === 'en' ? getArt('museum/poster-hiring') : undefined;
-  const art = !dinoId && hiringArt ? hiringArt : framed;
-  const writeTitle = !(!dinoId && hiringArt);
+  const hired = getArt(v.hired);
+  const hiring = currentLanguage() === 'en' ? getArt(v.hiring) : undefined;
+  const art = dinoId ? hired : (hiring ?? hired);
   const swing = useSharedValue(0);
 
   useEffect(() => {
@@ -70,63 +96,59 @@ export function WantedPoster({ station, active, onPick }: { station: StationId; 
     }
   }, [active, swing]);
 
-  // Gira sobre el clavo (arriba al centro), como un péndulo.
-  const swingStyle = useAnimatedStyle(() => ({ transform: [{ rotate: `${swing.value * 7}deg` }] }));
+  // En la pared gira sobre el clavo, como un péndulo; en el tripié se tambalea un poco menos.
+  const maxDeg = variant === 'wall' ? 7 : 4;
+  const swingStyle = useAnimatedStyle(() => ({ transform: [{ rotate: `${swing.value * maxDeg}deg` }] }));
+
+  const win = {
+    left: width * v.window.left,
+    top: height * v.window.top,
+    width: width * v.window.width,
+    height: height * v.window.height,
+  };
 
   return (
-    <Animated.View style={[styles.wrap, swingStyle]}>
+    <Animated.View style={[{ width, height, transformOrigin: v.pivot }, swingStyle]}>
       <Pressable accessibilityRole="button" accessibilityLabel={`manager-${station}`} onPress={onPick} style={StyleSheet.absoluteFill}>
-        {art ? <Image source={art} resizeMode="stretch" style={styles.art} /> : <View style={styles.paperFill} />}
-        <View style={styles.top}>
-          {species ? (
-            <GameText size={7} weight="black" color={INK} center numberOfLines={1}>
-              {dinoName(species.id)}
-            </GameText>
-          ) : writeTitle ? (
-            <GameText size={8} weight="black" color={INK} center>
-              {t('mine.wanted').toUpperCase()}
-            </GameText>
-          ) : null}
-        </View>
-        <View style={styles.window}>
+        {art ? (
+          // Ancho y alto explícitos: en web, absoluteFill sola deja la imagen a su tamaño original.
+          <Image source={art} resizeMode="stretch" style={{ position: 'absolute', top: 0, left: 0, width, height }} />
+        ) : (
+          <CodeFrame variant={variant} />
+        )}
+        <View style={[styles.window, win]}>
           {dinoId ? (
-            <Photo dinoId={dinoId} />
+            <Photo dinoId={dinoId} size={win.height} />
           ) : (
-            <GameText size={20} weight="black" color={INK}>
+            <GameText size={Math.max(10, win.height * 0.8)} weight="black" color={INK}>
               +
             </GameText>
           )}
         </View>
-        <View style={styles.bottom}>
-          {ability ? (
-            <View style={styles.reward}>
-              <GameIcon name="turbo" size={9} />
-              <GameText size={7} weight="black" color={INK}>
-                {t('mine.reward', { multiplier: ability.multiplier, seconds: ability.seconds })}
-              </GameText>
-            </View>
-          ) : (
-            <GameText size={7} weight="black" color={INK} center>
-              {t('mine.hire')}
-            </GameText>
-          )}
-        </View>
       </Pressable>
-      <View style={styles.pin}>
+      <View style={[styles.pin, { left: width - 10 }]}>
         <TurboButton station={station} />
       </View>
     </Animated.View>
   );
 }
 
+/** Marco provisional mientras no llegue el arte (papel; en el tripié, con sus patas). */
+function CodeFrame({ variant }: { variant: PosterVariant }) {
+  if (variant === 'wall') return <View style={styles.paper} />;
+  return (
+    <>
+      <View style={[styles.leg, styles.legLeft]} />
+      <View style={[styles.leg, styles.legRight]} />
+      <View style={[styles.paper, styles.easelPaper]} />
+    </>
+  );
+}
+
 const styles = StyleSheet.create({
-  // transformOrigin arriba: el giro es alrededor del clavo.
-  wrap: { width: POSTER_WIDTH, height: POSTER_HEIGHT, transformOrigin: 'top' },
-  // Ancho y alto explícitos: en web, absoluteFill sola deja la imagen a su tamaño original.
-  art: { position: 'absolute', top: 0, left: 0, width: POSTER_WIDTH, height: POSTER_HEIGHT },
-  paperFill: {
+  paper: {
     position: 'absolute',
-    top: 8,
+    top: 4,
     left: 0,
     right: 0,
     bottom: 0,
@@ -135,13 +157,12 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: '#A9774E',
   },
-  // Franjas del arte: título (arriba), ventanita de la foto y recompensa (abajo).
-  top: { position: 'absolute', top: POSTER_HEIGHT * 0.2, left: 4, right: 4, alignItems: 'center' },
-  window: { position: 'absolute', ...WINDOW, alignItems: 'center', justifyContent: 'center' },
-  bottom: { position: 'absolute', top: POSTER_HEIGHT * 0.73, left: 3, right: 3, alignItems: 'center' },
+  easelPaper: { top: 0, bottom: '45%' },
+  leg: { position: 'absolute', bottom: 0, width: 3, height: '60%', backgroundColor: '#7A4A24', borderRadius: 2 },
+  legLeft: { left: '22%', transform: [{ rotate: '8deg' }] },
+  legRight: { right: '22%', transform: [{ rotate: '-8deg' }] },
+  window: { position: 'absolute', alignItems: 'center', justifyContent: 'center' },
   photo: { width: '100%', height: '100%', borderRadius: 2, overflow: 'hidden', alignItems: 'center', justifyContent: 'center' },
   portrait: { width: '100%', height: '100%' },
-  reward: { flexDirection: 'row', alignItems: 'center', gap: 1 },
-  // Anclada por la izquierda: al mostrar la cuenta atrás crece hacia fuera, sin tapar el título.
-  pin: { position: 'absolute', top: 4, left: POSTER_WIDTH - 14 },
+  pin: { position: 'absolute', top: -2 },
 });
