@@ -39,7 +39,8 @@ export function DinoAvatar({ dinoId, size = 56, silhouette, ring }: DinoAvatarPr
       ]}
     >
       {sprite && !silhouette ? (
-        <Image source={sprite} style={{ width: size * 0.9, height: size * 0.9 }} resizeMode="contain" />
+        // Los retratos son fotos cuadradas con fondo: llenan el círculo (que las recorta).
+        <Image source={sprite} style={{ width: size, height: size }} resizeMode="cover" />
       ) : (
         <GameText size={size * 0.55} style={[{ lineHeight: size * 0.75 }, silhouette && styles.silhouette]}>
           {silhouette ? '❔' : (species?.emoji ?? '🦖')}

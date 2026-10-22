@@ -16,6 +16,8 @@ const PULLEY = 20;
 /** La cuerda sale del centro de la polea. */
 const ROPE_TOP = 4 + PULLEY / 2;
 const ROPE = 4;
+/** Alto del arte de la polea (con su argolla y los cabos de cuerda). */
+const PULLEY_ART_H = 38;
 /** Columna del montacargas: a 16 pt del borde derecho, con su pared izquierda de 3 pt. */
 const COLUMN_RIGHT = 16;
 const COLUMN_BORDER = 3;
@@ -66,6 +68,7 @@ export function Lift() {
     transform: [{ rotate: `${((liftDepth(p.value) * travel) / (PULLEY / 2)) * (180 / Math.PI)}deg` }],
   }));
   const pulleyArt = getArt('museum/pulley');
+  const wheelArt = getArt('museum/pulley-wheel');
   const ropeArt = getArt('museum/rope');
 
   const empty = getArt('museum/crate-empty') ?? getArt('museum/crate');
@@ -75,16 +78,19 @@ export function Lift() {
       <Animated.View style={[styles.rope, ropeStyle]}>
         {ropeArt ? <Image source={ropeArt} resizeMode="repeat" style={styles.ropeArt} /> : <View style={styles.ropeTwist} />}
       </Animated.View>
-      <Animated.View style={[styles.pulley, pulleyStyle]}>
-        {pulleyArt ? (
-          <Image source={pulleyArt} resizeMode="contain" style={styles.pulleyArt} />
-        ) : (
-          <>
-            <View style={styles.spoke} />
-            <View style={[styles.spoke, styles.spokeCross]} />
-          </>
-        )}
-      </Animated.View>
+      {/* Con arte: museum/pulley-wheel (opcional) gira debajo y museum/pulley (soporte con la rueda) va
+          fijo encima, porque la argolla y el soporte no deben girar. Sin arte: rueda de código que gira. */}
+      {pulleyArt || wheelArt ? (
+        <>
+          {wheelArt ? <Animated.Image source={wheelArt} resizeMode="contain" style={[styles.wheelArt, pulleyStyle]} /> : null}
+          {pulleyArt ? <Image source={pulleyArt} resizeMode="contain" style={styles.pulleyArt} /> : null}
+        </>
+      ) : (
+        <Animated.View style={[styles.pulley, pulleyStyle]}>
+          <View style={styles.spoke} />
+          <View style={[styles.spoke, styles.spokeCross]} />
+        </Animated.View>
+      )}
       <Animated.View style={[styles.carrier, moveStyle]}>
         {empty && full ? (
           <>
@@ -128,7 +134,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  pulleyArt: { position: 'absolute', width: PULLEY + 8, height: PULLEY + 8 },
+  // Arte entregado 210 × 256 con el centro de la rueda al ~55 % del alto: se alinea con la polea.
+  pulleyArt: { position: 'absolute', top: ROPE_TOP - PULLEY_ART_H * 0.55, width: (PULLEY_ART_H * 210) / 256, height: PULLEY_ART_H },
+  wheelArt: { position: 'absolute', top: ROPE_TOP - PULLEY + 2, width: PULLEY * 2 - 4, height: PULLEY * 2 - 4 },
   spoke: { position: 'absolute', width: PULLEY - 6, height: 2, backgroundColor: '#4A3020' },
   spokeCross: { transform: [{ rotate: '90deg' }] },
   crate: {

@@ -11,19 +11,21 @@ que todos parezcan de la misma familia de peluches.
 ## Formato
 
 - Carpeta `assets/art/dinos/`, nombre = id de la especie (tabla de abajo), p. ej. `trex.png`.
-- PNG/WebP **transparente, cuadrado, 512 × 512**.
-- **Busto** (cabeza y hombros), mirando a cámara en 3/4, centrado, con ~10 % de margen.
-- Se muestra **dentro de un círculo** de 30–40 pt con el color de la especie de fondo: que la cara
-  quede en el centro y se lea en pequeño. Nada importante en las esquinas.
-- Sin texto, sin marco, sin fondo, sin sombra.
+- JPG/PNG/WebP **cuadrado** (Claude lo deja en 512 × 512).
+- Estilo **"foto de jefe"** (como `gallimimus` y `parasaurolophus`, ✅): busto con saco y corbata,
+  mirando a cámara en 3/4, con un **fondo borroso** de oficina/ciudad. Mismo encuadre en todos.
+- Se muestra recortado en un círculo (colección, lista de managers) y en el papel del cuadro
+  "HIRED": que la cara quede en el tercio de arriba y centrada, y nada importante en las esquinas.
+- Sin texto ni marco.
 
 ## Prompt (uno por especie)
 
 ```
-A head-and-shoulders portrait of a cute chubby plush baby [SPECIES], [COLOR AND FEATURE],
-looking at the viewer in a three-quarter view with a friendly proud smile, like an ID photo.
-Centered, face in the middle of the image, generous padding, transparent or plain pure white
-background. No text, no frame, no hat.
+A corporate headshot of a cute plush felt baby [SPECIES], [COLOR AND FEATURE], wearing a dark
+felt suit jacket, a light blue shirt and a dark tie, looking at the viewer in a three-quarter view
+with a confident friendly smile, like a company boss photo. Head and shoulders, face in the upper
+third and centered, softly blurred city/office background (shallow depth of field). Square format.
+No text, no frame, no hat.
 [BIBLIA DE ESTILO]
 ```
 
