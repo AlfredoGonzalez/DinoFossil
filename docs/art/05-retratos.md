@@ -66,13 +66,14 @@ mucho o trae fondo, súbelo igual: Claude lo recorta y lo convierte.
 
 ## Videos de la ficha (opcional)
 
-Al tocar un dino descubierto en **Dinos**, su ficha muestra un video en bucle en lugar del retrato.
+Al tocar un dino descubierto en **Dinos**, su ficha reproduce un video **una sola vez** en lugar del
+retrato, y se queda en el último cuadro.
 
 - Archivo: `assets/art/dinos/<id>.mp4` (mismo id que el retrato, p. ej. `gallimimus.mp4` ✅).
 - Cuadrado (1:1), 3–6 s, mismo encuadre de "foto de jefe" que el retrato. Se reproduce **sin sonido**.
-- Mientras carga se ve el retrato, así que conviene que el primer cuadro se parezca a él.
-- Claude lo recorta a 480 × 480, quita el audio y lo deja en bucle "ida y vuelta" (adelante y luego
-  en reversa) para que no salte al reiniciarse: de ~2.5 MB queda en ~200 KB.
+- Mientras carga se ve el retrato, así que conviene que el primer cuadro se parezca a él. El último
+  cuadro es el que se queda en pantalla: que termine en una pose bonita (saludando, sonriendo…).
+- Claude lo recorta a 480 × 480 y le quita el audio: de ~2.5 MB queda en ~150 KB.
 
 Los datos de la ficha (dieta, época, tamaño, región y dato curioso) ya están escritos para las 24
 especies en `src/data/dinoFacts.ts` y `src/i18n/dinoFacts.ts`.

@@ -37,7 +37,7 @@ export function GameModal({ visible, title, onClose, children, testID }: Props) 
 const styles = StyleSheet.create({
   backdrop: { flex: 1, backgroundColor: colors.overlay, alignItems: 'center', justifyContent: 'center', padding: 16 },
   panel: { width: '100%', maxWidth: MAX_WIDTH - 32, maxHeight: '88%' },
-  scroll: { flexGrow: 0 },
+  scroll: { flexGrow: 0, flexShrink: 1 },
   content: { gap: 12 },
   close: {
     position: 'absolute',

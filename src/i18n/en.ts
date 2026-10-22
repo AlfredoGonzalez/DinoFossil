@@ -143,6 +143,7 @@ const en: Translations = {
     size: 'Size',
     region: 'Region',
     funFact: 'Fun fact',
+    tabs: { info: 'Info', stats: 'Stats' },
     diets: { herbivore: 'Herbivore', carnivore: 'Carnivore', omnivore: 'Omnivore' },
     periods: {
       earlyJurassic: 'Early Jurassic',

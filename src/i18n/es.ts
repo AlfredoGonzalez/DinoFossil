@@ -141,6 +141,7 @@ const es = {
     size: 'Tamaño',
     region: 'Región',
     funFact: 'Dato curioso',
+    tabs: { info: 'Info', stats: 'Mecánicas' },
     diets: { herbivore: 'Herbívoro', carnivore: 'Carnívoro', omnivore: 'Omnívoro' },
     periods: {
       earlyJurassic: 'Jurásico temprano',

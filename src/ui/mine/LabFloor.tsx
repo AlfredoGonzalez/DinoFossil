@@ -11,7 +11,7 @@ import { ProgressBar } from '../ProgressBar';
 import { colors } from '../theme';
 import { Digger } from './Digger';
 import { Floor, FLOOR_SCENE_HEIGHT } from './Floor';
-import { hasLabWorkerSprites, LabWorker } from './LabWorker';
+import { hasLabWorkerSprites, LAB_WORKER_SIZE, LabWorker } from './LabWorker';
 import { LevelSign } from './LevelSign';
 import { TapHint } from './TapHint';
 import { TurboGlow, useTurboActive } from './TurboGlow';
@@ -22,7 +22,7 @@ const POSTER_HEIGHT = 48;
 /**
  * Planta del laboratorio. En el motor es la estación "elevator": sube la caja de los sótanos
  * por el montacargas y deja los huesos limpios para la sala. De izquierda a derecha: letrero de
- * nivel · cuadro del manager colgado de la viga (al centro) · el laboratorista, a la derecha
+ * nivel · cuadro del manager colgado de la viga · el laboratorista, a la derecha
  * junto al montacargas, que sube la caja tirando de la cuerda de la polea (LabWorker).
  * Su nombre va en la tablita "Laboratorio" sobre la unión con la sala (FloorSign).
  */
@@ -91,12 +91,12 @@ export function LabFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; 
 const styles = StyleSheet.create({
   scene: { flex: 1, alignSelf: 'stretch' },
   level: { position: 'absolute', left: 0, top: 4 },
-  // Colgado de la viga, al centro de la planta (misma cuenta que en los sótanos: 0.5·64 − 6 = 26).
-  poster: { position: 'absolute', left: '50%', marginLeft: 26, top: 14, width: 0, alignItems: 'center' },
+  // Colgado de la viga junto al letrero, fuera del camino del laboratorista (que es grande).
+  poster: { position: 'absolute', left: 100, top: 14, width: 0, alignItems: 'center' },
   worker: { position: 'absolute', right: 0, bottom: 2, alignItems: 'center' },
   hint: { marginBottom: -4 },
   labWorker: { position: 'absolute', right: 0, bottom: 2 },
-  // Manita sobre el laboratorista en su sitio (a la derecha).
-  workerHint: { position: 'absolute', right: 18, bottom: 58 },
+  // Manita junto a la cara del laboratorista en su sitio (no cabe encima: llega casi a la viga).
+  workerHint: { position: 'absolute', right: LAB_WORKER_SIZE - 14, bottom: LAB_WORKER_SIZE * 0.55 },
   progress: { position: 'absolute', left: '30%', right: '30%', bottom: 4 },
 });

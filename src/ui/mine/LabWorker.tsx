@@ -7,14 +7,15 @@ import { SpriteSheet } from '../SpriteSheet';
 import { PULLEY_FROM_SCENE } from './Lift';
 import { useCycle } from './useCycle';
 
-const SIZE = 64;
+/** Grande y fuerte (es quien sube la caja): casi todo el alto de la planta, bajo la viga. */
+const SIZE = 104;
 /** Cuánto camina hacia atrás mientras tira de la cuerda. */
-const PULL_DISTANCE = 96;
+const PULL_DISTANCE = 84;
 /** Dónde agarra la cuerda, en fracciones del fotograma (las garras, al frente). */
 const HANDS = { x: 0.8, y: 0.52 };
 const ROPE = 3;
-const DUST_W = 42;
-const DUST_H = 25;
+const DUST_W = 64;
+const DUST_H = 38;
 const DUST_MS = 420;
 
 interface Props {
@@ -122,6 +123,7 @@ export function hasLabWorkerSprites(): boolean {
 
 /** Ancho que ocupa en la planta: su sitio más lo que retrocede al tirar. */
 export const LAB_WORKER_WIDTH = SIZE + PULL_DISTANCE;
+export const LAB_WORKER_SIZE = SIZE;
 
 const styles = StyleSheet.create({
   track: { width: LAB_WORKER_WIDTH, height: SIZE },

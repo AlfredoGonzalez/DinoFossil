@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     elevation: 4,
   },
-  inner: { borderRadius: radius.lg - 4, padding: 12, overflow: 'hidden' },
+  // flexShrink: con un alto máximo (modales), el contenido se encoge y su ScrollView hace scroll.
+  inner: { flexShrink: 1, borderRadius: radius.lg - 4, padding: 12, overflow: 'hidden' },
   titleBar: {
     marginHorizontal: -12,
     marginTop: -12,
