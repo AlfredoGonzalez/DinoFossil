@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
-import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { Easing, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { DINOS } from '@/data/dinos';
 import { carrierCapacity } from '@/game/economy';
 import { formatNumber } from '@/game/format';
@@ -26,8 +26,12 @@ const VISITOR_SHEETS = ['sprites/visitors/a', 'sprites/visitors/b', 'sprites/vis
 const VISITOR_SIZE = 52;
 const LAP_MS = 9000;
 
+/** Fracción de la vuelta que tarda en aparecer (al entrar) y en desvanecerse (al llegar a la derecha). */
+const FADE = 0.12;
+
 /**
- * Visitante que cruza la sala de izquierda a derecha. En cada vuelta entra uno de los
+ * Visitante que cruza todo el piso de la sala de izquierda a derecha: aparece poco a poco
+ * (de transparente a sólido), camina y, al acercarse a la derecha, se desvanece. En cada vuelta entra uno de los
  * visitantes animados al azar (sprites/visitors/a|b|c); si no hay ninguno, el arte fijo
  * museum/visitor o un emoji.
  */
@@ -45,7 +49,10 @@ function Visitor({ width }: { width: number }) {
     return () => clearTimeout(id);
   }, [lap.n, x]);
 
-  const style = useAnimatedStyle(() => ({ transform: [{ translateX: -VISITOR_SIZE + x.value * (width + VISITOR_SIZE * 2) }] }));
+  const style = useAnimatedStyle(() => ({
+    opacity: interpolate(x.value, [0, FADE, 1 - FADE, 1], [0, 1, 1, 0]),
+    transform: [{ translateX: x.value * (width - VISITOR_SIZE) }],
+  }));
   const art = getArt('museum/visitor');
   return (
     <Animated.View pointerEvents="none" style={[styles.visitor, style]}>
@@ -76,11 +83,15 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
   return (
     <Floor art={getArt('museum/hall')} color="#F3D9A4" floorColor="#A4693B">
       {turbo ? <TurboGlow /> : null}
+      {/* Capa del ancho de todo el piso (también por delante de la columna del nivel). */}
+      <View pointerEvents="none" style={styles.walkway} onLayout={(e) => setWidth(e.nativeEvent.layout.width)}>
+        {/* Siempre hay alguien paseando: si solo saliera durante la venta, desaparecería a media sala. */}
+        {width > 0 ? <Visitor width={width} /> : null}
+      </View>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="tap-museum"
         style={styles.body}
-        onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
         onPress={() => {
           if (!idle) return;
           tapFeedback();
@@ -103,7 +114,6 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
             </View>
           ))}
         </View>
-        {width > 0 && (manager || station.running) ? <Visitor width={width} /> : null}
         <StationStatus idle={idle} progress={station.progress} color={colors.gold} />
         {/* Cuadro del manager sobre un tripié, en el suelo de la sala, junto al nivel. */}
         <View style={styles.easel}>
@@ -126,7 +136,8 @@ const styles = StyleSheet.create({
   stock: { flexDirection: 'row', alignItems: 'center', gap: 2, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: 8, paddingHorizontal: 5 },
   exhibits: { flexDirection: 'row', gap: 6 },
   pedestal: { paddingBottom: 3, borderBottomWidth: 5, borderBottomColor: '#C9A06A', borderRadius: 4 },
-  visitor: { position: 'absolute', bottom: 4, left: 0 },
+  walkway: { position: 'absolute', left: 0, right: 0, bottom: 4, height: VISITOR_SIZE, zIndex: 1 },
+  visitor: { position: 'absolute', bottom: 0, left: 0 },
   easel: { position: 'absolute', right: 0, bottom: 0 },
   visitorArt: { width: 30, height: 30 },
   side: { alignItems: 'center', gap: 3, width: 70 },

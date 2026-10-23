@@ -96,27 +96,45 @@ AutoSprite (side-scroller, 25 fotogramas, 256 px, Sharpen: None):
 - **walk**: *Side view, facing right. The strong plush dinosaur walks forward with relaxed arms.
   In-place animation, loops seamlessly.*
 
-## Taquillero de la sala (`assets/art/sprites/hall/`) · pendiente
+## Anfitrión de la sala: Pterodáctilo (`assets/art/sprites/hall/`) · pendiente
 
-El que cobra la entrada a los visitantes: de pie junto a una taquilla o un cordón rojo, a la
-**derecha** de la sala, mirando a la izquierda (hacia los visitantes; dibújalo mirando a la derecha y
-el juego lo voltea).
+Da la bienvenida a los visitantes. Vive a la **izquierda** de la sala, por donde entran, mirando a
+la derecha (hacia ellos). Al tocar la sala hace su número y vuelve a reposo:
 
-| Archivo | Qué hace |
-|---|---|
-| `idle.png` | Espera tranquilo junto al cordón |
-| `charge.png` | Recibe una moneda, la guarda y saluda con la mano (se repite en cada visita) |
+**reposo → despega → aletea en el aire → aterriza → saluda → reposo**
 
-Personaje base:
+| Archivo | Se repite | Qué hace |
+|---|---|---|
+| `idle.png` | sí | De pie con las alas plegadas, respira, mira a los lados |
+| `takeoff.png` | no, una vez | Se agacha, abre las alas y da el salto (termina ya en el aire) |
+| `fly.png` | sí | En el aire, aleteando **en el sitio** |
+| `land.png` | no, una vez | Baja aleteando, toca el suelo y pliega las alas *(opcional: si falta, el juego reproduce `takeoff` al revés)* |
+| `wave.png` | no, una vez | Saluda con el ala (o hace una reverencia) y vuelve a la pose de reposo |
+
+Importante: **todas "en el sitio"**. La subida y la bajada las hace el juego moviendo el sprite,
+como con el laboratorista; así el personaje no se sale del cuadro de 256 px. Las tres de "una
+vez" deben **empezar y terminar** en la pose de la hoja que va antes y después (p. ej. `wave`
+termina como empieza `idle`), para que no salte al cambiar.
+
+Personaje base (usa el retrato `dinos/pterodactyl` como referencia si ya existe):
 
 ```
-Full body, side view facing right. A cute chubby plush dinosaur museum usher wearing a small red
-vest with golden buttons, a tiny red bow tie and a little red usher cap. Lavender felt body with a
-cream belly. Standing upright next to nothing (no props), polite welcoming smile.
+Full body, side view facing right. A cute chubby plush pterodactyl museum host made of sky-blue felt
+with a cream belly and visible stitched seams, a small rounded head crest, wings folded at its sides.
+It wears a tiny red vest with golden buttons, a little red bow tie and a small red usher cap.
+Standing upright on its feet, polite welcoming smile. No props.
 [BIBLIA DE ESTILO]
 ```
 
-AutoSprite: **charge**: *Side view, facing right. The plush usher holds out one paw, receives a
-golden coin, drops it into a small pouch at its belt and gives a friendly wave. In-place animation,
-loops seamlessly.* · **idle**: *stands politely, small bounce, looks around. In-place animation,
-loops seamlessly.*
+AutoSprite (side-scroller, 25 fotogramas, 256 px, Sharpen: None):
+
+- **idle**: *Side view, facing right. The plush pterodactyl stands politely with wings folded, small
+  breathing bounce, looks around. In-place animation, loops seamlessly.*
+- **takeoff**: *Side view, facing right. The plush pterodactyl crouches, spreads its wings and jumps
+  into the air with a big flap, ending airborne with wings open. In-place animation, plays once.*
+- **fly**: *Side view, facing right. The plush pterodactyl hovers in the air flapping its wings
+  steadily, legs tucked, happy face. In-place animation, loops seamlessly.*
+- **land**: *Side view, facing right. The plush pterodactyl flaps gently downward, touches the ground
+  with its feet and folds its wings. In-place animation, plays once.*
+- **wave**: *Side view, facing right. The plush pterodactyl waves hello with one wing, then gives a
+  small polite bow and returns to standing. In-place animation, plays once.*
