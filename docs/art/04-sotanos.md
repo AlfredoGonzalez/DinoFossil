@@ -30,7 +30,7 @@ Estilo: el mismo "peluche/fieltro con costuras" de siempre → bloque **Biblia d
   mientras escarba aparece un **reloj circular** junto a su cabeza con el tiempo que falta.
 - **Manager**: un cuadro pequeño (~32 × 48 pt) colgado de la viga, justo debajo de la tablita
   "Sótanos" y detrás del camino del dino. Vacío lleva un **+**; con manager, solo su foto. El mismo
-  cuadro cuelga en el laboratorio; en la sala va sobre un tripié (`easel-*`). Vacío lleva
+  cuadro cuelga en el laboratorio y, en la sala, del poste izquierdo del pabellón del fondo. Vacío lleva
   un **+** (abre la lista de dinos); con manager, la foto de la especie ([05-retratos.md](05-retratos.md)),
   su nombre y su "recompensa": el Turbo de su rareza (de ×2 · 30 s a ×5 · 90 s). La chincheta ⚡ de
   la esquina activa el Turbo; mientras dura, el cartel se balancea y todo el piso brilla en dorado.

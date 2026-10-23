@@ -99,7 +99,10 @@ AutoSprite (side-scroller, 25 fotogramas, 256 px, Sharpen: None):
 ## Anfitrión de la sala: Pterodáctilo (`assets/art/sprites/hall/`) · ✅ entregado
 
 Entregado en hojas de **7 × 7 (49 fotogramas)**: `idle`, `welcome` (despega, aletea y aterriza en
-una sola hoja) y `wave`. Claude las escaló al tamaño de `idle` (`welcome` ×1,54, `wave` ×1,1) y fijó
+una sola hoja) y `wave`. En el juego: está detrás de la taquilla (`museum/ticket-desk`) mirando a la
+izquierda; cada toque a la sala lo hace volar (despega y aterriza con nubes de polvo, `museum/dirt`) y
+un toque a medio vuelo cobra pero no lo reinicia; con manager vuela solo cada 10 s. `wave` está
+guardada pero hoy no se usa. Claude las escaló al tamaño de `idle` (`welcome` ×1,54, `wave` ×1,1) y fijó
 los pies en la misma línea; la subida del vuelo la hace el código. Referencia del personaje:
 `docs/art/referencias/pterodactyl-host.webp`. Lo de abajo es la propuesta original.
 

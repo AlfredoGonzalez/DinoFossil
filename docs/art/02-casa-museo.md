@@ -54,7 +54,7 @@ Todos en `assets/art/museum/`.
 | `pulley.png` ✅ | PNG/WebP transparente | ~**210 × 256** | Polea con su soporte y argolla, de frente. Va **fija** arriba del montacargas, en el laboratorio. | rueda de código que gira |
 | `pulley-wheel.png` (opcional) | PNG/WebP transparente | **256 × 256** | Solo la **rueda** (sin soporte ni argolla), del mismo tamaño que en `pulley.png`: el código la hace girar debajo del soporte. Para que se vea girar, quita la rueda de `pulley.png` y deja solo soporte, argolla y cabos. | — |
 | `rope.png` (pendiente) | PNG/WebP transparente | **32 × 256** | Tramo **vertical** de cuerda trenzada, que empalme arriba con abajo: el código lo repite hasta la caja. | cuerda de código |
-| `easel-hiring.png` / `easel-hired.png` ✅ | PNG/WebP transparente | ~**300 × 480** | El cuadro del manager sobre un tripié, para la sala. "Hiring" con el texto (solo inglés) y "Hired" liso con la **misma ventanita** para la foto en el mismo lugar. | cuadro de código con patas |
+| `easel-hiring.png` / `easel-hired.png` ✅ | PNG/WebP transparente | ~**300 × 480** | El cuadro del manager sobre un tripié (hoy la sala usa el de pared, colgado del poste del pabellón; este queda de repuesto). "Hiring" con el texto (solo inglés) y "Hired" liso con la **misma ventanita** para la foto en el mismo lugar. | cuadro de código con patas |
 | `visitor.png` | PNG/WebP transparente | **512 × 512** | *(Reemplazado por los visitantes animados de [sprites.md](sprites.md#visitantes-de-la-sala-assetsartspritesvisitors).)* | emoji 🧒 |
 
 ### Zonas seguras de las plantas (`hall`, `lab`, `basement`)
