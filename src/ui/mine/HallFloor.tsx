@@ -24,6 +24,8 @@ import { LevelSign } from './LevelSign';
 
 const VISITOR_SHEETS = ['sprites/visitors/a', 'sprites/visitors/b', 'sprites/visitors/c'] as const;
 const VISITOR_SIZE = 52;
+/** Cuadro del manager en el poste del pabellón. */
+const POSTER_HEIGHT = 40;
 const LAP_MS = 9000;
 
 /** Fracción de la vuelta que tarda en aparecer (al entrar) y en desvanecerse (al llegar a la derecha). */
@@ -70,11 +72,11 @@ function Visitor({ width }: { width: number }) {
 /**
  * Planta alta: la sala de exposición al aire libre (estación "museum" del motor). Los fósiles
  * limpios se convierten aquí en dinero de entradas y recuerdos: el contador muestra las monedas
- * que esperan en taquilla y cada visita cobra una parte (más con más nivel). Distribución, pensada
- * para dejar a la vista el pabellón, los esqueletos y el cartel EXIT del fondo:
- * - abajo a la izquierda, la taquilla con el pterodáctilo (HallHost), que vuela a cada toque;
+ * que esperan en taquilla y cada visita cobra una parte (más con más nivel). Distribución (el fondo
+ * museum/hall se escala con el ancho, así que las posiciones van en % del ancho):
+ * - sobre el pasto, al ~18 %, la taquilla con el pterodáctilo (HallHost), que vuela a cada toque;
  * - arriba, junto a su cabeza, el dinero en taquilla y, durante la venta, su barra;
- * - en el suelo, entre el pabellón y los esqueletos, el cuadro del manager en su tripié;
+ * - el cuadro del manager, con su clavo, en el poste izquierdo del pabellón (~46 %);
  * - arriba a la derecha, sobre el cielo, la tablita de nivel (como en las demás plantas);
  * - los visitantes pasean por delante de todo el piso.
  */
@@ -106,9 +108,9 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
         }}
       >
         {turbo ? <TurboGlow /> : null}
-        {/* Cuadro del manager sobre un tripié, en el suelo. */}
-        <View style={styles.easel}>
-          <WantedPoster station="museum" variant="easel" active={turbo} onPick={onPickManager} height={60} />
+        {/* Cuadro del manager colgado del poste izquierdo del pabellón (donde el fondo trae su cartel WANTED). */}
+        <View style={styles.poster}>
+          <WantedPoster station="museum" active={turbo} onPick={onPickManager} height={POSTER_HEIGHT} />
         </View>
         {withHost ? (
           <HallHost flights={flights} managed={!!manager} hint={idle} style={styles.host} />
@@ -148,15 +150,16 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
 
 const styles = StyleSheet.create({
   scene: { flex: 1, alignSelf: 'stretch' },
-  // La taquilla, en la entrada (izquierda), apoyada en el suelo.
-  host: { position: 'absolute', left: -2, bottom: 0 },
+  // La taquilla, sobre el pasto, entre los árboles y el pabellón (como en el boceto).
+  host: { position: 'absolute', left: '18%', bottom: 12 },
   status: { position: 'absolute', left: 8, right: 8, bottom: 6 },
   // Junto a la cabeza del pterodáctilo.
-  till: { position: 'absolute', left: HALL_HOST_WIDTH + 4, top: 6, width: 84, gap: 3 },
+  till: { position: 'absolute', left: '18%', marginLeft: HALL_HOST_WIDTH + 2, top: 6, width: 84, gap: 3 },
   stock: { flexDirection: 'row', alignSelf: 'flex-start', alignItems: 'center', gap: 2, backgroundColor: 'rgba(255,255,255,0.75)', borderRadius: 8, paddingHorizontal: 5 },
-  // En el claro entre el pabellón y los esqueletos.
-  easel: { position: 'absolute', left: '50%', bottom: 0 },
-  walkway: { position: 'absolute', left: -6, right: -6, bottom: 2, height: VISITOR_SIZE },
+  // Centrado en el cartel WANTED del fondo (al 45.7 % del ancho del arte y 53 % de su alto).
+  poster: { position: 'absolute', left: '45.5%', top: 44, width: 0, alignItems: 'center' },
+  // Por el sendero del fondo.
+  walkway: { position: 'absolute', left: -6, right: -6, bottom: 4, height: VISITOR_SIZE },
   visitor: { position: 'absolute', bottom: 0, left: 0 },
   visitorArt: { width: 30, height: 30 },
   // Arriba a la derecha, sobre el cielo: deja ver el cartel EXIT del fondo.

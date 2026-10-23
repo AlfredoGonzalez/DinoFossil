@@ -6,18 +6,18 @@ import { TapHint } from './TapHint';
 import { getSheet } from '../spriteSheets';
 import { SpriteSheet } from '../SpriteSheet';
 
-const SIZE = 68;
+const SIZE = 60;
 /** Cuánto sube en el vuelo, en fracciones de su tamaño (hasta rozar el techo de la sala). */
 const LIFT = 0.5;
 /** Mesita de entradas y recuerdos (museum/ticket-desk, 512 × 308). */
-const DESK_W = 96;
+const DESK_W = 84;
 const DESK_H = Math.round((DESK_W * 308) / 512);
 /** Altura de sus pies sobre el suelo: quedan tapados por el frente de la mesita. */
-const FEET = 18;
+const FEET = 15;
 /** Con manager vuela solo cada tantos ms. */
 const AUTO_MS = 10000;
-const DUST_W = 58;
-const DUST_H = 34;
+const DUST_W = 50;
+const DUST_H = 30;
 
 /**
  * Altura del vuelo según el avance (0–1) de la hoja "welcome": en tierra aleteando, sube,
