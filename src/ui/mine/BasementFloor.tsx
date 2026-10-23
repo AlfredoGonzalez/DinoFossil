@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { shaftCycleSeconds, shaftRate } from '@/game/economy';
 import { formatNumber } from '@/game/format';
@@ -13,7 +14,7 @@ import { colors } from '../theme';
 import { BASKET_WIDTH, BoneBasket } from './BoneBasket';
 import { Digger } from './Digger';
 import { DirtMound, MOUND_CUT, MOUND_WIDTH } from './DirtMound';
-import { Floor } from './Floor';
+import { Floor, LIFT_WIDTH } from './Floor';
 import { LevelSign } from './LevelSign';
 import { TurboGlow, useTurboActive } from './TurboGlow';
 import { WantedPoster } from './WantedPoster';
@@ -30,6 +31,15 @@ const BAG_RIGHT = 4;
 const HOME_RIGHT = BAG_RIGHT + BASKET_WIDTH - 12;
 /** Margen interior de la planta (Floor): el montón se recorta contra la pared, no contra él. */
 const FLOOR_PADDING = 6;
+
+/**
+ * Centro del cuadro del manager, en coordenadas de la escena: al 50 % del ancho de la planta,
+ * entre los dos postes del fondo. La escena empieza 6 pt dentro de la planta y deja a la derecha
+ * el montacargas (LIFT_WIDTH + 6), así que la planta mide la escena + 12 + LIFT_WIDTH.
+ */
+function posterCenter(sceneWidth: number): number {
+  return (sceneWidth + 2 * FLOOR_PADDING + LIFT_WIDTH) / 2 - FLOOR_PADDING;
+}
 
 /** Tiempo de escarbado que falta (la ida y la vuelta duran ~1.3 s cada una sin Turbo). */
 function digLeft(progress: number, cycleSeconds: number, speed: number): string {
@@ -59,6 +69,7 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
   });
   const speed = useGameStore((s) => stationSpeed(s.game, station, Date.now()));
   const turbo = useTurboActive(station);
+  const [sceneWidth, setSceneWidth] = useState(0);
   if (!shaft) return null;
   const cycleSeconds = shaftCycleSeconds(index);
   const idle = !manager && !shaft.running;
@@ -71,6 +82,7 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
         accessibilityRole="button"
         accessibilityLabel={`tap-${station}`}
         style={styles.scene}
+        onLayout={(e) => setSceneWidth(e.nativeEvent.layout.width)}
         onPress={() => {
           if (!idle) return;
           tapFeedback();
@@ -79,7 +91,7 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
       >
         {turbo ? <TurboGlow /> : null}
         {/* En la pared, detrás del camino del dino (el dino no captura toques). */}
-        <View style={styles.poster}>
+        <View style={[styles.poster, { left: posterCenter(sceneWidth) }]}>
           <WantedPoster station={station} active={turbo} onPick={onPickManager} height={POSTER_HEIGHT} />
         </View>
         <DirtMound style={styles.mound} />
@@ -131,9 +143,8 @@ const styles = StyleSheet.create({
   // Ancho 0 y centrado: el letrero queda centrado justo sobre el 25 %.
   level: { position: 'absolute', left: '25%', top: 2, width: 0, alignItems: 'center' },
   basket: { position: 'absolute', right: BAG_RIGHT, bottom: 0 },
-  // Cuadro del manager colgado de la viga bajo la tablita, al ~47 % del ancho de la planta (la escena empieza
-  // 6 pt dentro de la planta y deja 64 pt a la derecha para el montacargas: 0.47·64 − 6 ≈ 24).
-  poster: { position: 'absolute', left: '47%', marginLeft: 24, top: 14, width: 0, alignItems: 'center' },
+  // Cuadro del manager con el clavo sobre la viga horizontal del fondo (el centro lo da posterCenter).
+  poster: { position: 'absolute', top: 26, width: 0, alignItems: 'center' },
   walk: { position: 'absolute', left: MOUND_WIDTH - MOUND_CUT - FLOOR_PADDING - DIG_REACH, right: HOME_RIGHT, bottom: 0 },
   home: { position: 'absolute', right: HOME_RIGHT, bottom: 0 },
   // Manita centrada sobre la cabeza del dino en reposo.

@@ -91,12 +91,12 @@ export function LabFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; 
 const styles = StyleSheet.create({
   scene: { flex: 1, alignSelf: 'stretch' },
   level: { position: 'absolute', left: 0, top: 4 },
-  // Colgado de la viga junto al letrero, fuera del camino del laboratorista (que es grande).
-  poster: { position: 'absolute', left: 100, top: 14, width: 0, alignItems: 'center' },
+  // Junto al letrero, fuera del camino del laboratorista, con el clavo sobre la viga horizontal del fondo.
+  poster: { position: 'absolute', left: 110, top: 26, width: 0, alignItems: 'center' },
   worker: { position: 'absolute', right: 0, bottom: 2, alignItems: 'center' },
   hint: { marginBottom: -4 },
   labWorker: { position: 'absolute', right: 0, bottom: 2 },
-  // Manita junto a la cara del laboratorista en su sitio (no cabe encima: llega casi a la viga).
-  workerHint: { position: 'absolute', right: LAB_WORKER_SIZE - 14, bottom: LAB_WORKER_SIZE * 0.55 },
+  // Manita sobre la cabeza del laboratorista en su sitio (casi rozando la viga del techo).
+  workerHint: { position: 'absolute', right: LAB_WORKER_SIZE * 0.4 - 14, bottom: LAB_WORKER_SIZE * 0.82 },
   progress: { position: 'absolute', left: '30%', right: '30%', bottom: 4 },
 });

@@ -1,14 +1,23 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
+import { Image, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import Animated, { cancelAnimation, Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { getArt } from '../art';
+import { TapHint } from './TapHint';
 import { getSheet } from '../spriteSheets';
 import { SpriteSheet } from '../SpriteSheet';
 
-const SIZE = 76;
-/** Cuánto sube en el vuelo, en fracciones de su tamaño. */
-const LIFT = 0.32;
-
-type Phase = 'idle' | 'welcome' | 'wave';
+const SIZE = 68;
+/** Cuánto sube en el vuelo, en fracciones de su tamaño (hasta rozar el techo de la sala). */
+const LIFT = 0.5;
+/** Mesita de entradas y recuerdos (museum/ticket-desk, 512 × 308). */
+const DESK_W = 96;
+const DESK_H = Math.round((DESK_W * 308) / 512);
+/** Altura de sus pies sobre el suelo: quedan tapados por el frente de la mesita. */
+const FEET = 18;
+/** Con manager vuela solo cada tantos ms. */
+const AUTO_MS = 10000;
+const DUST_W = 58;
+const DUST_H = 34;
 
 /**
  * Altura del vuelo según el avance (0–1) de la hoja "welcome": en tierra aleteando, sube,
@@ -26,52 +35,75 @@ function flight(t: number): number {
   return 0;
 }
 
+/** Nube de polvo (0–1) al despegar (fotogramas 17–25) y al aterrizar (44–49). */
+function dust(t: number): number {
+  'worklet';
+  const f = t * 49;
+  if (f >= 17 && f < 25) return 1 - (f - 17) / 8;
+  if (f >= 44) return Math.min(1, (f - 44) / 2) * (1 - Math.max(0, f - 46) / 3);
+  return 0;
+}
+
 /**
- * Pterodáctilo anfitrión de la sala, a la izquierda, por donde entran los visitantes.
- * En reposo ("idle") hasta que empieza una venta (`selling` pasa a true): despega, aletea en
- * el aire y aterriza ("welcome"), saluda ("wave") y vuelve a reposo. Si llega otra venta
- * a media función, la termina antes de repetir. Null si faltan sus hojas.
+ * Pterodáctilo de la taquilla: detrás de la mesita de entradas y recuerdos, mirando a la
+ * izquierda, animando a los visitantes a pasar. En reposo ("idle") hasta que cambia `flights`
+ * (cada toque a la sala): despega levantando polvo, vuela, aterriza y vuelve a reposo. Un toque
+ * a media función no la reinicia (la venta sí se cobra; eso lo decide la sala). Con manager
+ * vuela solo cada 10 s. Con `hint`, la manita sobre su cabeza. Dibuja también la mesita
+ * (encima de él) y el polvo (encima de todo). Null si faltan sus hojas.
  */
-export function HallHost({ selling, style }: { selling: boolean; style?: StyleProp<ViewStyle> }) {
+export function HallHost({ flights, managed, hint, style }: { flights: number; managed: boolean; hint: boolean; style?: StyleProp<ViewStyle> }) {
   const idle = getSheet('sprites/hall/idle');
   const welcome = getSheet('sprites/hall/welcome');
-  const wave = getSheet('sprites/hall/wave');
-  const [phase, setPhase] = useState<Phase>('idle');
-  const [wasSelling, setWasSelling] = useState(selling);
+  const dirt = getArt('museum/dirt');
+  const desk = getArt('museum/ticket-desk');
+  const [flying, setFlying] = useState(false);
+  const [seen, setSeen] = useState(flights);
   const t = useSharedValue(0);
 
-  // Al empezar una venta (ajuste de estado durante el render, sin efecto).
-  if (selling !== wasSelling) {
-    setWasSelling(selling);
-    if (selling && phase === 'idle' && welcome) setPhase('welcome');
+  // Toque nuevo (ajuste de estado durante el render, sin efecto): vuela si estaba en reposo.
+  if (flights !== seen) {
+    setSeen(flights);
+    if (!flying && welcome) setFlying(true);
   }
 
+  // Con manager, un vuelo cada 10 s.
   useEffect(() => {
-    if (phase === 'idle') return;
-    const sheet = phase === 'welcome' ? welcome : wave;
-    const ms = sheet ? (sheet.frames / sheet.fps) * 1000 : 0;
-    if (phase === 'welcome') {
-      t.value = 0;
-      t.value = withTiming(1, { duration: ms, easing: Easing.linear });
-    }
-    const id = setTimeout(() => setPhase(phase === 'welcome' && wave ? 'wave' : 'idle'), ms);
+    if (!managed || !welcome) return;
+    const id = setInterval(() => setFlying(true), AUTO_MS);
+    return () => clearInterval(id);
+  }, [managed, welcome]);
+
+  useEffect(() => {
+    if (!flying || !welcome) return;
+    const ms = (welcome.frames / welcome.fps) * 1000;
+    t.value = 0;
+    t.value = withTiming(1, { duration: ms, easing: Easing.linear });
+    const id = setTimeout(() => setFlying(false), ms);
     return () => {
       clearTimeout(id);
       cancelAnimation(t);
     };
-  }, [phase, t, welcome, wave]);
+  }, [flying, t, welcome]);
 
-  const lift = useAnimatedStyle(() => ({
-    transform: [{ translateY: phase === 'welcome' ? -flight(t.value) * LIFT * SIZE : 0 }],
-  }));
+  const lift = useAnimatedStyle(() => ({ transform: [{ translateY: flying ? -flight(t.value) * LIFT * SIZE : 0 }, { scaleX: -1 }] }));
+  const puff = useAnimatedStyle(() => {
+    const d = flying ? dust(t.value) : 0;
+    return { opacity: d * 0.9, transform: [{ scale: 0.6 + (1 - d) * 0.6 }] };
+  });
 
-  const sheet = phase === 'welcome' ? welcome : phase === 'wave' ? wave : idle;
+  const sheet = flying ? welcome : idle;
   if (!idle || !sheet) return null;
   return (
-    <Animated.View pointerEvents="none" style={[styles.host, style, lift]}>
-      {/* key: cada fase arranca su hoja desde el primer fotograma. */}
-      <SpriteSheet key={phase} sheet={sheet} size={SIZE} once={phase !== 'idle'} />
-    </Animated.View>
+    <View pointerEvents="none" style={[styles.wrap, style]}>
+      <Animated.View style={[styles.host, lift]}>
+        {/* key: cada vuelo arranca su hoja desde el primer fotograma. */}
+        <SpriteSheet key={flying ? 'fly' : 'idle'} sheet={sheet} size={SIZE} once={flying} />
+      </Animated.View>
+      {desk ? <Image source={desk} resizeMode="contain" style={styles.desk} /> : null}
+      {dirt ? <Animated.Image source={dirt} resizeMode="contain" style={[styles.dust, puff]} /> : null}
+      {hint ? <TapHint style={styles.hint} /> : null}
+    </View>
   );
 }
 
@@ -79,8 +111,16 @@ export function hasHallHostSprites(): boolean {
   return !!getSheet('sprites/hall/idle');
 }
 
-export const HALL_HOST_SIZE = SIZE;
+/** Ancho que ocupa la taquilla (la mesita). */
+export const HALL_HOST_WIDTH = DESK_W;
 
 const styles = StyleSheet.create({
-  host: { width: SIZE, height: SIZE },
+  wrap: { width: DESK_W, height: FEET + SIZE },
+  // Detrás de la parte ancha de la mesita, un poco a la derecha de su centro.
+  host: { position: 'absolute', left: DESK_W - SIZE - 6, bottom: FEET, width: SIZE, height: SIZE },
+  desk: { position: 'absolute', left: 0, bottom: 0, width: DESK_W, height: DESK_H },
+  // A la altura de la mesita, por delante: el polvo que levanta al despegar y al aterrizar.
+  dust: { position: 'absolute', left: DESK_W - SIZE - 6 + (SIZE - DUST_W) / 2, bottom: FEET + 4, width: DUST_W, height: DUST_H, opacity: 0 },
+  // Manita sobre su cabeza.
+  hint: { position: 'absolute', left: DESK_W - SIZE / 2 - 6 - 14, bottom: FEET + SIZE - 10 },
 });

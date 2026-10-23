@@ -13,6 +13,10 @@ motor no cambian para no romper partidas guardadas.
 Galerías (excavan fósiles) → Ascensor (sube fósiles) → Museo (vende por DinoCoins)
 ```
 
+En la sala, los fósiles limpios se muestran ya como **dinero de entradas y recuerdos**: el contador
+de la taquilla enseña las monedas que esperan (`fósiles · coinsPerFossil · bonus`) y cada visita cobra
+su capacidad. Es solo presentación: el motor sigue guardando fósiles en `surface`.
+
 - **Sin manager**, cada estación hace **un ciclo por toque**.
 - **Con un dino manager**, la estación trabaja sola, también offline.
 - Cada manager tiene la habilidad **Turbo** (×2 a ×5 de velocidad según rareza, 30–90 s, recarga de 5 min).

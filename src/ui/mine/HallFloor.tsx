@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import Animated, { Easing, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { DINOS } from '@/data/dinos';
+import { MINE_BALANCE } from '@/data/mine';
 import { carrierCapacity } from '@/game/economy';
 import { formatNumber } from '@/game/format';
 import { getModifiers } from '@/game/modifiers';
@@ -10,18 +10,18 @@ import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
 import { getArt } from '../art';
 import { GameText } from '../GameText';
-import { DinoAvatar, ResourceIcon } from '../Icons';
+import { IconLabel } from '../IconLabel';
+import { ResourceIcon } from '../Icons';
+import { ProgressBar } from '../ProgressBar';
 import { getSheet } from '../spriteSheets';
 import { SpriteSheet } from '../SpriteSheet';
 import { colors } from '../theme';
 import { Floor } from './Floor';
-import { HALL_HOST_SIZE, HallHost, hasHallHostSprites } from './HallHost';
+import { HALL_HOST_WIDTH, HallHost, hasHallHostSprites } from './HallHost';
 import { TurboGlow, useTurboActive } from './TurboGlow';
 import { WantedPoster } from './WantedPoster';
 import { StationStatus } from './StationStatus';
 import { UpgradeChip } from './UpgradeChip';
-
-const MAX_EXHIBITS = 4;
 
 const VISITOR_SHEETS = ['sprites/visitors/a', 'sprites/visitors/b', 'sprites/visitors/c'] as const;
 const VISITOR_SIZE = 52;
@@ -68,23 +68,29 @@ function Visitor({ width }: { width: number }) {
   );
 }
 
-/** Planta alta: la sala de exposición (estación "museum" del motor) vende los fósiles limpios. */
+/**
+ * Planta alta: la sala de exposición al aire libre (estación "museum" del motor). Los fósiles
+ * limpios se convierten aquí en dinero de entradas y recuerdos: el contador muestra las monedas
+ * que esperan en taquilla y cada visita cobra una parte (más con más nivel). De izquierda a
+ * derecha: visitantes paseando · cuadro del manager en su tripié · taquilla con el pterodáctilo
+ * (HallHost), que vuela a cada toque · columna del nivel.
+ */
 export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; onPickManager: () => void }) {
   const { t } = useTranslation();
   const [width, setWidth] = useState(0);
+  const [flights, setFlights] = useState(0);
   const station = useGameStore((s) => s.game.mine.museum);
   const manager = useGameStore((s) => s.game.managers.museum);
-  const ready = useGameStore((s) => s.game.mine.surface);
-  const dinos = useGameStore((s) => s.game.dinos);
+  const coinValue = useGameStore((s) => MINE_BALANCE.coinsPerFossil * getModifiers(s.game, Date.now()).coinValue);
+  const waiting = useGameStore((s) => s.game.mine.surface) * coinValue;
   const capacity = useGameStore((s) => carrierCapacity('museum', s.game.mine.museum.level) * getModifiers(s.game, Date.now()).museumCapacity);
-  const exhibits = DINOS.filter((d) => dinos[d.id]).slice(0, MAX_EXHIBITS);
   const idle = !manager && !station.running;
   const turbo = useTurboActive('museum');
+  const withHost = hasHallHostSprites();
 
   return (
-    <Floor art={getArt('museum/hall')} color="#F3D9A4" floorColor="#A4693B">
+    <Floor art={getArt('museum/hall')} color="#BFE3A8" floorColor="#A4693B">
       {turbo ? <TurboGlow /> : null}
-      <HallHost selling={station.running} style={styles.host} />
       {/* Capa del ancho de todo el piso (también por delante de la columna del nivel). */}
       <View pointerEvents="none" style={styles.walkway} onLayout={(e) => setWidth(e.nativeEvent.layout.width)}>
         {/* Siempre hay alguien paseando: si solo saliera durante la venta, desaparecería a media sala. */}
@@ -93,40 +99,48 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="tap-museum"
-        style={[styles.body, hasHallHostSprites() && styles.bodyWithHost]}
+        style={styles.body}
         onPress={() => {
-          if (!idle) return;
           tapFeedback();
-          useGameStore.getState().tap('museum');
+          // El pterodáctilo vuela con cada toque (si ya vuela, termina su vuelo); la venta
+          // solo empieza si la taquilla estaba libre.
+          setFlights((n) => n + 1);
+          if (idle) useGameStore.getState().tap('museum');
         }}
       >
-        {/* Sin título: el cartel del tejado ya la nombra. Arriba, los fósiles listos para exponer. */}
+        {/* Arriba: el dinero que espera en taquilla. */}
         <View style={styles.titleRow}>
           <View style={styles.stock}>
-            <ResourceIcon kind="fossils" size={14} />
+            <ResourceIcon kind="coins" size={14} />
             <GameText size={12} weight="black" color={colors.text}>
-              {formatNumber(ready)}
+              {formatNumber(waiting)}
             </GameText>
           </View>
         </View>
-        <View style={styles.exhibits}>
-          {exhibits.map((d) => (
-            <View key={d.id} style={styles.pedestal}>
-              <DinoAvatar dinoId={d.id} size={30} />
-            </View>
-          ))}
-        </View>
-        <StationStatus idle={idle} progress={station.progress} color={colors.gold} />
-        {/* Cuadro del manager sobre un tripié, en el suelo de la sala, junto al nivel. */}
-        <View style={styles.easel}>
+        {withHost ? (
+          <HallHost flights={flights} managed={!!manager} hint={idle} style={styles.host} />
+        ) : null}
+        {/* Cuadro del manager sobre un tripié, en el suelo, junto a la taquilla. */}
+        <View style={[styles.easel, withHost && styles.easelBesideDesk]}>
           <WantedPoster station="museum" variant="easel" active={turbo} onPick={onPickManager} height={60} />
         </View>
+        {withHost ? (
+          station.running ? (
+            <View style={styles.progress}>
+              <ProgressBar value={station.progress} height={8} color={colors.gold} />
+            </View>
+          ) : null
+        ) : (
+          <StationStatus idle={idle} progress={station.progress} color={colors.gold} />
+        )}
       </Pressable>
       <View style={styles.side}>
         <UpgradeChip station="museum" level={station.level} onPress={onUpgrade} />
-        <GameText size={10} weight="black" color={colors.textLight} outline center>
-          {t('mine.perCycle', { value: formatNumber(capacity) })}
-        </GameText>
+        <IconLabel icon="coins" size={12}>
+          <GameText size={10} weight="black" color={colors.textLight} outline center>
+            {t('mine.perCycle', { value: formatNumber(capacity * coinValue) })}
+          </GameText>
+        </IconLabel>
       </View>
     </Floor>
   );
@@ -134,16 +148,17 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
 
 const styles = StyleSheet.create({
   body: { flex: 1, height: '86%', justifyContent: 'space-between', paddingVertical: 4, paddingLeft: 6 },
-  // El anfitrión ocupa la entrada (izquierda): las vitrinas y la barra empiezan a su derecha.
-  bodyWithHost: { paddingLeft: HALL_HOST_SIZE + 2 },
-  titleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' },
-  stock: { flexDirection: 'row', alignItems: 'center', gap: 2, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: 8, paddingHorizontal: 5 },
-  exhibits: { flexDirection: 'row', gap: 6 },
-  pedestal: { paddingBottom: 3, borderBottomWidth: 5, borderBottomColor: '#C9A06A', borderRadius: 4 },
-  host: { position: 'absolute', left: 4, bottom: 2, zIndex: 1 },
+  // A la izquierda: a la derecha asoma la cabeza del pterodáctilo.
+  titleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' },
+  stock: { flexDirection: 'row', alignItems: 'center', gap: 2, backgroundColor: 'rgba(255,255,255,0.7)', borderRadius: 8, paddingHorizontal: 5 },
+  // Taquilla pegada a la columna del nivel; el cuerpo mide el 86 % del piso, centrado.
+  host: { position: 'absolute', right: 0, bottom: -6, zIndex: 1 },
   walkway: { position: 'absolute', left: 0, right: 0, bottom: 4, height: VISITOR_SIZE, zIndex: 1 },
   visitor: { position: 'absolute', bottom: 0, left: 0 },
   easel: { position: 'absolute', right: 0, bottom: 0 },
+  easelBesideDesk: { right: HALL_HOST_WIDTH + 2 },
+  // La barra de la venta, a la izquierda de la taquilla.
+  progress: { marginRight: HALL_HOST_WIDTH + 40 },
   visitorArt: { width: 30, height: 30 },
   side: { alignItems: 'center', gap: 3, width: 70 },
 });

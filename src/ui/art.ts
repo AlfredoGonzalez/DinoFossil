@@ -14,7 +14,7 @@ export const ART_SPECS = {
   // Módulo 2 · Casa-Museo (docs/art/02-casa-museo.md).
   'museum/sky': { size: '1290×2796', format: 'jpg/webp opaco', desc: 'Paisaje detrás de la casa (si falta: loading/background)' },
   'museum/roof': { size: '1290×430', format: 'png/webp transparente', desc: 'Tejado y fachada superior, con cartel vacío' },
-  'museum/hall': { size: '1290×480', format: 'jpg/webp opaco', desc: 'Interior de la sala de exposición' },
+  'museum/hall': { size: '1290×520', format: 'jpg/webp opaco', desc: 'Sala de exposición al aire libre (sendero, vitrinas y salida)' },
   'museum/lab': { size: '1290×480', format: 'jpg/webp opaco', desc: 'Interior del laboratorio' },
   'museum/basement': { size: '1290×480', format: 'jpg/webp opaco', desc: 'Interior de un sótano (se repite en cada uno)' },
   'museum/foundation': { size: '1290×360', format: 'jpg/webp opaco', desc: 'Cimientos y roca bajo el último sótano' },
@@ -34,6 +34,7 @@ export const ART_SPECS = {
   'museum/rope': { size: '32×256', format: 'png/webp transparente', desc: 'Tramo vertical de cuerda que se repite (montacargas)' },
   'museum/crate-empty': { size: '≈256×256', format: 'png/webp transparente', desc: 'Caja del montacargas vacía (baja)' },
   'museum/crate-full': { size: '≈256×256', format: 'png/webp transparente', desc: 'Caja del montacargas llena de huesos (sube)' },
+  'museum/ticket-desk': { size: '≈512×308', format: 'png/webp transparente', desc: 'Mesita de entradas y recuerdos de la sala (el pterodáctilo va detrás)' },
   'museum/visitor': { size: '512×512', format: 'png/webp transparente', desc: 'Visitante que pasea por la sala' },
   // Módulo 4 · Sótanos (docs/art/04-sotanos.md).
   'museum/basket': { size: '≈365×420', format: 'png/webp transparente', desc: 'Bolsa de huesos de cada sótano' },

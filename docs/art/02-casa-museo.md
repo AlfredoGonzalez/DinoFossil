@@ -19,7 +19,7 @@ Para interiores y escenarios usa el bloque de **fondos**.
 │        ╭──────────────╮      │
 │   ╭────│  Casa-Museo  │───╮  │  ← museum/roof (el cartel y su texto son código)
 │ ┌─┴────────────────────────┐ │
-│ │[M] Sala de exposición [Nv]│ │  ← museum/hall + dinos de tu colección + visitante
+│ │[M] Sala de exposición [Nv]│ │  ← museum/hall + taquilla con pterodáctilo + visitantes
 │ ├──────────────────────────┤ │
 │ │[M] Laboratorio  🖌️  [Nv]│▒│ │  ← museum/lab                    ▒ = montacargas
 │ ├══════════ suelo ══════════┤▒│     (raíles en código, caja = museum/crate)
@@ -44,7 +44,8 @@ Todos en `assets/art/museum/`.
 |---|---|---|---|---|
 | `sky.jpg` ✅ | JPG/WebP opaco | **1290 × 2796** | Paisaje detrás de la casa: cielo, colinas, palmeras lejanas. Solo se ve alrededor del tejado. *Opcional.* | fondo de la carga |
 | `roof.png` ✅ | PNG/WebP transparente | **1290 × 430** | Tejado de tejas de fieltro con chimenea y alero. **Deja libre un hueco central abajo** (≈ 520 × 170 px) para el cartel "Casa-Museo". | tejado de código |
-| `hall.png` ✅ | JPG/WebP opaco | **1290 × 480** | Interior de la sala de exposición: papel pintado cálido, zócalo de madera, cuadros con huesos, cordón rojo. **Sin personajes.** | color crema |
+| `hall.png` ✅ | JPG/WebP opaco | **1290 × 520** | Sala de exposición **al aire libre**: sendero, pabellón con vitrinas, esqueletos con cordón rojo y cartel EXIT. **Sin personajes.** | verde claro |
+| `ticket-desk.png` ✅ | PNG/WebP transparente | ~**512 × 308** | Mesita de entradas (TICKETS) y recuerdos (gorritos de dino). El pterodáctilo va detrás, mirando a la izquierda. | sin mesita |
 | `lab.png` ✅ | JPG/WebP opaco | **1290 × 480** | Interior del laboratorio: azulejos claros, estanterías con frascos, lupa gigante, mesa de trabajo baja. | color azul claro |
 | `basement.png` ✅ | JPG/WebP opaco | **1290 × 480** | Pared de tierra con vigas de madera, raíces, piedrecitas y algún hueso incrustado, **sin objetos grandes** (el montón de tierra y la canasta van encima, ver [04-sotanos.md](04-sotanos.md)). Se repite en cada sótano: que los bordes izquierdo/derecho no tengan elementos llamativos cortados. | color tierra |
 | `foundation.png` ✅ | JPG/WebP opaco | **1290 × 360** | Roca y tierra profunda bajo la casa (cimientos de piedra, cristales pequeños). La parte de arriba debe empalmar con el sótano. | color tierra oscura |
