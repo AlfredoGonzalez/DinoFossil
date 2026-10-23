@@ -66,6 +66,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       },
     ],
   ],
+  // Proyecto de EAS (expo.dev) para compilar el APK/AAB: su ID va en la variable EAS_PROJECT_ID.
+  ...(process.env.EAS_PROJECT_ID ? { extra: { ...config.extra, eas: { projectId: process.env.EAS_PROJECT_ID } } } : {}),
   experiments: {
     typedRoutes: true,
     // Prefijo de la web publicada en GitHub Pages (/DinoFossil). Vacío en local y en nativo.

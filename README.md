@@ -32,6 +32,17 @@ npx expo start --dev-client
 
 En Expo Go el juego funciona igual, con anuncios y compras simulados.
 
+### APK para probar en Android
+
+El perfil `preview` de `eas.json` genera un **APK instalable** (anuncios de prueba de AdMob).
+
+- **Desde GitHub** (sin instalar nada): crea el proyecto `dino-fossil-tycoon` en expo.dev, guarda en el
+  repositorio los secretos `EXPO_TOKEN` (token de acceso de Expo) y `EAS_PROJECT_ID` (ID del proyecto), y
+  lanza *Actions → Build Android APK (EAS) → Run workflow*. El enlace de descarga sale en expo.dev
+  (~15–20 min).
+- **Desde tu computadora**: `npx eas-cli@latest login` y luego
+  `EAS_PROJECT_ID=<id> npx eas-cli@latest build --platform android --profile preview`.
+
 ## Configuración para publicar
 
 Crea un archivo `.env.local` (no se sube a git):

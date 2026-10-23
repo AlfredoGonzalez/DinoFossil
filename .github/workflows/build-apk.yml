@@ -1,0 +1,34 @@
+name: Build Android APK (EAS)
+
+# Manual: Actions → "Build Android APK (EAS)" → Run workflow. Needs two repository secrets:
+# EXPO_TOKEN (expo.dev → Account settings → Access tokens) and EAS_PROJECT_ID (the project ID
+# shown on expo.dev after creating the "dino-fossil-tycoon" project). The APK link appears on expo.dev.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - run: npm ci
+      # Iconos subidos desde GitHub: recorta, reduce y convierte a WebP, igual que en la web.
+      - name: Optimize icons
+        run: pip install --quiet pillow && python3 scripts/optimize-icons.py
+      - run: npm test
+      - run: npm run typecheck
+      # Sin --wait: la compilación sigue en los servidores de Expo y el enlace sale en expo.dev.
+      - run: eas build --platform android --profile preview --non-interactive --no-wait
+        env:
+          EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}
