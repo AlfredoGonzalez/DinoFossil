@@ -96,7 +96,12 @@ AutoSprite (side-scroller, 25 fotogramas, 256 px, Sharpen: None):
 - **walk**: *Side view, facing right. The strong plush dinosaur walks forward with relaxed arms.
   In-place animation, loops seamlessly.*
 
-## Anfitrión de la sala: Pterodáctilo (`assets/art/sprites/hall/`) · pendiente
+## Anfitrión de la sala: Pterodáctilo (`assets/art/sprites/hall/`) · ✅ entregado
+
+Entregado en hojas de **7 × 7 (49 fotogramas)**: `idle`, `welcome` (despega, aletea y aterriza en
+una sola hoja) y `wave`. Claude las escaló al tamaño de `idle` (`welcome` ×1,54, `wave` ×1,1) y fijó
+los pies en la misma línea; la subida del vuelo la hace el código. Referencia del personaje:
+`docs/art/referencias/pterodactyl-host.webp`. Lo de abajo es la propuesta original.
 
 Da la bienvenida a los visitantes. Vive a la **izquierda** de la sala, por donde entran, mirando a
 la derecha (hacia ellos). Al tocar la sala hace su número y vuelve a reposo:

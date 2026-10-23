@@ -15,6 +15,7 @@ import { getSheet } from '../spriteSheets';
 import { SpriteSheet } from '../SpriteSheet';
 import { colors } from '../theme';
 import { Floor } from './Floor';
+import { HALL_HOST_SIZE, HallHost, hasHallHostSprites } from './HallHost';
 import { TurboGlow, useTurboActive } from './TurboGlow';
 import { WantedPoster } from './WantedPoster';
 import { StationStatus } from './StationStatus';
@@ -83,6 +84,7 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
   return (
     <Floor art={getArt('museum/hall')} color="#F3D9A4" floorColor="#A4693B">
       {turbo ? <TurboGlow /> : null}
+      <HallHost selling={station.running} style={styles.host} />
       {/* Capa del ancho de todo el piso (también por delante de la columna del nivel). */}
       <View pointerEvents="none" style={styles.walkway} onLayout={(e) => setWidth(e.nativeEvent.layout.width)}>
         {/* Siempre hay alguien paseando: si solo saliera durante la venta, desaparecería a media sala. */}
@@ -91,7 +93,7 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="tap-museum"
-        style={styles.body}
+        style={[styles.body, hasHallHostSprites() && styles.bodyWithHost]}
         onPress={() => {
           if (!idle) return;
           tapFeedback();
@@ -132,10 +134,13 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
 
 const styles = StyleSheet.create({
   body: { flex: 1, height: '86%', justifyContent: 'space-between', paddingVertical: 4, paddingLeft: 6 },
+  // El anfitrión ocupa la entrada (izquierda): las vitrinas y la barra empiezan a su derecha.
+  bodyWithHost: { paddingLeft: HALL_HOST_SIZE + 2 },
   titleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' },
   stock: { flexDirection: 'row', alignItems: 'center', gap: 2, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: 8, paddingHorizontal: 5 },
   exhibits: { flexDirection: 'row', gap: 6 },
   pedestal: { paddingBottom: 3, borderBottomWidth: 5, borderBottomColor: '#C9A06A', borderRadius: 4 },
+  host: { position: 'absolute', left: 4, bottom: 2, zIndex: 1 },
   walkway: { position: 'absolute', left: 0, right: 0, bottom: 4, height: VISITOR_SIZE, zIndex: 1 },
   visitor: { position: 'absolute', bottom: 0, left: 0 },
   easel: { position: 'absolute', right: 0, bottom: 0 },

@@ -21,6 +21,10 @@ export const SHEET_LAYOUTS: Partial<Record<ArtKey, SheetLayout>> = {
   'sprites/lab/idle': { cols: 5, rows: 5, frames: 25, fps: 10 },
   'sprites/lab/pull': { cols: 5, rows: 5, frames: 25, fps: 14 },
   'sprites/lab/walk': { cols: 5, rows: 5, frames: 25, fps: 16 },
+  // Anfitrión de la sala (pterodáctilo): hojas de 7 × 7.
+  'sprites/hall/idle': { cols: 7, rows: 7, frames: 49, fps: 14 },
+  'sprites/hall/welcome': { cols: 7, rows: 7, frames: 49, fps: 16 },
+  'sprites/hall/wave': { cols: 7, rows: 7, frames: 49, fps: 16 },
   'sprites/visitors/a': { cols: 5, rows: 5, frames: 25, fps: 14 },
   'sprites/visitors/b': { cols: 5, rows: 5, frames: 25, fps: 14 },
   'sprites/visitors/c': { cols: 5, rows: 5, frames: 25, fps: 14 },

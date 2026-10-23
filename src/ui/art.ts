@@ -48,6 +48,9 @@ export const ART_SPECS = {
   'sprites/visitors/c': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Visitante caminando (mira a la derecha)' },
   'sprites/lab/idle': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Laboratorista esperando con la cuerda (mira a la derecha)' },
   'sprites/lab/pull': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Laboratorista tirando de la cuerda (mira a la derecha, en el sitio)' },
+  'sprites/hall/idle': { size: '1792×1792 (7×7 de 256)', format: 'png/webp transparente', desc: 'Pterodáctilo anfitrión en reposo (mira a la derecha)' },
+  'sprites/hall/welcome': { size: '1792×1792 (7×7 de 256)', format: 'png/webp transparente', desc: 'Pterodáctilo: despega, aletea y aterriza (una vez)' },
+  'sprites/hall/wave': { size: '1792×1792 (7×7 de 256)', format: 'png/webp transparente', desc: 'Pterodáctilo saluda (una vez)' },
   'sprites/lab/walk': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Laboratorista volviendo a su sitio (mira a la derecha)' },
 } as const;
 
