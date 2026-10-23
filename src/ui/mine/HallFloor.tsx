@@ -10,7 +10,6 @@ import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
 import { getArt } from '../art';
 import { GameText } from '../GameText';
-import { IconLabel } from '../IconLabel';
 import { ResourceIcon } from '../Icons';
 import { ProgressBar } from '../ProgressBar';
 import { getSheet } from '../spriteSheets';
@@ -21,7 +20,7 @@ import { HALL_HOST_WIDTH, HallHost, hasHallHostSprites } from './HallHost';
 import { TurboGlow, useTurboActive } from './TurboGlow';
 import { WantedPoster } from './WantedPoster';
 import { StationStatus } from './StationStatus';
-import { UpgradeChip } from './UpgradeChip';
+import { LevelSign } from './LevelSign';
 
 const VISITOR_SHEETS = ['sprites/visitors/a', 'sprites/visitors/b', 'sprites/visitors/c'] as const;
 const VISITOR_SIZE = 52;
@@ -71,9 +70,13 @@ function Visitor({ width }: { width: number }) {
 /**
  * Planta alta: la sala de exposición al aire libre (estación "museum" del motor). Los fósiles
  * limpios se convierten aquí en dinero de entradas y recuerdos: el contador muestra las monedas
- * que esperan en taquilla y cada visita cobra una parte (más con más nivel). De izquierda a
- * derecha: visitantes paseando · cuadro del manager en su tripié · taquilla con el pterodáctilo
- * (HallHost), que vuela a cada toque · columna del nivel.
+ * que esperan en taquilla y cada visita cobra una parte (más con más nivel). Distribución, pensada
+ * para dejar a la vista el pabellón, los esqueletos y el cartel EXIT del fondo:
+ * - abajo a la izquierda, la taquilla con el pterodáctilo (HallHost), que vuela a cada toque;
+ * - arriba, junto a su cabeza, el dinero en taquilla y, durante la venta, su barra;
+ * - en el suelo, entre el pabellón y los esqueletos, el cuadro del manager en su tripié;
+ * - arriba a la derecha, sobre el cielo, la tablita de nivel (como en las demás plantas);
+ * - los visitantes pasean por delante de todo el piso.
  */
 export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; onPickManager: () => void }) {
   const { t } = useTranslation();
@@ -90,16 +93,10 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
 
   return (
     <Floor art={getArt('museum/hall')} color="#BFE3A8" floorColor="#A4693B">
-      {turbo ? <TurboGlow /> : null}
-      {/* Capa del ancho de todo el piso (también por delante de la columna del nivel). */}
-      <View pointerEvents="none" style={styles.walkway} onLayout={(e) => setWidth(e.nativeEvent.layout.width)}>
-        {/* Siempre hay alguien paseando: si solo saliera durante la venta, desaparecería a media sala. */}
-        {width > 0 ? <Visitor width={width} /> : null}
-      </View>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="tap-museum"
-        style={styles.body}
+        style={styles.scene}
         onPress={() => {
           tapFeedback();
           // El pterodáctilo vuela con cada toque (si ya vuela, termina su vuelo); la venta
@@ -108,57 +105,60 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
           if (idle) useGameStore.getState().tap('museum');
         }}
       >
-        {/* Arriba: el dinero que espera en taquilla. */}
-        <View style={styles.titleRow}>
+        {turbo ? <TurboGlow /> : null}
+        {/* Cuadro del manager sobre un tripié, en el suelo. */}
+        <View style={styles.easel}>
+          <WantedPoster station="museum" variant="easel" active={turbo} onPick={onPickManager} height={60} />
+        </View>
+        {withHost ? (
+          <HallHost flights={flights} managed={!!manager} hint={idle} style={styles.host} />
+        ) : (
+          <View style={styles.status}>
+            <StationStatus idle={idle} progress={station.progress} color={colors.gold} />
+          </View>
+        )}
+        {/* El dinero que espera en taquilla y, durante la venta, su avance. */}
+        <View pointerEvents="none" style={styles.till}>
           <View style={styles.stock}>
             <ResourceIcon kind="coins" size={14} />
             <GameText size={12} weight="black" color={colors.text}>
               {formatNumber(waiting)}
             </GameText>
           </View>
+          {withHost && station.running ? <ProgressBar value={station.progress} height={6} color={colors.gold} /> : null}
         </View>
-        {withHost ? (
-          <HallHost flights={flights} managed={!!manager} hint={idle} style={styles.host} />
-        ) : null}
-        {/* Cuadro del manager sobre un tripié, en el suelo, junto a la taquilla. */}
-        <View style={[styles.easel, withHost && styles.easelBesideDesk]}>
-          <WantedPoster station="museum" variant="easel" active={turbo} onPick={onPickManager} height={60} />
+        {/* Los visitantes cruzan todo el piso, por delante. */}
+        <View pointerEvents="none" style={styles.walkway} onLayout={(e) => setWidth(e.nativeEvent.layout.width)}>
+          {/* Siempre hay alguien paseando: si solo saliera durante la venta, desaparecería a media sala. */}
+          {width > 0 ? <Visitor width={width} /> : null}
         </View>
-        {withHost ? (
-          station.running ? (
-            <View style={styles.progress}>
-              <ProgressBar value={station.progress} height={8} color={colors.gold} />
-            </View>
-          ) : null
-        ) : (
-          <StationStatus idle={idle} progress={station.progress} color={colors.gold} />
-        )}
       </Pressable>
-      <View style={styles.side}>
-        <UpgradeChip station="museum" level={station.level} onPress={onUpgrade} />
-        <IconLabel icon="coins" size={12}>
-          <GameText size={10} weight="black" color={colors.textLight} outline center>
-            {t('mine.perCycle', { value: formatNumber(capacity * coinValue) })}
-          </GameText>
-        </IconLabel>
+      <View style={styles.level}>
+        <LevelSign
+          station="museum"
+          level={station.level}
+          detail={t('mine.perCycle', { value: formatNumber(capacity * coinValue) })}
+          post={false}
+          onPress={onUpgrade}
+        />
       </View>
     </Floor>
   );
 }
 
 const styles = StyleSheet.create({
-  body: { flex: 1, height: '86%', justifyContent: 'space-between', paddingVertical: 4, paddingLeft: 6 },
-  // A la izquierda: a la derecha asoma la cabeza del pterodáctilo.
-  titleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' },
-  stock: { flexDirection: 'row', alignItems: 'center', gap: 2, backgroundColor: 'rgba(255,255,255,0.7)', borderRadius: 8, paddingHorizontal: 5 },
-  // Taquilla pegada a la columna del nivel; el cuerpo mide el 86 % del piso, centrado.
-  host: { position: 'absolute', right: 0, bottom: -6, zIndex: 1 },
-  walkway: { position: 'absolute', left: 0, right: 0, bottom: 4, height: VISITOR_SIZE, zIndex: 1 },
+  scene: { flex: 1, alignSelf: 'stretch' },
+  // La taquilla, en la entrada (izquierda), apoyada en el suelo.
+  host: { position: 'absolute', left: -2, bottom: 0 },
+  status: { position: 'absolute', left: 8, right: 8, bottom: 6 },
+  // Junto a la cabeza del pterodáctilo.
+  till: { position: 'absolute', left: HALL_HOST_WIDTH + 4, top: 6, width: 84, gap: 3 },
+  stock: { flexDirection: 'row', alignSelf: 'flex-start', alignItems: 'center', gap: 2, backgroundColor: 'rgba(255,255,255,0.75)', borderRadius: 8, paddingHorizontal: 5 },
+  // En el claro entre el pabellón y los esqueletos.
+  easel: { position: 'absolute', left: '50%', bottom: 0 },
+  walkway: { position: 'absolute', left: -6, right: -6, bottom: 2, height: VISITOR_SIZE },
   visitor: { position: 'absolute', bottom: 0, left: 0 },
-  easel: { position: 'absolute', right: 0, bottom: 0 },
-  easelBesideDesk: { right: HALL_HOST_WIDTH + 2 },
-  // La barra de la venta, a la izquierda de la taquilla.
-  progress: { marginRight: HALL_HOST_WIDTH + 40 },
   visitorArt: { width: 30, height: 30 },
-  side: { alignItems: 'center', gap: 3, width: 70 },
+  // Arriba a la derecha, sobre el cielo: deja ver el cartel EXIT del fondo.
+  level: { position: 'absolute', right: 8, top: 4 },
 });

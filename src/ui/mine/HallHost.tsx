@@ -60,6 +60,10 @@ export function HallHost({ flights, managed, hint, style }: { flights: number; m
   const [flying, setFlying] = useState(false);
   const [seen, setSeen] = useState(flights);
   const t = useSharedValue(0);
+  // Primitivos para las dependencias: getSheet devuelve un objeto nuevo en cada render, y la sala
+  // se repinta con cada tick del juego; si el efecto dependiera de él, el vuelo se reiniciaría sin fin.
+  const canFly = !!welcome;
+  const flightMs = welcome ? (welcome.frames / welcome.fps) * 1000 : 0;
 
   // Toque nuevo (ajuste de estado durante el render, sin efecto): vuela si estaba en reposo.
   if (flights !== seen) {
@@ -69,22 +73,21 @@ export function HallHost({ flights, managed, hint, style }: { flights: number; m
 
   // Con manager, un vuelo cada 10 s.
   useEffect(() => {
-    if (!managed || !welcome) return;
+    if (!managed || !canFly) return;
     const id = setInterval(() => setFlying(true), AUTO_MS);
     return () => clearInterval(id);
-  }, [managed, welcome]);
+  }, [managed, canFly]);
 
   useEffect(() => {
-    if (!flying || !welcome) return;
-    const ms = (welcome.frames / welcome.fps) * 1000;
+    if (!flying || !flightMs) return;
     t.value = 0;
-    t.value = withTiming(1, { duration: ms, easing: Easing.linear });
-    const id = setTimeout(() => setFlying(false), ms);
+    t.value = withTiming(1, { duration: flightMs, easing: Easing.linear });
+    const id = setTimeout(() => setFlying(false), flightMs);
     return () => {
       clearTimeout(id);
       cancelAnimation(t);
     };
-  }, [flying, t, welcome]);
+  }, [flying, t, flightMs]);
 
   const lift = useAnimatedStyle(() => ({ transform: [{ translateY: flying ? -flight(t.value) * LIFT * SIZE : 0 }, { scaleX: -1 }] }));
   const puff = useAnimatedStyle(() => {
