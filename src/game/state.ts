@@ -46,8 +46,10 @@ export function migrateSave(raw: unknown, now: number): GameState {
   const fresh = createInitialState(now);
   if (!raw || typeof raw !== 'object') return fresh;
   const save = raw as Partial<GameState>;
-  // v1 → v2: el tutorial es nuevo; quien ya jugaba no lo repite.
-  const tutorialStep = typeof save.tutorialStep === 'number' ? save.tutorialStep : TUTORIAL_FINISHED;
+  // v1 → v2: el tutorial es nuevo. Quien ya había ganado algo no lo repite; una partida v1 sin
+  // progreso (recién creada o recién borrada con una versión anterior) sí lo ve.
+  const playedBefore = (save.lifetimeEarnings ?? 0) > 0 || (save.prestigeCount ?? 0) > 0;
+  const tutorialStep = typeof save.tutorialStep === 'number' ? save.tutorialStep : playedBefore ? TUTORIAL_FINISHED : 0;
   // Rellena con valores por defecto cualquier campo que falte (partidas antiguas).
   return {
     ...fresh,

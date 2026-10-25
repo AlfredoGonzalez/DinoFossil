@@ -46,10 +46,14 @@ describe('tutorial', () => {
     expect(currentTutorialStep(s)).toBeNull();
   });
 
-  it('se puede saltar, y las partidas antiguas no lo repiten', () => {
+  it('se puede saltar, y las partidas antiguas con progreso no lo repiten', () => {
     expect(skipTutorial(createInitialState(T0))!.tutorialStep).toBe(TUTORIAL_FINISHED);
-    const old = { ...createInitialState(T0), version: 1 } as Partial<GameState>;
+    const old = { ...createInitialState(T0), version: 1, lifetimeEarnings: 500 } as Partial<GameState>;
     delete old.tutorialStep;
     expect(migrateSave(old, T0).tutorialStep).toBe(TUTORIAL_FINISHED);
+    // Una partida v1 sin progreso (p. ej. borrada con la versión anterior) sí lo ve.
+    const blank = { ...createInitialState(T0), version: 1 } as Partial<GameState>;
+    delete blank.tutorialStep;
+    expect(migrateSave(blank, T0).tutorialStep).toBe(0);
   });
 });
