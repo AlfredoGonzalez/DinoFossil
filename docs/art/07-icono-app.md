@@ -38,3 +38,11 @@ Para `foreground.png`, el mismo prompt cambiando el fondo por *"on a transparent
 - [ ] `icon.png` 1024 × 1024, sin transparencia ni esquinas redondeadas.
 - [ ] La cara del dino dentro del círculo central.
 - [ ] Se entiende al verlo pequeñito (prueba reducirlo a 48 px).
+
+## Entregado ✅
+
+Se eligió la versión **sin texto** (el nombre ya aparece debajo del ícono en el teléfono y en la
+tienda, y a tamaño pequeño las letras no se leen). Claude generó:
+`assets/icon.png` (iOS/general), `assets/android-icon-foreground.png` (dino al 78 %, sin la nube),
+`assets/android-icon-background.png` (cielo con la nube), `assets/android-icon-monochrome.png`
+(temas de Android 13+) y `assets/favicon.png`. Los originales quedan en el historial de git.
