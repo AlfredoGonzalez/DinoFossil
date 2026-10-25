@@ -11,7 +11,6 @@ import { getArt } from '../art';
 import { ProgressBar } from '../ProgressBar';
 import { colors } from '../theme';
 import { Digger } from './Digger';
-import { DUMBWAITER_WIDTH } from './Dumbwaiter';
 import { Floor, FLOOR_SCENE_HEIGHT } from './Floor';
 import { hasLabWorkerSprites, LAB_WORKER_SIZE, LabWorker } from './LabWorker';
 import { LevelSign } from './LevelSign';
@@ -93,8 +92,7 @@ export function LabFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; 
 
 const styles = StyleSheet.create({
   scene: { flex: 1, alignSelf: 'stretch' },
-  // Junto al hueco del montaplatos (pared izquierda).
-  level: { position: 'absolute', left: DUMBWAITER_WIDTH - 2, top: 4 },
+  level: { position: 'absolute', left: 0, top: 4 },
   // Junto al letrero, fuera del camino del laboratorista, con el clavo sobre la viga horizontal del fondo.
   poster: { position: 'absolute', left: 110, top: 26, width: 0, alignItems: 'center' },
   worker: { position: 'absolute', right: 0, bottom: 2, alignItems: 'center' },
