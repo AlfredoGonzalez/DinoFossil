@@ -1,8 +1,11 @@
-import { STARTER_DINO } from '@/data/dinos';
-import { TUTORIAL_FINISHED } from './tutorial';
+import { TUTORIAL_FINISHED, TUTORIAL_STEPS, type TutorialStep } from './tutorial';
 import type { GameState, MineState } from './types';
 
-export const SAVE_VERSION = 2;
+export const SAVE_VERSION = 3;
+
+/** Pasos del tutorial en el guardado v2 (para traducir el paso a la lista actual). */
+const V2_TUTORIAL = ['dig', 'digWait', 'bag', 'lift', 'liftWait', 'sell', 'sellWait', 'upgrade', 'manager', 'done'];
+const V2_TO_V3: Record<string, string> = { sell: 'collect', sellWait: 'collectWait', manager: 'eggDig' };
 
 export function initialMine(): MineState {
   return {
@@ -23,7 +26,8 @@ export function createInitialState(now: number): GameState {
     runEarnings: 0,
     lifetimeEarnings: 0,
     mine: initialMine(),
-    dinos: { [STARTER_DINO]: { level: 1, count: 1 } },
+    // Sin dinos: el primero (el T-Rex) nace del huevo en el tutorial.
+    dinos: {},
     managers: {},
     abilities: {},
     eggs: { common: 1, rare: 0, epic: 0, legendary: 0, mythic: 0 },
@@ -49,7 +53,13 @@ export function migrateSave(raw: unknown, now: number): GameState {
   // v1 → v2: el tutorial es nuevo. Quien ya había ganado algo no lo repite; una partida v1 sin
   // progreso (recién creada o recién borrada con una versión anterior) sí lo ve.
   const playedBefore = (save.lifetimeEarnings ?? 0) > 0 || (save.prestigeCount ?? 0) > 0;
-  const tutorialStep = typeof save.tutorialStep === 'number' ? save.tutorialStep : playedBefore ? TUTORIAL_FINISHED : 0;
+  let tutorialStep = typeof save.tutorialStep === 'number' ? save.tutorialStep : playedBefore ? TUTORIAL_FINISHED : 0;
+  // v2 → v3: la lista de pasos creció; se traduce el paso por su nombre.
+  if (save.version === 2 && typeof save.tutorialStep === 'number') {
+    const name = V2_TUTORIAL[save.tutorialStep];
+    const index = name && name !== 'done' ? TUTORIAL_STEPS.indexOf((V2_TO_V3[name] ?? name) as TutorialStep) : -1;
+    tutorialStep = index >= 0 ? index : TUTORIAL_FINISHED;
+  }
   // Rellena con valores por defecto cualquier campo que falte (partidas antiguas).
   return {
     ...fresh,

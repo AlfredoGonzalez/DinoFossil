@@ -10,6 +10,7 @@ import { initAds } from '@/services/ads';
 import { initPurchases } from '@/services/purchases';
 import { useGameStore } from '@/store/gameStore';
 import { GlobalModals } from '@/ui/GlobalModals';
+import { TutorialOverlay } from '@/ui/tutorial/TutorialOverlay';
 import { FakeAdOverlay, Toasts } from '@/ui/Overlays';
 import { useGameLoop } from '@/ui/useGameLoop';
 
@@ -41,6 +42,8 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <StatusBar style="light" />
         <Stack screenOptions={{ headerShown: false, animation: 'fade' }} />
+        {/* Encima de todas las pantallas del juego (las ventanas modales quedan por encima de él). */}
+        <TutorialOverlay />
         <GlobalModals />
         <Toasts />
         <FakeAdOverlay />

@@ -7,6 +7,7 @@ import { useTranslation } from '@/i18n';
 import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
 import { GameIcon } from './GameIcon';
+import { TutorialSpot, type TutorialTargetId } from './tutorial/TutorialAnchor';
 import { GameText } from './GameText';
 import { useNow } from './hooks';
 import type { IconName } from './iconNames';
@@ -74,13 +75,16 @@ export function BottomNav() {
         const active = pathname === tab.href;
         const badge = tab.key === 'incubator' && eggBadge;
         return (
+          <TutorialSpot key={tab.key} id={`nav-${tab.key}` as TutorialTargetId} style={styles.spot}>
           <Pressable
-            key={tab.key}
             accessibilityRole="button"
             accessibilityLabel={t(`nav.${tab.key}`)}
-            style={[styles.tab, active && styles.active]}
+            style={[styles.tab, styles.fill, active && styles.active]}
             onPress={() => {
               tapFeedback();
+              // Tutorial: "vamos a los huevos" / "mira tu dino en la colección".
+              if (tab.key === 'incubator') useGameStore.getState().completeTutorialStep('goEggs');
+              if (tab.key === 'dinos') useGameStore.getState().completeTutorialStep('goDinos');
               // replace: las pestañas se sustituyen entre sí, así no se acumulan pantallas al ir y volver.
               if (!active) router.replace(tab.href);
             }}
@@ -91,6 +95,7 @@ export function BottomNav() {
             </GameText>
             {badge ? <View style={styles.badge} /> : null}
           </Pressable>
+          </TutorialSpot>
         );
       })}
     </View>
@@ -109,8 +114,10 @@ const styles = StyleSheet.create({
     borderTopWidth: 3,
     borderTopColor: '#5E3A1E',
   },
+  // La pestaña ocupa todo su hueco (TutorialSpot, que la envuelve para el tutorial).
+  spot: { flex: 1 },
+  fill: { alignSelf: 'stretch' },
   tab: {
-    flex: 1,
     height: 62,
     alignItems: 'center',
     justifyContent: 'flex-end',

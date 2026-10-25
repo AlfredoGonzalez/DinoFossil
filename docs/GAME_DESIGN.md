@@ -101,9 +101,18 @@ la economía pasa de 1e300, migra a `break_infinity.js` dentro de `src/game/`.
 
 ## Tutorial (primera partida)
 
-Pantalla oscurecida con un círculo sobre lo que hay que tocar y un globito corto; fuera del círculo
-no se puede tocar. Pasos (`src/game/tutorial.ts`): excavar → ver los primeros huesos → subirlos con
-el laboratorista → vender en la taquilla → mejorar el sótano (si no alcanza, se regalan las monedas
-justas) → contratar al T-Rex como jefe → "¡Listo!". Los pasos de espera dejan ver la animación y
-avanzan solos. Se puede saltar; las partidas anteriores a la v2 del guardado no lo ven. Para
-repetirlo: Ajustes → Borrar progreso.
+Pantalla oscurecida con un círculo (u óvalo, en botones largos) sobre lo que hay que tocar y un
+globito corto; fuera del hueco no se puede tocar, y en los pasos de espera no se puede tocar nada.
+Pasos (`src/game/tutorial.ts`):
+
+1. **Casa-Museo**: excavar → ver los primeros huesos → subirlos con el laboratorista → recoger en
+   la taquilla → mejorar el sótano (si no alcanza, se regalan las monedas justas).
+2. **Huevo**: otra excavación "encuentra" un huevo común → pestaña Huevos → incubarlo → acelerar
+   con ámbar (se regala el que falte) → eclosionar: **siempre nace el T-Rex**. La partida empieza
+   sin dinos: el T-Rex es el primero.
+3. **Colección**: pestaña Dinos → ficha del T-Rex → pestaña Mecánicas → "¡Contrátalo!" (la ficha va
+   en una ventana, así que el globito va dentro de ella).
+4. **Jefe**: cartel HIRING del sótano → contratar al T-Rex → tocar su rayo (Turbo) → "¡Listo!".
+
+Se puede saltar. Las partidas con progreso anteriores al tutorial no lo ven; las de la v2 se
+traducen al paso equivalente. Para repetirlo: Ajustes → Borrar progreso.

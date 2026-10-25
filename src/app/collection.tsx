@@ -1,6 +1,7 @@
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { DINOS, DINO_BY_ID } from '@/data/dinos';
+import { DINOS, DINO_BY_ID, STARTER_DINO } from '@/data/dinos';
 import { collectionBonuses } from '@/game/modifiers';
 import type { BonusType } from '@/game/types';
 import { dinoName, useTranslation } from '@/i18n';
@@ -15,6 +16,7 @@ import { DinoProfile } from '@/ui/DinoProfile';
 import { DinoAvatar } from '@/ui/Icons';
 import { Banner, Panel } from '@/ui/Panel';
 import { Screen } from '@/ui/Screen';
+import { TutorialSpot } from '@/ui/tutorial/TutorialAnchor';
 import { colors, radius, rarityColors } from '@/ui/theme';
 
 /** Colección de 24 especies con sus bonus pasivos. */
@@ -41,15 +43,16 @@ export default function CollectionScreen() {
         <View style={styles.grid}>
           {DINOS.map((d) => {
             const have = dinos[d.id];
-            return (
+            const card = (
               <Pressable
                 key={d.id}
                 accessibilityRole="button"
                 accessibilityLabel={`dino-${d.id}`}
-                style={[styles.card, { borderColor: have ? rarityColors[d.rarity] : '#7C8CA8' }]}
+                style={[styles.card, d.id === STARTER_DINO && styles.cardInSpot, { borderColor: have ? rarityColors[d.rarity] : '#7C8CA8' }]}
                 onPress={() => {
                   tapFeedback();
                   setSelected(d.id);
+                  if (d.id === STARTER_DINO) useGameStore.getState().completeTutorialStep('openDino');
                 }}
               >
                 <DinoAvatar dinoId={d.id} size={64} silhouette={!have} />
@@ -64,6 +67,13 @@ export default function CollectionScreen() {
                   </View>
                 ) : null}
               </Pressable>
+            );
+            return d.id === STARTER_DINO ? (
+              <TutorialSpot key={d.id} id="dino-trex" style={styles.cardSpot}>
+                {card}
+              </TutorialSpot>
+            ) : (
+              card
             );
           })}
         </View>
@@ -86,7 +96,14 @@ export default function CollectionScreen() {
       <GameModal visible={!!species} onClose={() => setSelected(null)} title={species && owned ? dinoName(species.id) : t('collection.unknown')}>
         {species ? (
           <>
-            <DinoProfile dinoId={species.id} owned={owned} />
+            <DinoProfile
+              dinoId={species.id}
+              owned={owned}
+              onHire={() => {
+                setSelected(null);
+                router.replace('/mine');
+              }}
+            />
             <ChunkyButton label={t('common.close')} onPress={() => setSelected(null)} />
           </>
         ) : null}
@@ -109,4 +126,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
   },
   level: { position: 'absolute', top: 4, right: 4, borderRadius: 8, paddingHorizontal: 5 },
+  // La tarjeta del T-Rex va envuelta para el tutorial: el envoltorio toma su ancho.
+  cardSpot: { width: '31%' },
+  cardInSpot: { width: '100%' },
 });

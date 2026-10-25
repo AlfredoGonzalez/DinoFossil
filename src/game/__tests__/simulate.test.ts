@@ -1,8 +1,8 @@
+import { newGame } from '@/test/newGame';
 import { shaftCycleSeconds, shaftCycleYield, shaftRate } from '../economy';
 import { activateAbility, assignManager } from '../managers';
 import { applyOfflineProgress } from '../offline';
 import { tapStation, tick } from '../simulate';
-import { createInitialState } from '../state';
 import type { GameState } from '../types';
 import { buyUpgrade, unlockShaft, upgradeQuote } from '../upgrades';
 
@@ -16,7 +16,7 @@ function run(state: GameState, seconds: number, step = 0.1, start = T0): GameSta
 }
 
 function fullyManaged(): GameState {
-  let s = createInitialState(T0);
+  let s = newGame(T0);
   s = { ...s, dinos: { ...s.dinos, stegosaurus: { level: 1, count: 1 }, triceratops: { level: 1, count: 1 } } };
   s = assignManager(s, 'shaft-0', 'trex');
   s = assignManager(s, 'elevator', 'stegosaurus');
@@ -25,12 +25,12 @@ function fullyManaged(): GameState {
 
 describe('tick', () => {
   it('sin managers no produce nada hasta que se toca', () => {
-    const s = run(createInitialState(T0), 30);
+    const s = run(newGame(T0), 30);
     expect(s.coins).toBe(0);
   });
 
   it('un toque hace un solo ciclo y la cadena lo lleva hasta el museo', () => {
-    let s = createInitialState(T0);
+    let s = newGame(T0);
     s = tapStation(s, 'shaft-0');
     s = run(s, 5);
     expect(s.mine.shafts[0]?.deposit).toBeCloseTo(6 * 1.02); // 1.5/s × 4 s, +2 % del T-Rex inicial
@@ -81,7 +81,7 @@ describe('tick', () => {
 
 describe('upgrades', () => {
   it('compra niveles y desbloquea galerías', () => {
-    let s = { ...createInitialState(T0), coins: 1e6 };
+    let s = { ...newGame(T0), coins: 1e6 };
     const quote = upgradeQuote(s, 'shaft-0', 10, T0);
     s = buyUpgrade(s, 'shaft-0', 10, T0)!;
     expect(s.mine.shafts[0]?.level).toBe(11);
@@ -91,19 +91,19 @@ describe('upgrades', () => {
   });
 
   it('no deja comprar sin dinero', () => {
-    expect(buyUpgrade(createInitialState(T0), 'museum', 1, T0)).toBeNull();
-    expect(unlockShaft(createInitialState(T0))).toBeNull();
+    expect(buyUpgrade(newGame(T0), 'museum', 1, T0)).toBeNull();
+    expect(unlockShaft(newGame(T0))).toBeNull();
   });
 
   it('MAX compra todo lo asequible', () => {
-    const s = { ...createInitialState(T0), coins: 5000 };
+    const s = { ...newGame(T0), coins: 5000 };
     const quote = upgradeQuote(s, 'elevator', 'max', T0);
     expect(quote.levels).toBeGreaterThan(10);
     expect(quote.cost).toBeLessThanOrEqual(5000);
   });
 
   it('"hasta el hito" compra justo los niveles que faltan para el siguiente ×2', () => {
-    let s = { ...createInitialState(T0), coins: 1e9 };
+    let s = { ...newGame(T0), coins: 1e9 };
     expect(upgradeQuote(s, 'shaft-0', 'milestone', T0).levels).toBe(9);
     s = buyUpgrade(s, 'shaft-0', 'milestone', T0)!;
     expect(s.mine.shafts[0]?.level).toBe(10);
@@ -129,7 +129,7 @@ describe('offline', () => {
     const s = fullyManaged();
     const day = applyOfflineProgress(s, T0 + 24 * 3600 * 1000);
     expect(day.seconds).toBeLessThan(24 * 3600);
-    const idle = applyOfflineProgress(createInitialState(T0), T0 + 3600 * 1000);
+    const idle = applyOfflineProgress(newGame(T0), T0 + 3600 * 1000);
     expect(idle.coins).toBe(0);
   });
 });

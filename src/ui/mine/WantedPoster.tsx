@@ -7,6 +7,7 @@ import { currentLanguage } from '@/i18n';
 import { useGameStore } from '@/store/gameStore';
 import { getArt, type ArtKey } from '../art';
 import { GameText } from '../GameText';
+import { TutorialSpot } from '../tutorial/TutorialAnchor';
 import { TurboButton } from './ManagerSlot';
 
 const INK = '#4A2C12';
@@ -129,7 +130,13 @@ export function WantedPoster({ station, active, onPick, variant = 'wall', height
         </View>
       </Pressable>
       <View style={[styles.pin, { left: width - 4 }]}>
-        <TurboButton station={station} />
+        {station === 'shaft-0' ? (
+          <TutorialSpot id="shaft-turbo">
+            <TurboButton station={station} />
+          </TutorialSpot>
+        ) : (
+          <TurboButton station={station} />
+        )}
       </View>
     </Animated.View>
   );

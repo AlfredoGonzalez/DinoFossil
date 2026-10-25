@@ -43,10 +43,13 @@ export function finishWithAmber(state: GameState, now: number): GameState | null
   return { ...state, amber: state.amber - cost, incubator: { ...state.incubator, endsAt: now } };
 }
 
-/** Eclosiona el huevo si ya está listo. Devuelve el dino obtenido. */
-export function hatch(state: GameState, now: number, rng: Rng = Math.random): { state: GameState; dinoId: string } | null {
+/**
+ * Eclosiona el huevo si ya está listo. Devuelve el dino obtenido. `forced` fija la especie
+ * (el tutorial hace nacer siempre al T-Rex; ver tutorialHatchDino).
+ */
+export function hatch(state: GameState, now: number, rng: Rng = Math.random, forced: string | null = null): { state: GameState; dinoId: string } | null {
   if (!state.incubator || incubatorRemaining(state, now) > 0) return null;
   const pool = DINOS.filter((d) => d.rarity === state.incubator?.rarity);
-  const dinoId = pick(pool, rng).id;
+  const dinoId = forced ?? pick(pool, rng).id;
   return { state: addDino({ ...state, incubator: null }, dinoId), dinoId };
 }

@@ -13,6 +13,7 @@ import {
   buyUpgrade,
   claimDailyAmber,
   claimGoal,
+  completeTutorialStep,
   continueTutorial,
   createInitialState,
   doPrestige,
@@ -24,6 +25,7 @@ import {
   skipTutorial,
   startIncubation,
   syncTutorial,
+  tutorialHatchDino,
   tapStation,
   tick,
   unlockShaft,
@@ -33,6 +35,7 @@ import {
   type Rarity,
   type Settings,
   type StationId,
+  type TutorialStep,
 } from '@/game';
 import { throttledStorage } from './throttledStorage';
 
@@ -69,6 +72,7 @@ interface GameStore {
   /** Tutorial: avanza los pasos cumplidos, sigue tras un paso de "toca para seguir" o lo salta. */
   syncTutorial: () => void;
   continueTutorial: () => void;
+  completeTutorialStep: (step: TutorialStep) => void;
   skipTutorial: () => void;
 }
 
@@ -108,7 +112,7 @@ export const useGameStore = create<GameStore>()(
 
         hatch: () => {
           const before = get().game;
-          const result = hatch(before, Date.now());
+          const result = hatch(before, Date.now(), Math.random, tutorialHatchDino(before));
           if (!result) return null;
           set({ game: result.state });
           const owned = result.state.dinos[result.dinoId];
@@ -146,6 +150,7 @@ export const useGameStore = create<GameStore>()(
 
         syncTutorial: () => void apply(syncTutorial(get().game, Date.now())),
         continueTutorial: () => void apply(continueTutorial(get().game, Date.now())),
+        completeTutorialStep: (step) => void apply(completeTutorialStep(get().game, step, Date.now())),
         skipTutorial: () => void apply(skipTutorial(get().game)),
 
         resetProgress: () => {

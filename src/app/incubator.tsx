@@ -23,6 +23,7 @@ import { DinoAvatar, EggIcon } from '@/ui/Icons';
 import { Banner, Panel } from '@/ui/Panel';
 import { ProgressBar } from '@/ui/ProgressBar';
 import { Screen } from '@/ui/Screen';
+import { TutorialSpot } from '@/ui/tutorial/TutorialAnchor';
 import { colors, radius, rarityColors } from '@/ui/theme';
 
 interface Reveal {
@@ -73,14 +74,15 @@ function Capsule() {
                 ⏳ {formatDuration(remaining)}
               </GameText>
               <View style={styles.row}>
-                <ChunkyButton
-                  testID="speed-up"
-                  style={styles.flex}
-                  disabled={amber < amberCost}
-                  label={t('incubator.speedUp')}
-                  sublabel={`${amberCost} ${t('resources.amber')}`}
-                  onPress={() => useGameStore.getState().finishWithAmber()}
-                />
+                <TutorialSpot id="speed-up" style={styles.flex}>
+                  <ChunkyButton
+                    testID="speed-up"
+                    disabled={amber < amberCost}
+                    label={t('incubator.speedUp')}
+                    sublabel={`${amberCost} ${t('resources.amber')}`}
+                    onPress={() => useGameStore.getState().finishWithAmber()}
+                  />
+                </TutorialSpot>
                 <ChunkyButton
                   style={styles.flex}
                   variant="blue"
@@ -93,20 +95,22 @@ function Capsule() {
               </View>
             </>
           ) : (
-            <ChunkyButton
-              testID="hatch"
-              size="lg"
-              variant="orange"
-              label={t('incubator.hatch')}
-              onPress={() => {
-                const result = useGameStore.getState().hatch();
-                if (result) {
-                  playSfx('hatch');
-                  successFeedback();
-                  setReveal(result);
-                }
-              }}
-            />
+            <TutorialSpot id="hatch">
+              <ChunkyButton
+                testID="hatch"
+                size="lg"
+                variant="orange"
+                label={t('incubator.hatch')}
+                onPress={() => {
+                  const result = useGameStore.getState().hatch();
+                  if (result) {
+                    playSfx('hatch');
+                    successFeedback();
+                    setReveal(result);
+                  }
+                }}
+              />
+            </TutorialSpot>
           )}
         </View>
       ) : null}
@@ -160,13 +164,25 @@ export default function IncubatorScreen() {
                   ⏳ {formatDuration(hatchSeconds(game, rarity, now))}
                 </GameText>
               </View>
-              <ChunkyButton
-                testID={`incubate-${rarity}`}
-                size="sm"
-                disabled={busy || eggs[rarity] <= 0}
-                label={busy ? t('incubator.busy') : t('incubator.incubate')}
-                onPress={() => useGameStore.getState().startIncubation(rarity)}
-              />
+              {rarity === 'common' ? (
+                <TutorialSpot id="incubate-common">
+                  <ChunkyButton
+                    testID={`incubate-${rarity}`}
+                    size="sm"
+                    disabled={busy || eggs[rarity] <= 0}
+                    label={busy ? t('incubator.busy') : t('incubator.incubate')}
+                    onPress={() => useGameStore.getState().startIncubation(rarity)}
+                  />
+                </TutorialSpot>
+              ) : (
+                <ChunkyButton
+                  testID={`incubate-${rarity}`}
+                  size="sm"
+                  disabled={busy || eggs[rarity] <= 0}
+                  label={busy ? t('incubator.busy') : t('incubator.incubate')}
+                  onPress={() => useGameStore.getState().startIncubation(rarity)}
+                />
+              )}
             </View>
           ))}
         </Panel>

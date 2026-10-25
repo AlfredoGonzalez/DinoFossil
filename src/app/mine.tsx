@@ -34,7 +34,6 @@ import { PrestigeModal } from '@/ui/mine/PrestigeModal';
 import { Roof } from '@/ui/mine/Roof';
 import { UpgradeSheet } from '@/ui/mine/UpgradeSheet';
 import { Screen } from '@/ui/Screen';
-import { TutorialOverlay } from '@/ui/tutorial/TutorialOverlay';
 import { colors } from '@/ui/theme';
 
 function Header({ onPrestige }: { onPrestige: () => void }) {
@@ -185,7 +184,6 @@ export default function MineScreen() {
         <Foundation />
       </ScrollView>
       <BottomNav />
-      {inTutorial ? <TutorialOverlay /> : null}
       <UpgradeSheet station={upgrading} onClose={() => setUpgrading(null)} />
       <ManagerPicker station={picking} onClose={() => setPicking(null)} />
       <PrestigeModal visible={prestigeOpen} onClose={() => setPrestigeOpen(false)} />

@@ -38,6 +38,7 @@ interface UiStore {
   /** Zonas que el tutorial puede resaltar, medidas en pantalla (ver TutorialAnchor). */
   tutorialTargets: Partial<Record<string, Rect>>;
   setTutorialTarget: (id: string, rect: Rect) => void;
+  clearTutorialTarget: (id: string) => void;
   toast: (text: string, icon?: string) => void;
   dismissToast: (id: number) => void;
   setOfflineReport: (report: OfflineReport | null) => void;
@@ -58,6 +59,10 @@ export const useUiStore = create<UiStore>((set, get) => ({
   testMode: false,
   tutorialTargets: {},
   setTutorialTarget: (id, rect) => set({ tutorialTargets: { ...get().tutorialTargets, [id]: rect } }),
+  clearTutorialTarget: (id) => {
+    const { [id]: _gone, ...rest } = get().tutorialTargets;
+    set({ tutorialTargets: rest });
+  },
   setTestMode: (testMode) => set({ testMode }),
   toast: (text, icon) => {
     const id = nextId++;

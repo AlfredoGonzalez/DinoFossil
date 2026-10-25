@@ -19,11 +19,12 @@ export function TurboGlow() {
     pulse.value = withRepeat(withTiming(1, { duration: 700, easing: Easing.inOut(Easing.sin) }), -1, true);
     return () => cancelAnimation(pulse);
   }, [pulse]);
-  const style = useAnimatedStyle(() => ({ opacity: 0.08 + pulse.value * 0.16 }));
+  // Más fuerte de lo que parece necesario: sobre el fondo claro del laboratorio un dorado suave no se ve.
+  const style = useAnimatedStyle(() => ({ opacity: 0.28 + pulse.value * 0.2 }));
   return <Animated.View pointerEvents="none" style={[styles.glow, style]} />;
 }
 
 const styles = StyleSheet.create({
   // Se extiende más allá de la escena para cubrir todo el piso (la planta recorta lo que sobra).
-  glow: { position: 'absolute', top: -10, bottom: -10, left: -20, right: -80, backgroundColor: '#FFD54A' },
+  glow: { position: 'absolute', top: -10, bottom: -10, left: -20, right: -80, backgroundColor: '#FFC21A', borderWidth: 6, borderColor: '#FF9F0A' },
 });
