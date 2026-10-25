@@ -1,39 +1,40 @@
-import { useState } from 'react';
-import { router } from 'expo-router';
-import { Image, ScrollView, StyleSheet, View } from 'react-native';
-import { formatDuration, formatNumber } from '@/game/format';
-import { claimableGoals } from '@/game/goals';
-import { isAdBoostActive } from '@/game/modifiers';
-import { canAddAdBoost } from '@/game/rewards';
-import { pendingHuellas } from '@/game/prestige';
-import { shaftStationId } from '@/game/simulate';
-import type { StationId } from '@/game/types';
-import { nextShaftUnlockCost } from '@/game/upgrades';
-import { useTranslation } from '@/i18n';
-import { playSfx } from '@/services/audio';
-import { successFeedback, tapFeedback } from '@/services/feedback';
-import { watchRewardedAd } from '@/services/rewards';
-import { useGameStore } from '@/store/gameStore';
-import { getArt } from '@/ui/art';
-import { BottomNav } from '@/ui/BottomNav';
-import { ChunkyButton } from '@/ui/ChunkyButton';
-import { CurrencyBar } from '@/ui/CurrencyBar';
-import { GameText } from '@/ui/GameText';
-import { GameIcon } from '@/ui/GameIcon';
-import { IconLabel } from '@/ui/IconLabel';
-import { useNow } from '@/ui/hooks';
-import { ResourceIcon } from '@/ui/Icons';
-import { BasementFloor, FloorSign } from '@/ui/mine/BasementFloor';
-import { FLOOR_HEIGHT } from '@/ui/mine/Floor';
-import { HallFloor } from '@/ui/mine/HallFloor';
-import { LabFloor } from '@/ui/mine/LabFloor';
-import { Lift } from '@/ui/mine/Lift';
-import { ManagerPicker } from '@/ui/mine/ManagerPicker';
-import { PrestigeModal } from '@/ui/mine/PrestigeModal';
-import { Roof } from '@/ui/mine/Roof';
-import { UpgradeSheet } from '@/ui/mine/UpgradeSheet';
-import { Screen } from '@/ui/Screen';
-import { colors } from '@/ui/theme';
+import { useState } from "react";
+import { router } from "expo-router";
+import { Image, ScrollView, StyleSheet, View } from "react-native";
+import { formatDuration, formatNumber } from "@/game/format";
+import { claimableGoals } from "@/game/goals";
+import { isAdBoostActive } from "@/game/modifiers";
+import { canAddAdBoost } from "@/game/rewards";
+import { pendingHuellas } from "@/game/prestige";
+import { shaftStationId } from "@/game/simulate";
+import type { StationId } from "@/game/types";
+import { nextShaftUnlockCost } from "@/game/upgrades";
+import { useTranslation } from "@/i18n";
+import { playSfx } from "@/services/audio";
+import { successFeedback, tapFeedback } from "@/services/feedback";
+import { watchRewardedAd } from "@/services/rewards";
+import { useGameStore } from "@/store/gameStore";
+import { getArt } from "@/ui/art";
+import { BottomNav } from "@/ui/BottomNav";
+import { ChunkyButton } from "@/ui/ChunkyButton";
+import { CurrencyBar } from "@/ui/CurrencyBar";
+import { GameText } from "@/ui/GameText";
+import { GameIcon } from "@/ui/GameIcon";
+import { IconLabel } from "@/ui/IconLabel";
+import { useNow } from "@/ui/hooks";
+import { ResourceIcon } from "@/ui/Icons";
+import { BasementFloor, FloorSign } from "@/ui/mine/BasementFloor";
+import { FLOOR_HEIGHT } from "@/ui/mine/Floor";
+import { Dumbwaiter } from "@/ui/mine/Dumbwaiter";
+import { HallFloor } from "@/ui/mine/HallFloor";
+import { LabFloor } from "@/ui/mine/LabFloor";
+import { Lift } from "@/ui/mine/Lift";
+import { ManagerPicker } from "@/ui/mine/ManagerPicker";
+import { PrestigeModal } from "@/ui/mine/PrestigeModal";
+import { Roof } from "@/ui/mine/Roof";
+import { UpgradeSheet } from "@/ui/mine/UpgradeSheet";
+import { Screen } from "@/ui/Screen";
+import { colors } from "@/ui/theme";
 
 function Header({ onPrestige }: { onPrestige: () => void }) {
   const { t } = useTranslation();
@@ -50,10 +51,16 @@ function Header({ onPrestige }: { onPrestige: () => void }) {
         testID="boost"
         style={styles.boost}
         size="sm"
-        variant={boosting ? 'orange' : 'blue'}
+        variant={boosting ? "orange" : "blue"}
         disabled={!canBoost}
         icon={boosting ? undefined : <GameIcon name="ad" size={20} />}
-        label={boosting ? t('mine.boost', { time: formatDuration((boostUntil - now) / 1000) }) : t('mine.boostCta')}
+        label={
+          boosting
+            ? t("mine.boost", {
+                time: formatDuration((boostUntil - now) / 1000),
+              })
+            : t("mine.boostCta")
+        }
         onPress={async () => {
           if (await watchRewardedAd()) {
             useGameStore.getState().adBoost();
@@ -64,7 +71,7 @@ function Header({ onPrestige }: { onPrestige: () => void }) {
       <ChunkyButton
         testID="prestige"
         size="sm"
-        variant={prestigeReady ? 'purple' : 'wood'}
+        variant={prestigeReady ? "purple" : "wood"}
         icon={<GameIcon name="huellas" size={22} />}
         onPress={onPrestige}
       />
@@ -75,7 +82,7 @@ function Header({ onPrestige }: { onPrestige: () => void }) {
           size="sm"
           variant="wood"
           icon={<GameIcon name="nav-missions" size={22} />}
-          onPress={() => router.replace('/goals')}
+          onPress={() => router.replace("/goals")}
         />
         {goalsBadge ? <View pointerEvents="none" style={styles.badge} /> : null}
       </View>
@@ -84,7 +91,7 @@ function Header({ onPrestige }: { onPrestige: () => void }) {
         size="sm"
         variant="wood"
         icon={<GameIcon name="settings" size={22} />}
-        onPress={() => router.push('/settings')}
+        onPress={() => router.push("/settings")}
       />
     </View>
   );
@@ -98,7 +105,7 @@ function UnlockRow() {
     return (
       <View style={styles.unlock}>
         <GameText color={colors.textLight} weight="black" outline center>
-          🏆 {t('mine.allShafts')}
+          🏆 {t("mine.allShafts")}
         </GameText>
       </View>
     );
@@ -111,14 +118,14 @@ function UnlockRow() {
         disabled={!affordable}
         onPress={() => {
           if (useGameStore.getState().unlockShaft()) {
-            playSfx('upgrade');
+            playSfx("upgrade");
             successFeedback();
           }
         }}
       >
         <IconLabel icon="station-basement" size={18}>
           <GameText size={16} color={colors.textLight} weight="black" outline>
-            {t('mine.newShaft')}
+            {t("mine.newShaft")}
           </GameText>
         </IconLabel>
         <View style={styles.cost}>
@@ -134,10 +141,12 @@ function UnlockRow() {
 
 /** Cimientos bajo el último sótano (arte: museum/foundation). */
 function Foundation() {
-  const art = getArt('museum/foundation');
+  const art = getArt("museum/foundation");
   return (
     <View style={styles.foundation}>
-      {art ? <Image source={art} resizeMode="cover" style={styles.fill} /> : null}
+      {art ? (
+        <Image source={art} resizeMode="cover" style={styles.fill} />
+      ) : null}
     </View>
   );
 }
@@ -151,26 +160,50 @@ export default function MineScreen() {
   const [prestigeOpen, setPrestigeOpen] = useState(false);
 
   return (
-    <Screen background="sky" backgroundImage={getArt('museum/sky') ?? getArt('loading/background')} edges={['top']}>
+    <Screen
+      background="sky"
+      backgroundImage={getArt("museum/sky") ?? getArt("loading/background")}
+      edges={["top"]}
+    >
       <CurrencyBar />
       <Header onPrestige={() => (tapFeedback(), setPrestigeOpen(true))} />
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
         <Roof />
-        <HallFloor onUpgrade={() => setUpgrading('museum')} onPickManager={() => setPicking('museum')} />
+        {/* Sala + laboratorio + sótanos: el montaplatos se dibuja encima de la sala y el laboratorio. */}
         <View>
-          <LabFloor onUpgrade={() => setUpgrading('elevator')} onPickManager={() => setPicking('elevator')} />
-          {Array.from({ length: shaftCount }, (_, i) => (
-            <BasementFloor
-              key={i}
-              index={i}
-              onUpgrade={() => setUpgrading(shaftStationId(i))}
-              onPickManager={() => setPicking(shaftStationId(i))}
+          <HallFloor
+            onUpgrade={() => setUpgrading("museum")}
+            onPickManager={() => setPicking("museum")}
+          />
+          <View>
+            <LabFloor
+              onUpgrade={() => setUpgrading("elevator")}
+              onPickManager={() => setPicking("elevator")}
             />
-          ))}
-          <Lift />
-          {/* Tablitas centradas sobre las uniones: "Laboratorio" (sala/lab) y "Sótanos" (lab/sótanos). */}
-          <FloorSign icon="station-lab" label={t('mine.elevator')} top={-14} />
-          {shaftCount > 0 ? <FloorSign icon="station-basement" label={t('mine.basements')} top={FLOOR_HEIGHT - 14} /> : null}
+            {Array.from({ length: shaftCount }, (_, i) => (
+              <BasementFloor
+                key={i}
+                index={i}
+                onUpgrade={() => setUpgrading(shaftStationId(i))}
+                onPickManager={() => setPicking(shaftStationId(i))}
+              />
+            ))}
+            <Lift />
+            {/* Tablitas centradas sobre las uniones: "Laboratorio" (sala/lab) y "Sótanos" (lab/sótanos). */}
+            <FloorSign
+              icon="station-lab"
+              label={t("mine.elevator")}
+              top={-14}
+            />
+            {shaftCount > 0 ? (
+              <FloorSign
+                icon="station-basement"
+                label={t("mine.basements")}
+                top={FLOOR_HEIGHT - 14}
+              />
+            ) : null}
+          </View>
+          <Dumbwaiter />
         </View>
         <UnlockRow />
         <Foundation />
@@ -178,16 +211,25 @@ export default function MineScreen() {
       <BottomNav />
       <UpgradeSheet station={upgrading} onClose={() => setUpgrading(null)} />
       <ManagerPicker station={picking} onClose={() => setPicking(null)} />
-      <PrestigeModal visible={prestigeOpen} onClose={() => setPrestigeOpen(false)} />
+      <PrestigeModal
+        visible={prestigeOpen}
+        onClose={() => setPrestigeOpen(false)}
+      />
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  header: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 10, paddingBottom: 6 },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    paddingHorizontal: 10,
+    paddingBottom: 6,
+  },
   boost: { flex: 1 },
   badge: {
-    position: 'absolute',
+    position: "absolute",
     top: -4,
     right: -4,
     width: 14,
@@ -195,7 +237,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     backgroundColor: colors.red,
     borderWidth: 2,
-    borderColor: '#fff',
+    borderColor: "#fff",
   },
   scroll: { flex: 1 },
   // flexGrow + cimientos con flex: la casa siempre llega hasta la barra inferior.
@@ -204,7 +246,7 @@ const styles = StyleSheet.create({
   unlock: {
     marginHorizontal: 10,
     padding: 12,
-    backgroundColor: '#4A2F19',
+    backgroundColor: "#4A2F19",
     borderLeftWidth: 6,
     borderRightWidth: 6,
     borderColor: colors.woodDark,
@@ -217,9 +259,15 @@ const styles = StyleSheet.create({
     borderLeftWidth: 6,
     borderRightWidth: 6,
     borderColor: colors.woodDark,
-    backgroundColor: '#3A2412',
-    overflow: 'hidden',
+    backgroundColor: "#3A2412",
+    overflow: "hidden",
   },
-  fill: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' },
-  cost: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  fill: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+  },
+  cost: { flexDirection: "row", alignItems: "center", gap: 4 },
 });
