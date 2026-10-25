@@ -128,6 +128,17 @@ const es = {
     duplicate: '¡Duplicado! {{name}} sube a nivel {{level}}',
     eggFound: '¡Encontraste un huevo {{rarity}}!',
   },
+  tutorial: {
+    dig: '¡Toca a tu dino para que excave!',
+    bag: '¡Tu dino encontró sus primeros huesos!',
+    lift: 'Toca al laboratorista para subirlos',
+    sell: '¡Toca la taquilla para vender entradas!',
+    upgrade: 'Mejora tu sótano para excavar más rápido',
+    manager: 'Contrata a un jefe: ¡trabajará solo!',
+    done: '¡Listo! Tu museo ya funciona solo. Sigue mejorando y descubre más dinos.',
+    tapToContinue: 'Toca para seguir',
+    skip: 'Saltar',
+  },
   collection: {
     title: 'Colección de dinosaurios',
     subtitle: 'Descubre y revive todas las especies',

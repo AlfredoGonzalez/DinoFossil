@@ -13,6 +13,7 @@ import {
   buyUpgrade,
   claimDailyAmber,
   claimGoal,
+  continueTutorial,
   createInitialState,
   doPrestige,
   finishWithAmber,
@@ -20,7 +21,9 @@ import {
   migrateSave,
   restorePurchases,
   skipIncubation,
+  skipTutorial,
   startIncubation,
+  syncTutorial,
   tapStation,
   tick,
   unlockShaft,
@@ -63,6 +66,10 @@ interface GameStore {
   restorePurchases: (owned: ProductId[]) => void;
   updateSettings: (settings: Partial<Settings>) => void;
   resetProgress: () => void;
+  /** Tutorial: avanza los pasos cumplidos, sigue tras un paso de "toca para seguir" o lo salta. */
+  syncTutorial: () => void;
+  continueTutorial: () => void;
+  skipTutorial: () => void;
 }
 
 export const useGameStore = create<GameStore>()(
@@ -136,6 +143,10 @@ export const useGameStore = create<GameStore>()(
           const game = get().game;
           set({ game: { ...game, settings: { ...game.settings, ...settings } } });
         },
+
+        syncTutorial: () => void apply(syncTutorial(get().game, Date.now())),
+        continueTutorial: () => void apply(continueTutorial(get().game, Date.now())),
+        skipTutorial: () => void apply(skipTutorial(get().game)),
 
         resetProgress: () => {
           const settings = get().game.settings;

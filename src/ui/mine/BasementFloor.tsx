@@ -20,6 +20,7 @@ import { LevelSign } from './LevelSign';
 import { TurboGlow, useTurboActive } from './TurboGlow';
 import { WantedPoster } from './WantedPoster';
 import { TapHint } from './TapHint';
+import { TutorialAnchor } from '../tutorial/TutorialAnchor';
 import { hasWalkerSprites, Walker, WALKER_SIZE } from './Walker';
 
 /** El dino escarba metido en la cara derecha del montón. */
@@ -95,6 +96,7 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
         {/* En la pared, detrás del camino del dino (el dino no captura toques). */}
         <View style={[styles.poster, { left: posterCenter(sceneWidth) }]}>
           <WantedPoster station={station} active={turbo} onPick={onPickManager} height={POSTER_HEIGHT} />
+          {index === 0 ? <TutorialAnchor id="shaft-poster" style={styles.anchorPoster} /> : null}
         </View>
         <DirtMound style={styles.mound} />
         <BoneBasket amount={shaft.deposit} style={styles.basket} />
@@ -114,11 +116,18 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
           </View>
         )}
         {idle ? <TapHint style={styles.hint} /> : null}
+        {index === 0 ? (
+          <>
+            <TutorialAnchor id="shaft-dino" style={styles.anchorDino} />
+            <TutorialAnchor id="shaft-bag" style={styles.anchorBag} />
+          </>
+        ) : null}
       </Pressable>
       {/* Fuera de la escena: se centra en el 25 % del ancho de la planta, a medio camino entre
           la pared y la tablita "Sótanos" (que va al centro), dejando ver el hueso del montón. */}
       <View style={styles.level}>
         <LevelSign station={station} level={shaft.level} detail={`${formatNumber(rate)}/s`} onPress={onUpgrade} />
+        {index === 0 ? <TutorialAnchor id="shaft-level" style={styles.anchorLevel} /> : null}
       </View>
     </Floor>
   );
@@ -151,6 +160,11 @@ const styles = StyleSheet.create({
   home: { position: 'absolute', right: HOME_RIGHT, bottom: 0 },
   // Manita centrada sobre la cabeza del dino en reposo.
   hint: { position: 'absolute', right: HOME_RIGHT + WALKER_SIZE / 2 - 14, bottom: WALKER_SIZE - 6 },
+  // Zonas que resalta el tutorial (solo en el primer sótano).
+  anchorDino: { position: 'absolute', right: HOME_RIGHT, bottom: 0, width: WALKER_SIZE, height: WALKER_SIZE },
+  anchorBag: { position: 'absolute', right: BAG_RIGHT, bottom: 0, width: BASKET_WIDTH, height: BASKET_WIDTH },
+  anchorPoster: { position: 'absolute', top: 0, left: -18, width: 36, height: POSTER_HEIGHT },
+  anchorLevel: { position: 'absolute', top: 0, left: -36, width: 72, height: 46 },
   signRow: { position: 'absolute', left: 0, right: 0, alignItems: 'center', zIndex: 2 },
   sign: {
     paddingHorizontal: 10,

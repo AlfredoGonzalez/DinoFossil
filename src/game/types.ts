@@ -93,6 +93,8 @@ export interface GameState {
   lastActiveAt: number;
   lastDailyAmberAt: number;
   settings: Settings;
+  /** Paso del tutorial (índice en TUTORIAL_STEPS); TUTORIAL_FINISHED = terminado o saltado. */
+  tutorialStep: number;
 }
 
 /** Eventos que produce la simulación para que la UI reaccione (sonidos, toasts). */

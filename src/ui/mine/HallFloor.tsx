@@ -18,6 +18,7 @@ import { SpriteSheet } from '../SpriteSheet';
 import { colors } from '../theme';
 import { Floor } from './Floor';
 import { HALL_HOST_WIDTH, HallHost, hasHallHostSprites } from './HallHost';
+import { TutorialAnchor } from '../tutorial/TutorialAnchor';
 import { TurboGlow, useTurboActive } from './TurboGlow';
 import { WantedPoster } from './WantedPoster';
 import { StationStatus } from './StationStatus';
@@ -115,7 +116,10 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
           <WantedPoster station="museum" active={turbo} onPick={onPickManager} height={POSTER_HEIGHT} />
         </View>
         {withHost ? (
-          <HallHost flights={flights} managed={!!manager} hint={idle} style={styles.host} />
+          <>
+            <HallHost flights={flights} managed={!!manager} hint={idle} style={styles.host} />
+            <TutorialAnchor id="hall-host" style={[styles.host, styles.anchorHost]} />
+          </>
         ) : (
           <View style={styles.status}>
             <StationStatus idle={idle} progress={station.progress} color={colors.gold} />
@@ -154,6 +158,7 @@ const styles = StyleSheet.create({
   scene: { flex: 1, alignSelf: 'stretch' },
   // La taquilla, sobre el pasto, entre los árboles y el pabellón (como en el boceto).
   host: { position: 'absolute', left: '18%', bottom: 12 },
+  anchorHost: { width: HALL_HOST_WIDTH, height: 70 },
   status: { position: 'absolute', left: 8, right: 8, bottom: 6 },
   // Junto a la cabeza del pterodáctilo.
   till: { position: 'absolute', left: '18%', marginLeft: HALL_HOST_WIDTH + 2, top: 6, width: 84, gap: 3 },

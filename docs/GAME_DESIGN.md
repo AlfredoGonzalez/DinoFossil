@@ -98,3 +98,12 @@ Compras (IDs iguales en App Store Connect, Google Play y RevenueCat):
 Se usan `number` de JavaScript (hasta ~1e308), suficiente para el Mundo 1. El formato
 (`src/game/format.ts`) muestra K, M, B, T y después aa, ab, ac… Si en mundos futuros
 la economía pasa de 1e300, migra a `break_infinity.js` dentro de `src/game/`.
+
+## Tutorial (primera partida)
+
+Pantalla oscurecida con un círculo sobre lo que hay que tocar y un globito corto; fuera del círculo
+no se puede tocar. Pasos (`src/game/tutorial.ts`): excavar → ver los primeros huesos → subirlos con
+el laboratorista → vender en la taquilla → mejorar el sótano (si no alcanza, se regalan las monedas
+justas) → contratar al T-Rex como jefe → "¡Listo!". Los pasos de espera dejan ver la animación y
+avanzan solos. Se puede saltar; las partidas anteriores a la v2 del guardado no lo ven. Para
+repetirlo: Ajustes → Borrar progreso.

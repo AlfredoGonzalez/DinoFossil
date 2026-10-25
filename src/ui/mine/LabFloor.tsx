@@ -16,6 +16,7 @@ import { hasLabWorkerSprites, LAB_WORKER_SIZE, LabWorker } from './LabWorker';
 import { LevelSign } from './LevelSign';
 import { TapHint } from './TapHint';
 import { TurboGlow, useTurboActive } from './TurboGlow';
+import { TutorialAnchor } from '../tutorial/TutorialAnchor';
 import { WantedPoster } from './WantedPoster';
 
 const POSTER_HEIGHT = 48;
@@ -73,6 +74,7 @@ export function LabFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; 
               sceneHeight={FLOOR_SCENE_HEIGHT}
             />
             {idle ? <TapHint style={styles.workerHint} /> : null}
+            <TutorialAnchor id="lab-worker" style={styles.anchorWorker} />
           </View>
         ) : (
           <View style={styles.worker}>
@@ -100,5 +102,6 @@ const styles = StyleSheet.create({
   labWorker: { position: 'absolute', right: 0, bottom: 2 },
   // Manita sobre la cabeza del laboratorista en su sitio (casi rozando la viga del techo).
   workerHint: { position: 'absolute', right: LAB_WORKER_SIZE * 0.4 - 14, bottom: LAB_WORKER_SIZE * 0.82 },
+  anchorWorker: { position: 'absolute', right: 0, bottom: 0, width: LAB_WORKER_SIZE * 0.8, height: LAB_WORKER_SIZE * 0.9 },
   progress: { position: 'absolute', left: '30%', right: '30%', bottom: 4 },
 });

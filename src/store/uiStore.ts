@@ -19,6 +19,14 @@ export interface HatchReveal {
   duplicate: boolean;
 }
 
+/** Rectángulo en coordenadas de ventana. */
+export interface Rect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 interface UiStore {
   toasts: Toast[];
   offlineReport: OfflineReport | null;
@@ -27,6 +35,9 @@ interface UiStore {
   lastEgg: Rarity | null;
   /** Modo prueba (oculto: 7 toques a la versión en Ajustes). Permite desbloquear dinos. */
   testMode: boolean;
+  /** Zonas que el tutorial puede resaltar, medidas en pantalla (ver TutorialAnchor). */
+  tutorialTargets: Partial<Record<string, Rect>>;
+  setTutorialTarget: (id: string, rect: Rect) => void;
   toast: (text: string, icon?: string) => void;
   dismissToast: (id: number) => void;
   setOfflineReport: (report: OfflineReport | null) => void;
@@ -45,6 +56,8 @@ export const useUiStore = create<UiStore>((set, get) => ({
   fakeAdPlaying: false,
   lastEgg: null,
   testMode: false,
+  tutorialTargets: {},
+  setTutorialTarget: (id, rect) => set({ tutorialTargets: { ...get().tutorialTargets, [id]: rect } }),
   setTestMode: (testMode) => set({ testMode }),
   toast: (text, icon) => {
     const id = nextId++;

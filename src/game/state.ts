@@ -1,7 +1,8 @@
 import { STARTER_DINO } from '@/data/dinos';
+import { TUTORIAL_FINISHED } from './tutorial';
 import type { GameState, MineState } from './types';
 
-export const SAVE_VERSION = 1;
+export const SAVE_VERSION = 2;
 
 export function initialMine(): MineState {
   return {
@@ -33,6 +34,7 @@ export function createInitialState(now: number): GameState {
     lastActiveAt: now,
     lastDailyAmberAt: 0,
     settings: { sound: true, music: true, haptics: true, language: null },
+    tutorialStep: 0,
   };
 }
 
@@ -44,6 +46,8 @@ export function migrateSave(raw: unknown, now: number): GameState {
   const fresh = createInitialState(now);
   if (!raw || typeof raw !== 'object') return fresh;
   const save = raw as Partial<GameState>;
+  // v1 → v2: el tutorial es nuevo; quien ya jugaba no lo repite.
+  const tutorialStep = typeof save.tutorialStep === 'number' ? save.tutorialStep : TUTORIAL_FINISHED;
   // Rellena con valores por defecto cualquier campo que falte (partidas antiguas).
   return {
     ...fresh,
@@ -52,6 +56,7 @@ export function migrateSave(raw: unknown, now: number): GameState {
     eggs: { ...fresh.eggs, ...save.eggs },
     purchases: { ...fresh.purchases, ...save.purchases },
     settings: { ...fresh.settings, ...save.settings },
+    tutorialStep,
     version: SAVE_VERSION,
   };
 }

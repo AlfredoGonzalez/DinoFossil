@@ -130,6 +130,17 @@ const en: Translations = {
     duplicate: 'Duplicate! {{name}} reaches level {{level}}',
     eggFound: 'You found a {{rarity}} egg!',
   },
+  tutorial: {
+    dig: 'Tap your dino to start digging!',
+    bag: 'Your dino found its first bones!',
+    lift: 'Tap the lab worker to lift them up',
+    sell: 'Tap the ticket desk to sell tickets!',
+    upgrade: 'Upgrade your basement to dig faster',
+    manager: 'Hire a boss: it works on its own!',
+    done: 'All set! Your museum runs by itself now. Keep upgrading and discover more dinos.',
+    tapToContinue: 'Tap to continue',
+    skip: 'Skip',
+  },
   collection: {
     title: 'Dinosaur collection',
     subtitle: 'Discover and revive every species',

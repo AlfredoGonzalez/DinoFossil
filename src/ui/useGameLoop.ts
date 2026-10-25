@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { AppState } from 'react-native';
+import { TUTORIAL_FINISHED } from '@/game/tutorial';
 import i18n from '@/i18n';
 import { successFeedback } from '@/services/feedback';
 import { playSfx } from '@/services/audio';
@@ -34,6 +35,8 @@ export function useGameLoop() {
         return;
       }
       const events = useGameStore.getState().tick(gap / 1000);
+      // Tutorial: avanza los pasos que el jugador ya cumplió (toques, mejoras, contrataciones).
+      if (useGameStore.getState().game.tutorialStep < TUTORIAL_FINISHED) useGameStore.getState().syncTutorial();
       for (const event of events) {
         if (event.type === 'eggFound') {
           useUiStore.getState().toast(i18n.t('incubator.eggFound', { rarity: i18n.t(`rarity.${event.rarity}`) }), '🥚');

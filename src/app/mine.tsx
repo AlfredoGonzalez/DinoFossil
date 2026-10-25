@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { router } from 'expo-router';
 import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import { formatDuration, formatNumber } from '@/game/format';
@@ -8,6 +8,7 @@ import { canAddAdBoost } from '@/game/rewards';
 import { pendingHuellas } from '@/game/prestige';
 import { shaftStationId } from '@/game/simulate';
 import type { StationId } from '@/game/types';
+import { TUTORIAL_FINISHED } from '@/game/tutorial';
 import { nextShaftUnlockCost } from '@/game/upgrades';
 import { useTranslation } from '@/i18n';
 import { playSfx } from '@/services/audio';
@@ -33,6 +34,7 @@ import { PrestigeModal } from '@/ui/mine/PrestigeModal';
 import { Roof } from '@/ui/mine/Roof';
 import { UpgradeSheet } from '@/ui/mine/UpgradeSheet';
 import { Screen } from '@/ui/Screen';
+import { TutorialOverlay } from '@/ui/tutorial/TutorialOverlay';
 import { colors } from '@/ui/theme';
 
 function Header({ onPrestige }: { onPrestige: () => void }) {
@@ -149,12 +151,19 @@ export default function MineScreen() {
   const [upgrading, setUpgrading] = useState<StationId | null>(null);
   const [picking, setPicking] = useState<StationId | null>(null);
   const [prestigeOpen, setPrestigeOpen] = useState(false);
+  // Durante el tutorial la casa se queda arriba y sin scroll: así el círculo no se mueve.
+  const tutorialStep = useGameStore((s) => s.game.tutorialStep);
+  const inTutorial = tutorialStep < TUTORIAL_FINISHED;
+  const scrollRef = useRef<ScrollView>(null);
+  useEffect(() => {
+    if (inTutorial) scrollRef.current?.scrollTo({ y: 0, animated: true });
+  }, [inTutorial, tutorialStep]);
 
   return (
     <Screen background="sky" backgroundImage={getArt('museum/sky') ?? getArt('loading/background')} edges={['top']}>
       <CurrencyBar />
       <Header onPrestige={() => (tapFeedback(), setPrestigeOpen(true))} />
-      <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
+      <ScrollView ref={scrollRef} scrollEnabled={!inTutorial} style={styles.scroll} contentContainerStyle={styles.content}>
         <Roof />
         <HallFloor onUpgrade={() => setUpgrading('museum')} onPickManager={() => setPicking('museum')} />
         <View>
@@ -176,6 +185,7 @@ export default function MineScreen() {
         <Foundation />
       </ScrollView>
       <BottomNav />
+      {inTutorial ? <TutorialOverlay /> : null}
       <UpgradeSheet station={upgrading} onClose={() => setUpgrading(null)} />
       <ManagerPicker station={picking} onClose={() => setPicking(null)} />
       <PrestigeModal visible={prestigeOpen} onClose={() => setPrestigeOpen(false)} />

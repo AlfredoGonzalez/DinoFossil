@@ -8,6 +8,7 @@ export * from './offline';
 export * from './prestige';
 export * from './rewards';
 export * from './simulate';
+export * from './tutorial';
 export * from './state';
 export * from './types';
 export * from './upgrades';
