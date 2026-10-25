@@ -12,6 +12,7 @@ común y los prompts generales están en [`../ART_GUIDE.md`](../ART_GUIDE.md).
 | 4 | Los sótanos (canasta y montón de tierra) | [04-sotanos.md](04-sotanos.md) | falta el cartel "Se busca" (opcional) |
 | 5 | Retratos de los 24 dinos (managers, colección) | [05-retratos.md](05-retratos.md) | listo para recibir arte |
 | 6 | Sonidos básicos (toque, monedas, despegue…) | [06-sonidos.md](06-sonidos.md) | listo para recibir sonidos |
+| 7 | Ícono de la app (teléfono, tiendas, navegador) | [07-icono-app.md](07-icono-app.md) | listo para recibir arte |
 
 Animaciones de personajes (hojas de sprites): ver [sprites.md](sprites.md).
 
