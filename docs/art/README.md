@@ -11,6 +11,7 @@ común y los prompts generales están en [`../ART_GUIDE.md`](../ART_GUIDE.md).
 | 3 | Iconos (36: recursos, huevos, navegación, estados, tienda) | [03-iconos.md](03-iconos.md) | listo para recibir arte |
 | 4 | Los sótanos (canasta y montón de tierra) | [04-sotanos.md](04-sotanos.md) | falta el cartel "Se busca" (opcional) |
 | 5 | Retratos de los 24 dinos (managers, colección) | [05-retratos.md](05-retratos.md) | listo para recibir arte |
+| 6 | Sonidos básicos (toque, monedas, despegue…) | [06-sonidos.md](06-sonidos.md) | listo para recibir sonidos |
 
 Animaciones de personajes (hojas de sprites): ver [sprites.md](sprites.md).
 

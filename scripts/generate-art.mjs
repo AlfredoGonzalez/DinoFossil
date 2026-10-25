@@ -71,6 +71,18 @@ const toEntries = (map) =>
 const entries = toEntries(byKey);
 const videoEntries = toEntries(videos);
 
+// Efectos de sonido: assets/sfx/<nombre>.(mp3|m4a|wav|ogg) → SOUNDS (lista de nombres en src/services/audio.ts).
+const sfxDir = path.join(root, 'assets/sfx');
+const SFX_EXTENSIONS = ['.mp3', '.m4a', '.wav', '.ogg'];
+const sounds = new Map();
+for (const file of walk(sfxDir)) {
+  const ext = path.extname(file).toLowerCase();
+  if (!SFX_EXTENSIONS.includes(ext)) continue;
+  const key = path.basename(file, path.extname(file)).toLowerCase();
+  if (!sounds.has(key)) sounds.set(key, file);
+}
+const soundEntries = toEntries(sounds);
+
 const content = `// Archivo generado por scripts/generate-art.mjs. No lo edites a mano.
 import type { ImageSourcePropType } from 'react-native';
 
@@ -78,7 +90,10 @@ export const ART: Partial<Record<string, ImageSourcePropType>> = ${entries.lengt
 
 /** Videos (módulo de Metro: número en nativo, URL en web). */
 export const VIDEOS: Partial<Record<string, number>> = ${videoEntries.length ? `{\n${videoEntries.join('\n')}\n}` : '{}'};
+
+/** Efectos de sonido (assets/sfx/<nombre>). */
+export const SOUNDS: Partial<Record<string, number>> = ${soundEntries.length ? `{\n${soundEntries.join('\n')}\n}` : '{}'};
 `;
 
 if (!fs.existsSync(outFile) || fs.readFileSync(outFile, 'utf8') !== content) fs.writeFileSync(outFile, content);
-console.log(`[art] ${byKey.size} imagen(es) y ${videos.size} video(s) registrados en src/ui/art.generated.ts`);
+console.log(`[art] ${byKey.size} imagen(es), ${videos.size} video(s) y ${sounds.size} sonido(s) registrados en src/ui/art.generated.ts`);

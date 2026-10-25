@@ -1,14 +1,15 @@
 import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
 import { useGameStore } from '@/store/gameStore';
-
-export type SfxName = 'tap' | 'coins' | 'upgrade' | 'egg' | 'hatch' | 'prestige';
+import { SOUNDS } from '@/ui/art.generated';
 
 /**
- * Registro de efectos de sonido. Añade aquí los archivos cuando existan, p. ej.:
- *   tap: require('../../assets/sfx/tap.mp3'),
- * Mientras un efecto no tenga archivo, playSfx() no hace nada.
+ * Efectos de sonido. Cada uno se carga de assets/sfx/<nombre>.(mp3|m4a|wav|ogg) (lo registra
+ * scripts/generate-art.mjs); mientras no exista el archivo, playSfx() no hace nada.
+ * Ficha con qué suena cada uno y dónde conseguirlos: docs/art/06-sonidos.md.
  */
-const SFX: Partial<Record<SfxName, number>> = {};
+export type SfxName = 'tap' | 'coins' | 'upgrade' | 'fly' | 'lift' | 'egg' | 'hatch' | 'prestige';
+
+const SFX = SOUNDS as Partial<Record<SfxName, number>>;
 
 const players = new Map<SfxName, AudioPlayer>();
 

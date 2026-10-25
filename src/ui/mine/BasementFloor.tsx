@@ -4,6 +4,7 @@ import { shaftCycleSeconds, shaftRate } from '@/game/economy';
 import { formatNumber } from '@/game/format';
 import { getModifiers } from '@/game/modifiers';
 import { shaftStationId, stationSpeed } from '@/game/simulate';
+import { playSfx } from '@/services/audio';
 import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
 import { getArt } from '../art';
@@ -86,6 +87,7 @@ export function BasementFloor({ index, onUpgrade, onPickManager }: { index: numb
         onPress={() => {
           if (!idle) return;
           tapFeedback();
+          playSfx('tap');
           useGameStore.getState().tap(station);
         }}
       >

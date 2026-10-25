@@ -40,6 +40,8 @@ export function useGameLoop() {
           playSfx('egg');
           successFeedback();
         }
+        // Cobro en taquilla (cada visita a la sala).
+        if (event.type === 'sold') playSfx('coins');
       }
     }, TICK_MS);
 

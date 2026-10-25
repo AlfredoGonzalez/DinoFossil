@@ -6,6 +6,7 @@ import { carrierCapacity } from '@/game/economy';
 import { formatNumber } from '@/game/format';
 import { getModifiers } from '@/game/modifiers';
 import { useTranslation } from '@/i18n';
+import { playSfx } from '@/services/audio';
 import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
 import { getArt } from '../art';
@@ -101,6 +102,7 @@ export function HallFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void;
         style={styles.scene}
         onPress={() => {
           tapFeedback();
+          playSfx('tap');
           // El pterodáctilo vuela con cada toque (si ya vuela, termina su vuelo); la venta
           // solo empieza si la taquilla estaba libre.
           setFlights((n) => n + 1);

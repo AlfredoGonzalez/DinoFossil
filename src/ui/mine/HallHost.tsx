@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Image, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import Animated, { cancelAnimation, Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { playSfx } from '@/services/audio';
 import { getArt } from '../art';
 import { TapHint } from './TapHint';
 import { getSheet } from '../spriteSheets';
@@ -80,6 +81,7 @@ export function HallHost({ flights, managed, hint, style }: { flights: number; m
 
   useEffect(() => {
     if (!flying || !flightMs) return;
+    playSfx('fly');
     t.value = 0;
     t.value = withTiming(1, { duration: flightMs, easing: Easing.linear });
     const id = setTimeout(() => setFlying(false), flightMs);

@@ -4,6 +4,7 @@ import { formatNumber } from '@/game/format';
 import { getModifiers } from '@/game/modifiers';
 import { stationSpeed } from '@/game/simulate';
 import { useTranslation } from '@/i18n';
+import { playSfx } from '@/services/audio';
 import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
 import { getArt } from '../art';
@@ -46,6 +47,7 @@ export function LabFloor({ onUpgrade, onPickManager }: { onUpgrade: () => void; 
         onPress={() => {
           if (!idle) return;
           tapFeedback();
+          playSfx('lift');
           useGameStore.getState().tap('elevator');
         }}
       >
