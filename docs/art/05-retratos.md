@@ -30,6 +30,8 @@ el mismo fieltro, pero con su propia ropa y fondo.
 
 ## Lista
 
+**Entregados ✅ los 24 retratos** (Claude los dejó en WebP de 512 × 512, ~30 KB cada uno).
+
 | Archivo | Especie | Rareza | Color y rasgo | Ropa | Fondo |
 |---|---|---|---|---|---|
 | `trex.png` | T-Rex | común | verde lima con barriga crema (la mascota) | saco azul marino, camisa blanca, corbata roja | oficina alta con la ciudad al atardecer |
@@ -215,10 +217,156 @@ Al tocar un dino descubierto en **Dinos**, su ficha reproduce un video **una sol
 retrato, y se queda en el último cuadro.
 
 - Archivo: `assets/art/dinos/<id>.mp4` (mismo id que el retrato, p. ej. `gallimimus.mp4` ✅).
-- Cuadrado (1:1), 3–6 s, mismo encuadre de "foto de jefe" que el retrato. Se reproduce **sin sonido**.
-- Mientras carga se ve el retrato, así que conviene que el primer cuadro se parezca a él. El último
-  cuadro es el que se queda en pantalla: que termine en una pose bonita (saludando, sonriendo…).
+- Cuadrado (1:1), 3–6 s. Se reproduce **sin sonido** (si la herramienta añade audio, no pasa nada).
+- **Imagen → video, usando el retrato como primer cuadro.** Mientras carga se ve el retrato, así que
+  el arranque no "salta". El último cuadro es el que se queda: que termine sonriendo a cámara.
+- Si la herramienta deja poner **cuadro inicial y final** (Kling, Luma), pon el retrato en los dos: el
+  video empieza y acaba igual que el retrato y queda perfecto.
 - Claude lo recorta a 480 × 480 y le quita el audio: de ~2.5 MB queda en ~150 KB.
+
+### Prompts de video (copiar y pegar, con el retrato adjunto)
+
+Cada dino hace un gesto propio que va con su ropa y su carácter. Todos llevan la misma cola: cámara
+fija, mismo fondo, sin objetos nuevos y final quieto sonriendo.
+
+**T-Rex** → `trex.mp4`
+
+```
+The plush felt T-Rex in the image proudly straightens its tie with its tiny arms, then gives a happy little thumbs-up. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Compsognathus** → `compsognathus.mp4`
+
+```
+The plush felt Compsognathus in the image tilts its tiny head curiously, then gives a small shy wave. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Protoceratops** → `protoceratops.mp4`
+
+```
+The plush felt Protoceratops in the image nods thoughtfully, then breaks into a big smile and wiggles its frill. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Oviraptor** → `oviraptor.mp4`
+
+```
+The plush felt Oviraptor in the image straightens its red bow tie, fluffs its little feathers and winks. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Iguanodon** → `iguanodon.mp4`
+
+```
+The plush felt Iguanodon in the image raises one thumb spike like a thumbs-up and nods. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Parasaurio** → `parasaurolophus.mp4`
+
+```
+The plush felt Parasaurolophus in the image puffs its cheeks and toots through its tubular crest like a trumpet, then laughs. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Paquicefalosaurio** → `pachycephalosaurus.mp4`
+
+```
+The plush felt Pachycephalosaurus in the image does a playful little head bob toward the viewer, then laughs. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Triceratops** → `triceratops.mp4`
+
+```
+The plush felt Triceratops in the image adjusts the lapels of its tweed jacket and nods wisely. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Stegosaurus** → `stegosaurus.mp4`
+
+```
+The plush felt Stegosaurus in the image laughs happily while its back plates wiggle. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Ankylosaurus** → `ankylosaurus.mp4`
+
+```
+The plush felt Ankylosaurus in the image taps its armored chest proudly and nods once. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Velociraptor** → `velociraptor.mp4`
+
+```
+The plush felt Velociraptor in the image glances left and right with a cheeky grin, then points at the viewer and winks. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Pterodáctilo** → `pterodactyl.mp4`
+
+```
+The plush felt pterodactyl in the image gives its wings a short flap behind its shoulders, then does a pilot salute. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Diplodocus** → `diplodocus.mp4`
+
+```
+The plush felt Diplodocus in the image gently sways its long neck up and down, then smiles. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Brontosaurio** → `brontosaurus.mp4`
+
+```
+The plush felt Brontosaurus in the image takes a polite little bow like a stage performer and comes back up smiling. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Alosaurio** → `allosaurus.mp4`
+
+```
+The plush felt Allosaurus in the image leans in with a serious boss face, then breaks into a big friendly smile. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Carnotauro** → `carnotaurus.mp4`
+
+```
+The plush felt Carnotaurus in the image tugs its red bandana and gives a confident grin. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Therizinosaurio** → `therizinosaurus.mp4`
+
+```
+The plush felt Therizinosaurus in the image pushes up its round glasses with one claw and smiles. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Plesiosaurio** → `plesiosaurus.mp4`
+
+```
+The plush felt Plesiosaurus in the image tilts its head side to side happily and waves a flipper. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Espinosaurio** → `spinosaurus.mp4`
+
+```
+The plush felt Spinosaurus in the image straightens its gold tie while the sail on its back ripples softly. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Braquiosaurio** → `brachiosaurus.mp4`
+
+```
+The plush felt Brachiosaurus in the image looks up toward the stars, then back at the viewer with a smile. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Quetzalcoatlus** → `quetzalcoatlus.mp4`
+
+```
+The plush felt Quetzalcoatlus in the image checks its little brass compass, then looks up and smiles as a breeze moves its crest. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Mosasaurio** → `mosasaurus.mp4`
+
+```
+The plush felt Mosasaurus in the image gives a captain salute while small bubbles float up around it. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
+**Argentinosaurio** → `argentinosaurus.mp4`
+
+```
+The plush felt Argentinosaurus in the image adjusts its bow tie elegantly and nods while golden sparkles twinkle. Keep the exact same character, outfit, framing and background as the image; the camera does not move and the background stays softly blurred. Gentle, cute stop-motion plush toy movement, about 5 seconds. It ends facing the viewer in a three-quarter view with a friendly smile, holding still for the last second. No text, no new objects, no camera cuts.
+```
+
 
 Los datos de la ficha (dieta, época, tamaño, región y dato curioso) ya están escritos para las 24
 especies en `src/data/dinoFacts.ts` y `src/i18n/dinoFacts.ts`.

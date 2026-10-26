@@ -10,7 +10,7 @@ común y los prompts generales están en [`../ART_GUIDE.md`](../ART_GUIDE.md).
 | 2 | La Casa-Museo (pantalla principal) | [02-casa-museo.md](02-casa-museo.md) | ✅ completo |
 | 3 | Iconos (41: recursos, huevos, navegación, estados, ficha del dino, tienda) | [03-iconos.md](03-iconos.md) | ✅ completo |
 | 4 | Los sótanos (canasta y montón de tierra) | [04-sotanos.md](04-sotanos.md) | falta el cartel "Se busca" (opcional) |
-| 5 | Retratos de los 24 dinos (managers, colección) | [05-retratos.md](05-retratos.md) | listo para recibir arte |
+| 5 | Retratos de los 24 dinos (managers, colección) | [05-retratos.md](05-retratos.md) | ✅ retratos completos · videos en curso |
 | 6 | Sonidos básicos (toque, monedas, despegue…) | [06-sonidos.md](06-sonidos.md) | listo para recibir sonidos |
 | 7 | Ícono de la app (teléfono, tiendas, navegador) | [07-icono-app.md](07-icono-app.md) | ✅ completo |
 
