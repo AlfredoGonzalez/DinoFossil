@@ -225,7 +225,7 @@ retrato, y se queda en el último cuadro.
   video empieza y acaba igual que el retrato y queda perfecto.
 - Claude lo recorta a 480 × 480 y le quita el audio: de ~2.5 MB queda en ~150 KB.
 
-**Entregados ✅ 23 videos** (todos menos `parasaurolophus`, que muestra su retrato). Los míticos duran
+**Entregados ✅ los 24 videos**. Los míticos duran
 8 s, el doble que el resto. Claude los dejó en 480 × 480, sin audio, ~120 KB cada uno.
 
 ### Prompts de video (copiar y pegar, con el retrato adjunto)
