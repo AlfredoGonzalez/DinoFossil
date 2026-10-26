@@ -39,7 +39,7 @@ Estilo: el mismo "peluche/fieltro con costuras" del logo → bloque **Biblia de 
 | `settings.png` | Engranaje de madera | Cabecera de la mina |
 | `ad.png` | Televisor retro con botón de play (ver anuncio) | Botones de recompensa |
 
-### Prioridad 2 · Estados y detalles (13)
+### Prioridad 2 · Estados y detalles (12)
 
 | Archivo | Qué dibujar | Dónde sale |
 |---|---|---|
@@ -51,7 +51,6 @@ Estilo: el mismo "peluche/fieltro con costuras" del logo → bloque **Biblia de 
 | `star-empty.png` | La misma estrella, vacía/gris | Estrellas no conseguidas |
 | `lock.png` | Candado | Mundos bloqueados |
 | `check.png` | Marca de verificación verde | Misiones cumplidas |
-| `station-hall.png` | Columnas de museo / vitrina | Título de la sala |
 | `station-lab.png` | Microscopio o lupa | Título del laboratorio |
 | `station-basement.png` | Pico de excavación | Título de los sótanos, "Nuevo sótano" |
 | `dna.png` | Hélice de ADN | Recurso de mundos futuros |
@@ -79,7 +78,12 @@ Estilo: el mismo "peluche/fieltro con costuras" del logo → bloque **Biblia de 
 | `shop-double-income.png` | Dos monedas DinoCoin apiladas con un brillo (ingresos ×2) |
 | `shop-dino-pass.png` | Ticket/pase dorado con una huella de dino |
 
-**Total: 42 iconos.** Si hay que priorizar, la tanda 1 ya cambia por completo el aspecto del juego.
+**Total: 41 iconos.**
+
+## Entregado ✅
+
+Los 41 iconos están en el juego (optimizados a WebP de 256 px, 384 px los de la tienda). El de la
+sala (`station-hall`) se descartó porque la sala ya no lleva letrero.
 
 ## No hace falta crear
 

@@ -43,7 +43,6 @@ export const ICONS = {
   'fact-region': '🌍',
   'fact-curious': '💡',
   // Plantas de la Casa-Museo (junto al nombre de cada planta)
-  'station-hall': '🏛️',
   'station-lab': '🔬',
   'station-basement': '⛏️',
   // Productos de la tienda
