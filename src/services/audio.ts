@@ -24,3 +24,23 @@ export function playSfx(name: SfxName) {
   void player.seekTo(0);
   player.play();
 }
+
+/** Música de fondo (assets/music/theme), en bucle y suave. Ficha: docs/art/09-musica.md. */
+const MUSIC = SOUNDS['music/theme'];
+export const hasMusic = MUSIC !== undefined;
+const MUSIC_VOLUME = 0.35;
+let music: AudioPlayer | null = null;
+
+export function setMusicPlaying(playing: boolean) {
+  if (MUSIC === undefined) return;
+  if (!playing) {
+    music?.pause();
+    return;
+  }
+  if (!music) {
+    music = createAudioPlayer(MUSIC);
+    music.loop = true;
+    music.volume = MUSIC_VOLUME;
+  }
+  music.play();
+}

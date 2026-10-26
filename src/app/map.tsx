@@ -1,9 +1,10 @@
 import { router } from 'expo-router';
 import { useRef } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { WORLDS } from '@/data/worlds';
 import { worldStars } from '@/game/goals';
 import { useTranslation } from '@/i18n';
+import { getArt } from '@/ui/art';
 import { tapFeedback } from '@/services/feedback';
 import { useGameStore } from '@/store/gameStore';
 import { BottomNav } from '@/ui/BottomNav';
@@ -22,11 +23,12 @@ export default function MapScreen() {
   const ordered = [...WORLDS].reverse();
 
   return (
-    <Screen background="sky" edges={['top']}>
+    <Screen background="sky" edges={['top']} backgroundImage={getArt('map/background')}>
       <CurrencyBar />
       <ScrollView ref={scroll} contentContainerStyle={styles.list} onContentSizeChange={() => scroll.current?.scrollToEnd({ animated: false })}>
         {ordered.map((world, i) => {
           const name = t(`worlds.${world.key}.name` as 'worlds.eggValley.name');
+          const art = getArt(`map/world-${world.id}` as `map/world-${1}`);
           return (
             <Pressable
               key={world.id}
@@ -39,17 +41,31 @@ export default function MapScreen() {
               }}
               style={[styles.island, { alignSelf: i % 2 === 0 ? 'flex-start' : 'flex-end' }]}
             >
-              <View style={[styles.islandTop, { backgroundColor: world.color, opacity: world.playable ? 1 : 0.75 }]}>
-                <GameText size={46} style={{ lineHeight: 56 }}>
-                  {world.emoji}
-                </GameText>
-                {!world.playable ? (
-                  <View style={styles.lock}>
-                    <GameIcon name="lock" size={24} />
+              {art ? (
+                // Isla ilustrada; las bloqueadas, apagadas y con candado.
+                <View style={styles.islandArt}>
+                  <Image source={art} resizeMode="contain" style={[styles.islandImage, !world.playable && styles.lockedArt]} />
+                  {!world.playable ? (
+                    <View style={styles.lock}>
+                      <GameIcon name="lock" size={28} />
+                    </View>
+                  ) : null}
+                </View>
+              ) : (
+                <>
+                  <View style={[styles.islandTop, { backgroundColor: world.color, opacity: world.playable ? 1 : 0.75 }]}>
+                    <GameText size={46} style={{ lineHeight: 56 }}>
+                      {world.emoji}
+                    </GameText>
+                    {!world.playable ? (
+                      <View style={styles.lock}>
+                        <GameIcon name="lock" size={24} />
+                      </View>
+                    ) : null}
                   </View>
-                ) : null}
-              </View>
-              <View style={styles.islandDirt} />
+                  <View style={styles.islandDirt} />
+                </>
+              )}
               <View style={styles.label}>
                 <GameText size={13} weight="black" center>
                   {world.id}. {name}
@@ -91,6 +107,9 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: 'rgba(0,0,0,0.18)',
   },
+  islandArt: { width: '100%', aspectRatio: 4 / 3 },
+  islandImage: { width: '100%', height: '100%' },
+  lockedArt: { opacity: 0.6 },
   islandDirt: {
     width: '80%',
     height: 22,

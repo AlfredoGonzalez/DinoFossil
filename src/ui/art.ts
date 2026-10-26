@@ -48,11 +48,26 @@ export const ART_SPECS = {
   'sprites/visitors/b': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Visitante caminando (mira a la derecha)' },
   'sprites/visitors/c': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Visitante caminando (mira a la derecha)' },
   'sprites/lab/idle': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Laboratorista esperando con la cuerda (mira a la derecha)' },
-  'sprites/lab/pull': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Laboratorista tirando de la cuerda (mira a la derecha, en el sitio)' },
+  'sprites/lab/pull': {
+    size: '1280×1280 (5×5 de 256)',
+    format: 'png/webp transparente',
+    desc: 'Laboratorista tirando de la cuerda (mira a la derecha, en el sitio)',
+  },
   'sprites/hall/idle': { size: '1792×1792 (7×7 de 256)', format: 'png/webp transparente', desc: 'Pterodáctilo anfitrión en reposo (mira a la derecha)' },
   'sprites/hall/welcome': { size: '1792×1792 (7×7 de 256)', format: 'png/webp transparente', desc: 'Pterodáctilo: despega, aletea y aterriza (una vez)' },
   'sprites/hall/wave': { size: '1792×1792 (7×7 de 256)', format: 'png/webp transparente', desc: 'Pterodáctilo saluda (una vez)' },
   'sprites/lab/walk': { size: '1280×1280 (5×5 de 256)', format: 'png/webp transparente', desc: 'Laboratorista volviendo a su sitio (mira a la derecha)' },
+  // Módulo 8 · Mapa de mundos (docs/art/08-mapa.md).
+  'map/background': { size: '1290×2796', format: 'jpg/webp opaco', desc: 'Cielo del mapa detrás de las islas' },
+  'map/world-1': { size: '1024×768', format: 'png/webp transparente', desc: 'Isla del mundo 1' },
+  'map/world-2': { size: '1024×768', format: 'png/webp transparente', desc: 'Isla del mundo 2' },
+  'map/world-3': { size: '1024×768', format: 'png/webp transparente', desc: 'Isla del mundo 3' },
+  'map/world-4': { size: '1024×768', format: 'png/webp transparente', desc: 'Isla del mundo 4' },
+  'map/world-5': { size: '1024×768', format: 'png/webp transparente', desc: 'Isla del mundo 5' },
+  'map/world-6': { size: '1024×768', format: 'png/webp transparente', desc: 'Isla del mundo 6' },
+  'map/world-7': { size: '1024×768', format: 'png/webp transparente', desc: 'Isla del mundo 7' },
+  'map/world-8': { size: '1024×768', format: 'png/webp transparente', desc: 'Isla del mundo 8' },
+  'map/world-9': { size: '1024×768', format: 'png/webp transparente', desc: 'Isla del mundo 9' },
 } as const;
 
 /**

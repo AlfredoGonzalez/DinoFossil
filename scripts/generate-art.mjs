@@ -81,6 +81,13 @@ for (const file of walk(sfxDir)) {
   const key = path.basename(file, path.extname(file)).toLowerCase();
   if (!sounds.has(key)) sounds.set(key, file);
 }
+// Música de fondo: assets/music/<nombre> → SOUNDS['music/<nombre>'] (docs/art/09-musica.md).
+for (const file of walk(path.join(root, 'assets/music'))) {
+  const ext = path.extname(file).toLowerCase();
+  if (!SFX_EXTENSIONS.includes(ext)) continue;
+  const key = `music/${path.basename(file, ext).toLowerCase()}`;
+  if (!sounds.has(key)) sounds.set(key, file);
+}
 const soundEntries = toEntries(sounds);
 
 const content = `// Archivo generado por scripts/generate-art.mjs. No lo edites a mano.
@@ -91,7 +98,7 @@ export const ART: Partial<Record<string, ImageSourcePropType>> = ${entries.lengt
 /** Videos (módulo de Metro: número en nativo, URL en web). */
 export const VIDEOS: Partial<Record<string, number>> = ${videoEntries.length ? `{\n${videoEntries.join('\n')}\n}` : '{}'};
 
-/** Efectos de sonido (assets/sfx/<nombre>). */
+/** Efectos de sonido (assets/sfx/<nombre>) y música (assets/music/<nombre> → music/<nombre>). */
 export const SOUNDS: Partial<Record<string, number>> = ${soundEntries.length ? `{\n${soundEntries.join('\n')}\n}` : '{}'};
 `;
 

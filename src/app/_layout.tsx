@@ -12,6 +12,7 @@ import { useGameStore } from '@/store/gameStore';
 import { GlobalModals } from '@/ui/GlobalModals';
 import { TutorialOverlay } from '@/ui/tutorial/TutorialOverlay';
 import { FakeAdOverlay, Toasts } from '@/ui/Overlays';
+import { useBackgroundMusic } from '@/ui/useBackgroundMusic';
 import { useGameLoop } from '@/ui/useGameLoop';
 
 void SplashScreen.preventAutoHideAsync();
@@ -21,6 +22,7 @@ export default function RootLayout() {
   const language = useGameStore((s) => s.game.settings.language);
 
   useGameLoop();
+  useBackgroundMusic();
 
   useEffect(() => {
     setLanguage(language);

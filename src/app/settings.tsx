@@ -5,6 +5,7 @@ import { ScrollView, StyleSheet, Switch, View } from 'react-native';
 import type { Settings } from '@/game/types';
 import { useTranslation } from '@/i18n';
 import { adsAreSimulated, showPrivacyOptions } from '@/services/ads';
+import { hasMusic } from '@/services/audio';
 import { useGameStore } from '@/store/gameStore';
 import { useUiStore } from '@/store/uiStore';
 import { ChunkyButton } from '@/ui/ChunkyButton';
@@ -14,7 +15,8 @@ import { Banner, Panel } from '@/ui/Panel';
 import { Screen } from '@/ui/Screen';
 import { colors } from '@/ui/theme';
 
-const TOGGLES: (keyof Pick<Settings, 'sound' | 'music' | 'haptics'>)[] = ['sound', 'music', 'haptics'];
+// "Música" solo aparece cuando hay pista (assets/music/theme).
+const TOGGLES: (keyof Pick<Settings, 'sound' | 'music' | 'haptics'>)[] = hasMusic ? ['sound', 'music', 'haptics'] : ['sound', 'haptics'];
 const LANGUAGES: { value: Settings['language']; label: string }[] = [
   { value: null, label: 'settings.auto' },
   { value: 'es', label: 'Español' },
@@ -26,7 +28,6 @@ export default function SettingsScreen() {
   const settings = useGameStore((s) => s.game.settings);
   const update = useGameStore((s) => s.updateSettings);
   const [confirmReset, setConfirmReset] = useState(false);
-  const [loginInfo, setLoginInfo] = useState(false);
   // Modo prueba oculto: 7 toques seguidos a la versión.
   const [versionTaps, setVersionTaps] = useState(0);
 
@@ -56,9 +57,6 @@ export default function SettingsScreen() {
             ))}
           </View>
         </Panel>
-        <Panel title={t('settings.account')}>
-          <ChunkyButton variant="blue" label={t('settings.login')} onPress={() => setLoginInfo(true)} />
-        </Panel>
         <Panel title={t('settings.news')}>
           <GameText>{t('settings.newsBody')}</GameText>
         </Panel>
@@ -81,10 +79,6 @@ export default function SettingsScreen() {
           {t('settings.version', { version: Constants.expoConfig?.version ?? '1.0.0' })}
         </GameText>
       </ScrollView>
-      <GameModal visible={loginInfo} title={t('settings.login')} onClose={() => setLoginInfo(false)}>
-        <GameText center>{t('settings.loginSoon')}</GameText>
-        <ChunkyButton label={t('common.continue')} onPress={() => setLoginInfo(false)} />
-      </GameModal>
       <GameModal visible={confirmReset} title={t('settings.reset')} onClose={() => setConfirmReset(false)}>
         <GameText center>{t('settings.resetConfirm')}</GameText>
         <View style={styles.langs}>
